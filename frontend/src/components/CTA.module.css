@@ -1,0 +1,46 @@
+.cta_button {
+    color: var(--text-prim);
+    border: 2px solid var(--orange);
+    background-color: transparent;
+    cursor: pointer;
+    outline: none;
+    transition: 400ms ease-in-out;
+}
+.loading_button {
+    display: grid;
+    place-items: center;
+}
+.button_lg {
+    width: 10rem;
+    height: 3.5rem;
+    padding: 10px;
+    font-size: 1.3rem;
+    border-radius: 1rem;
+}
+.button_sm {
+    width: 7rem;
+    height: 2.5rem;
+    padding: 3px;
+    font-size: 1rem;
+    border-radius: .5rem;
+}
+.loading_button_lg {
+    width: 25%;
+    height: 3.5rem;
+    margin: 2rem auto;
+    padding: 5px;
+    font-size: 1.3rem;
+    border-radius: 1rem;
+}
+.loading_button_sm {
+    width: 7rem;
+    height: 2.5rem;
+    padding: 3px;
+    font-size: 1rem;
+    border-radius: .5rem;
+}
+.cta_button:hover {
+    color: var(--orange);
+    background-color: var(--background-prim);
+    border: 2px solid var(--background-terc);
+}

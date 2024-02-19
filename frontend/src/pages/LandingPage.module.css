@@ -1,0 +1,31 @@
+.main_container {
+    display: flex;
+}
+.main_wrapper {
+    width: 100%;
+}
+.home_section {
+    height: 100vh;
+    padding: 2rem 0 0 2rem;
+}
+.theme_section {
+    height: 100vh;
+    padding: 2rem 0 0 2rem;
+}
+.text_wrapper {
+    width: 600px;
+}
+.text_wrapper h1 {
+    font-size: 58px;
+    letter-spacing: 3px;
+    margin-bottom: 3rem;
+    color: var(--text-prim);
+}
+.text_wrapper h1 span {
+    color: var(--orange);
+}
+.text_wrapper p {
+    font-size: 24px;
+    color: var(--text-prim);
+    margin-bottom: 3rem;
+}

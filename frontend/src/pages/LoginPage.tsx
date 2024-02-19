@@ -1,0 +1,32 @@
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../store/store';
+import { userLogin } from '../store/usersSlice';
+import { Link } from 'react-router-dom';
+import { useToastMessage } from '../hooks/useToastMessage';
+import LoginCSS from './LoginPage.module.css';
+import CTA from '../components/CTA';
+const LoginPage = () => {
+  const { errorMessage } = useToastMessage();
+  const [password, setPassword] = useState<string>();
+  const dispatch = useDispatch<AppDispatch>();
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    if (password) dispatch(userLogin(password.trim()));
+    else errorMessage('Polje za lozinku je prazno');
+  }
+  return (
+    <main className={LoginCSS.main_wrapper}>
+      <h1><Link to = '/'>MojaTema</Link></h1>
+      <div className={LoginCSS.form_container}>
+          <form className={LoginCSS.form}>
+            <h1>Prijavi se</h1>
+            <label>Lozinka:</label>
+            <input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} type="text" placeholder='Unesi lozinku...'/>
+            <CTA title='Prijavi se' type='loading_btn' size='lg' onClick={handleSubmit}/>
+          </form>
+      </div>
+    </main>
+  );
+}
+export default LoginPage;

@@ -1,0 +1,5 @@
+.logo {
+    width: 7rem;
+    height: 7rem;
+    stroke: var(--text-prim);
+}

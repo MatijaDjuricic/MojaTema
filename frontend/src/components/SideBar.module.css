@@ -1,0 +1,110 @@
+.sidebar_container {
+    min-width: 300px;
+}
+.main_wrapper {
+    min-width: inherit;
+    position: fixed;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    background-color: var(--background-sec);
+    border-right: 2px solid var(--orange);
+    border-radius: 0 10px 10px 0;
+    filter: drop-shadow(3px 3px 3px var(--orange));
+}
+.head {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+.line {
+    width: 70%;
+    height: 2px;
+    background: var(--orange);
+    border-radius: 10px;
+}
+.head a {
+    display: flex;
+    align-items: end;
+    text-decoration: none;
+}
+.head span {
+    color: var(--orange);
+    font-size: 1.5rem;
+    padding-bottom: 10px;
+}
+.head p {
+    color: var(--text-prim);
+    font-size: 3rem;
+}
+.navs {
+    display: flex;
+    flex-direction: column;
+}
+.nav_item {
+    padding: 0 0 2rem 1rem;
+    display: flex;
+    justify-content: start;
+    gap: 3rem;
+    align-items: center;
+}
+.nav_item a {
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: var(--text-prim);
+}
+.nav_icons_stroke {
+    width: 2rem;
+    height: 2rem;
+    stroke: var(--orange);
+}
+.nav_icons_fill {
+    width: 2rem;
+    height: 2rem;
+    fill: var(--orange);
+}
+.profile_container .line {
+    margin: 2rem auto 2rem auto;
+}
+.status_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1rem 0 1rem;
+}
+.status_wrapper span {
+    color: var(--orange);
+    font-size: 2rem;
+    text-transform: capitalize;
+}
+.login {
+    text-align: center;
+}
+.login a {
+    font-size: 2rem;
+    text-decoration: none;
+    color: var(--text-prim);
+    transition: 500ms ease-in-out;
+}
+.login a:hover {
+    color: var(--orange);
+}
+.profile_wrapper {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 0 1rem 0 1rem;
+}
+.profile_wrapper p {
+    font-size: 1.2rem;
+    color: var(--text-prim);
+}
+.profile_wrapper {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}

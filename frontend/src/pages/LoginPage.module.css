@@ -1,0 +1,53 @@
+.main_wrapper {
+    position: absolute;
+    inset: 0;
+    background-color: var(--background-prim);
+}
+.main_wrapper h1 {
+    text-align: center;
+    margin: 150px 0 2rem 0;
+    font-size: 3rem;
+}
+.main_wrapper h1 a {
+    color: var(--text-prim);
+    text-decoration: none;
+}
+.form_container {
+    position: relative;
+    margin: auto;
+    max-width: 650px;
+    height: 350px;
+    background-color: var(--background-sec);
+    border: 2px solid var(--orange);
+    border-radius: 1rem;
+}
+.form {
+    display: flex;
+    flex-direction: column;
+}
+.form h1 {
+    margin: 2rem 0 2rem 0;
+    text-align: center;
+    color: var(--text-prim);
+    font-size: 2.5rem;
+}
+.form label {
+    color: var(--text-prim);
+    margin: 0 0 .5rem 20%;
+    font-size: 1.5rem;
+}
+.form input {
+    width: 60%;
+    margin: auto;
+    padding: 15px;
+    color: var(--text-prim);
+    background-color: var(--background-prim);
+    border: 3px solid var(--background-terc);
+    font-size: 1.25rem;
+    border-radius: 1rem;
+    outline: none;
+}
+.form input::placeholder {
+    color: var(--text-prim);
+    opacity: 0.2;
+}

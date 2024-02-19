@@ -1,0 +1,50 @@
+.link_wrapper {
+    margin: 0 1rem 1rem 1rem;
+    text-decoration: none;
+}
+.scroll_wrapper {
+    margin: 0 1rem 1rem 1rem;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: 300ms ease-in-out;
+    cursor: pointer;
+}
+.nav_item {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: .5rem 1rem .5rem 1rem;
+    border-radius: 10px;
+    gap: 3rem;
+    transition: 300ms ease-in-out;
+}
+.nav_item p {
+    font-size: 1.5rem;
+    color: var(--text-prim);
+    text-decoration: none;
+    transition: 300ms ease-in-out;
+}
+.nav_icons {
+    width: 2rem;
+    height: 2rem;
+    fill: transparent;
+    stroke: var(--orange);
+}
+.active {
+    background-color: var(--orange);
+}
+.not_active:hover {
+    background-color: var(--text-prim);
+}
+.active .nav_icons {
+    stroke: var(--text-prim);
+}
+.active p {
+    color: var(--background-sec);
+}
+.active:hover p {
+    color: var(--text-prim);
+}
+.not_active:hover p {
+    color: var(--background-sec);
+}

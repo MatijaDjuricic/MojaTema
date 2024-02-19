@@ -1,0 +1,40 @@
+.modal_content {
+    background: var(--background-prim) !important;
+    border: 3px solid var(--background-terc) !important;
+    border-radius: 10px !important;
+}
+.modal_title {
+    color: var(--text-prim) !important;
+    font-size: 2rem !important;
+}
+.modal_footer, .modal_header {
+    border: none !important;
+}
+.modal_body p {
+    color: var(--text-prim) !important;
+    font-size: 1.5rem !important;
+}
+.logout_btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+.logout_btn .logout_icon {
+    width: 2rem;
+    height: 2rem;
+    stroke: var(--red);
+}
+.close_btn {
+    border: none;
+    border-radius: 50%;
+    background-color: transparent;
+}
+.close_icon {
+    width: 2rem;
+    height: 2rem;
+    fill: var(--orange);
+    transition: 400ms ease-in-out;
+}
+.close_btn:hover .close_icon {
+    fill: var(--text-prim);
+}
