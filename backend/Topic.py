@@ -17,3 +17,8 @@ class Topic:
             results = cur.execute(query).fetchall()
             data = [dict(row) for row in results]
             return json.dumps(data) if data else None
+    def topicsRegistration(self, user_id, topic_id):
+        with self.Connect as conn:
+            cur = conn.cursor()
+            cur.execute("UPDATE Tema SET ucenik_id = (?) WHERE tema_id = (?)", (user_id, topic_id))
+            conn.commit()

@@ -19,7 +19,7 @@ TOKEN_DURATION = 60
 @app.route('/ping')
 def ping():
     return make_response(jsonify({"message": "success"}), 200)
-@app.route('/users/login', methods = ['POST'])
+@app.route('/users/login', methods=['POST'])
 def studentLogin():
     try:
         if request.method == 'POST':
@@ -70,6 +70,14 @@ def getTopics():
             })
         return make_response(jsonify(allData), 200)
     return make_response(jsonify({"message": "no topics found"}), 404)
+@app.route('/topics/registration', methods=['POST'])
+def topicsRegistration():
+    if request.method == 'POST':
+        user_id = request.get_json()["user_id"]
+        topic_id = request.get_json()["topic_id"]
+        Topic(Connect()).topicsRegistration(user_id, topic_id)
+        return make_response(jsonify({"message": "success"}), 200)
+    return make_response(jsonify({"message": "bad request"}), 400)
 if '__main__' == __name__:
     from waitress import serve
     serve(app, host = "0.0.0.0", port = os.getenv("PORT", 8080))
