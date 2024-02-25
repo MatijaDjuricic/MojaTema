@@ -70,14 +70,32 @@ def getTopics():
             })
         return make_response(jsonify(allData), 200)
     return make_response(jsonify({"message": "no topics found"}), 404)
-@app.route('/topics/registration', methods=['POST'])
-def topicsRegistration():
+@app.route('/topics/registrationApply', methods=['POST'])
+def topicsRegistrationApply():
     if request.method == 'POST':
         user_id = request.get_json()["user_id"]
         topic_id = request.get_json()["topic_id"]
-        Topic(Connect()).topicsRegistration(user_id, topic_id)
-        return make_response(jsonify({"message": "success"}), 200)
+        Topic(Connect()).topicsRegistrationApply(user_id, topic_id)
+        userData = Topic(Connect()).SelectStudentTopicBy(topic_id)
+        data = {
+            "user_id": user_id,
+            "topic_id": topic_id,
+            "student_username": f"{userData['ime']} {userData['prezime']}"
+        }
+        return make_response(jsonify(data), 200)
+    return make_response(jsonify({"message": "bad request"}), 400)
+@app.route('/topics/registrationCencel', methods=['POST'])
+def topicsRegistrationCencel():
+    if request.method == 'POST':
+        topic_id = request.get_json()["topic_id"]
+        print(topic_id)
+        Topic(Connect()).topicsRegistrationCencel(topic_id)
+        data = {
+            "topic_id": topic_id
+        }
+        return make_response(jsonify(data), 200)
     return make_response(jsonify({"message": "bad request"}), 400)
 if '__main__' == __name__:
     from waitress import serve
     serve(app, host = "0.0.0.0", port = os.getenv("PORT", 8080))
+    #app.run(host = "localhost", port = os.getenv("PORT", 8080), debug = True)

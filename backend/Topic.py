@@ -3,6 +3,14 @@ import json
 class Topic:
     def __init__(self, Connect):
         self.Connect = Connect
+    def SelectStudentTopicBy(self, topic_id) -> dict:
+        with self.Connect as conn:
+            conn.row_factory = sqlite3.Row
+            cur = conn.cursor()
+            query = f"SELECT *, Ucenik.ime as ime, Ucenik.prezime as prezime FROM Tema \
+                LEFT JOIN Ucenik ON Tema.ucenik_id = Ucenik.ucenik_id WHERE Tema.tema_id = '{topic_id}'"
+            data = cur.execute(query).fetchone()
+            return json.loads(json.dumps(dict(data))) if data else None
     def SelectAllTopics(self) -> dict:
         with self.Connect as conn:
             conn.row_factory = sqlite3.Row
@@ -17,8 +25,13 @@ class Topic:
             results = cur.execute(query).fetchall()
             data = [dict(row) for row in results]
             return json.dumps(data) if data else None
-    def topicsRegistration(self, user_id, topic_id):
+    def topicsRegistrationApply(self, user_id, topic_id):
         with self.Connect as conn:
             cur = conn.cursor()
             cur.execute("UPDATE Tema SET ucenik_id = (?) WHERE tema_id = (?)", (user_id, topic_id))
+            conn.commit()
+    def topicsRegistrationCencel(self, topic_id):
+        with self.Connect as conn:
+            cur = conn.cursor()
+            cur.execute("UPDATE Tema SET ucenik_id = null WHERE tema_id = (?)", (topic_id,))
             conn.commit()
