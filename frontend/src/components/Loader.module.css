@@ -16,9 +16,13 @@
     width: 4rem;
     height: 4rem;
 }
-.btn_loader {
+.btn_lg_loader {
     width: 2.5rem;
     height: 2.5rem;
+}
+.btn_sm_loader {
+    width: 1.5rem;
+    height: 1.5rem;
 }
 @keyframes loading {
     0% {

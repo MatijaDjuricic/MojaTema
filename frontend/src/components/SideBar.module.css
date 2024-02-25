@@ -1,8 +1,8 @@
 .sidebar_container {
-    min-width: 300px;
+    min-width: 270px;
 }
 .main_wrapper {
-    min-width: inherit;
+    width: 270px;
     position: fixed;
     height: 100vh;
     display: flex;
@@ -22,7 +22,7 @@
     padding-top: 1rem;
 }
 .line {
-    width: 70%;
+    width: 60%;
     height: 2px;
     background: var(--orange);
     border-radius: 10px;
@@ -46,7 +46,7 @@
     flex-direction: column;
 }
 .nav_item {
-    padding: 0 0 2rem 1rem;
+    padding: 0 0 2rem 0rem;
     display: flex;
     justify-content: start;
     gap: 3rem;
@@ -63,8 +63,8 @@
     stroke: var(--orange);
 }
 .nav_icons_fill {
-    width: 2rem;
-    height: 2rem;
+    width: 1.8rem;
+    height: 1.8rem;
     fill: var(--orange);
 }
 .profile_container .line {
@@ -78,7 +78,7 @@
 }
 .status_wrapper span {
     color: var(--orange);
-    font-size: 2rem;
+    font-size: 1.5rem;
     text-transform: capitalize;
 }
 .login {
@@ -96,15 +96,19 @@
 .profile_wrapper {
     display: flex;
     align-items: center;
-    gap: 2rem;
-    padding: 0 1rem 0 1rem;
+    gap: 1rem;
+    padding: 0 1rem 0 2rem;
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
 }
-.profile_wrapper p {
+.title_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+.title_wrapper p {
     font-size: 1.2rem;
     color: var(--text-prim);
-}
-.profile_wrapper {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
 }

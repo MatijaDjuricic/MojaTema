@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
-import { useAuth } from './hooks/useAuth';
+import { useUserContext } from './context/UserContext';
 import ToastMessage from './components/ToastMessage';
 import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
@@ -7,14 +7,13 @@ import TopicsPage from './pages/TopicsPage';
 import LandingPage from './pages/LandingPage';
 import NotFoundPage from './pages/NotFoundPage';
 const App = () => {
-  const { getUserAuth } = useAuth();
-  const auth = getUserAuth();
+  const user = useUserContext();
   const RequireAuth = ({ children }: { children: JSX.Element }) => {
-    if (auth) return children;
+    if (user != undefined) return children;
     return <LandingPage/>;
   }
   const AuthRedirect = ({ children }: { children: JSX.Element }) => {
-    if (!auth) return children;
+    if (user == undefined) return children;
     return <Navigate to = '/'/>;
   }
   const router = createBrowserRouter([
@@ -35,7 +34,10 @@ const App = () => {
     },
     {
       path: '/topics',
-      element: <TopicsPage/>
+      element:
+        <RequireAuth>
+          <TopicsPage/>
+        </RequireAuth>
     }
   ]);
   return (

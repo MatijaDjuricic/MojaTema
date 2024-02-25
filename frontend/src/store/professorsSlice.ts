@@ -1,4 +1,4 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+/*import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Professor, ProfessorsState } from "../types/types";
 import axios from "axios";
 axios.defaults.withCredentials = true;
@@ -14,4 +14,4 @@ export const professorsSlice = createSlice({
     }
 });
 export const { resetState } = professorsSlice.actions;
-export default professorsSlice.reducer;
+export default professorsSlice.reducer;*/

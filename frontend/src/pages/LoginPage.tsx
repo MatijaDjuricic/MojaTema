@@ -9,10 +9,14 @@ import CTA from '../components/CTA';
 const LoginPage = () => {
   const { errorMessage } = useToastMessage();
   const [password, setPassword] = useState<string>();
+  const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    if (password) dispatch(userLogin(password.trim()));
+    if (password) {
+      setLoading(true);
+      dispatch(userLogin(password.trim())).finally(() => setLoading(false));
+    }
     else errorMessage('Polje za lozinku je prazno');
   }
   return (
@@ -23,7 +27,7 @@ const LoginPage = () => {
             <h1>Prijavi se</h1>
             <label>Lozinka:</label>
             <input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} type="text" placeholder='Unesi lozinku...'/>
-            <CTA title='Prijavi se' type='loading_btn' size='lg' onClick={handleSubmit}/>
+            <CTA title='Prijavi se' type='loading_btn' loading={loading} size='lg' onClick={handleSubmit}/>
           </form>
       </div>
     </main>

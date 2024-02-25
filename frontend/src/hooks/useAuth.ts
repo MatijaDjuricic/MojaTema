@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from '../store/store';
 export const useAuth = () => {
     const { getCookie, removeCookie } = useCookie();
-    const getAuth = (): TokenData | boolean => {
+    const getAuth = (): TokenData | User | undefined => {
         const access_token = getCookie('access_token');
         if (access_token) {
             try {
@@ -14,16 +14,16 @@ export const useAuth = () => {
                     return decodedToken;
                 }
                 removeCookie('access_token');
-                return false;
+                return undefined;
             } catch (err: any) {
                 throw new Error(err)
             }
         }
-        return false;
+        return undefined;
     }
-    const getUserAuth = (): boolean | User | TokenData => {
-        const user = useSelector((state: RootState) => state.users.loggedIn)
-        return user ? user : false;
+    const getUserAuth = (): TokenData | User | undefined => {
+        const user = useSelector((state: RootState) => state.users.loggedIn);
+        return user;
     }
     return { getAuth, getUserAuth }
 }

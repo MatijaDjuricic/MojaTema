@@ -10,7 +10,9 @@ import theme_icon from '../assets/theme.svg';
 import success_icon from '../assets/success.svg';
 import profile_icon from '../assets/profile.svg';
 import SideBarCSS from './SideBar.module.css';
-const SideBar = ({ user }: any) => {
+import { useUserContext } from '../context/UserContext';
+const SideBar = () => {
+    const user = useUserContext();
     return (
         <aside className={SideBarCSS.sidebar_container}>
             <main className={SideBarCSS.main_wrapper}>
@@ -43,8 +45,10 @@ const SideBar = ({ user }: any) => {
                         </div>
                         <div className={SideBarCSS.line}></div>
                         <div className={SideBarCSS.profile_wrapper}>
-                            <ReactSVG src={profile_icon} className={SideBarCSS.nav_icons_stroke}/>
-                            <p>{user.first_name} {user.last_name}</p>
+                            <div className={SideBarCSS.title_wrapper}>
+                                <ReactSVG src={profile_icon} className={SideBarCSS.nav_icons_stroke}/>
+                                <p>{user.first_name} {user.last_name}</p>
+                            </div>
                             <LogOutModal/>
                         </div>
                     </div>

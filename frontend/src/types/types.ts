@@ -31,18 +31,16 @@ export interface Topic {
 }
 export interface UsersState {
     users: User[],
-    loggedIn: TokenData | boolean,
-    loading_status: boolean
+    loggedIn: User | TokenData | undefined
 }
 export interface StudentsState {
-    students: Student[],
+    students: Student[]
 }
 export interface ProfessorsState {
-    professors: Professor[],
+    professors: Professor[]
 }
 export interface TopicsState {
-    topics: Topic[],
-    loading_status: boolean,
+    topics: Topic[]
 }
 export type TokenData = {
     id: number,
@@ -50,6 +48,7 @@ export type TokenData = {
     last_name: string,
     theme_id: number,
     subject_id?: number,
+    role_status: string,
     iat: number,
     exp: number,
 }

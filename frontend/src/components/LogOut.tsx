@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { ReactSVG } from 'react-svg';
 import { logOut } from '../store/usersSlice';
@@ -10,7 +11,11 @@ import LogOutModalCSS from './LogOut.module.css';
 const ModalPopup = () => {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
-  const LogOutSubmit = () => dispatch(logOut());
+  const navigate = useNavigate();
+  const LogOutSubmit = () => {
+    dispatch(logOut());
+    navigate('/');
+  }
   return (
     <>
       <button onClick={() => setShow(true)} className={LogOutModalCSS.logout_btn}>

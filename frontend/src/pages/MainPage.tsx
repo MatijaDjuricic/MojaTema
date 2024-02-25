@@ -1,12 +1,9 @@
-import { useAuth } from '../hooks/useAuth';
 import SideBar from '../components/SideBar';
 import MainCSS from './MainPage.module.css';
 const MainPage = () => {
-  const { getUserAuth } = useAuth();
-  const user = getUserAuth();
   return (
     <div className={MainCSS.main_container}>
-      <SideBar user = {user}/>
+      <SideBar/>
       <main className={MainCSS.main_wrapper}>
         <h1>Početna</h1>
       </main>
