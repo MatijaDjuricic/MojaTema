@@ -3,14 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store/store';
 import { topicsFetchAll, topicsRegistrationApply, topicsRegistrationCancel } from '../store/topicsSlice';
 import { useUserContext } from '../context/UserContext';
-import { User } from '../types/types';
 import Card from 'react-bootstrap/Card';
 import Loader from '../components/Loader';
 import SideBar from '../components/SideBar';
 import CTA from '../components/CTA';
 import TopicsCSS from './TopicsPage.module.css';
 const TopicsPage = () => {
-  const user = useUserContext() as User;
+  const user = useUserContext();
   const effectRef = useRef<boolean>(false);
   const topics = useSelector((state: RootState) => state.topics.topics);
   const [loading, setLoading] = useState<boolean>(true);

@@ -4,7 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 const UserContext = createContext<TokenData | User | undefined>(undefined);
 export const useUserContext = () => {
     const user = useContext(UserContext);
-    return user;
+    return user as User;
 }
 export const UserContextProvider = ({ children }: { children: JSX.Element}) => {
     const { getUserAuth } = useAuth();

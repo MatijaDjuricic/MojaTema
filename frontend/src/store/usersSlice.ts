@@ -6,7 +6,7 @@ import { useAuth } from "../hooks/useAuth";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 axios.defaults.withCredentials = true;
-const URL = import.meta.env.VITE_URL_PRIVATE;
+const URL = import.meta.env.VITE_API_URL;
 const { setCookie, removeCookie } = useCookie();
 const { getAuth } = useAuth();
 const { successMessage, errorMessage } = useToastMessage()
