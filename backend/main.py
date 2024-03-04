@@ -13,7 +13,7 @@ CORS(app, supports_credentials = True)
 app.secret_key = str(os.getenv("SECRET_KEY", ""))
 Hash = lambda string: hashlib.sha256(str(string).encode("utf-8")).hexdigest()
 HashBase64 = lambda string: base64.b64encode(str(string).encode("utf-8")).decode("utf-8")
-Connect = lambda: sqlite3.connect(os.getenv("DB_NAME", "database.db"))
+Connect = lambda: sqlite3.connect(os.getenv("DB_NAME", "./database.db"))
 TOKEN_DURATION = 60
 @app.route('/ping')
 def ping():
