@@ -1,0 +1,21 @@
+.header_container {
+    width: 100%;
+    display: flex;
+}
+.left_side {
+    width: 50%;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+.left_side p {
+    font-size: 1.5rem;
+    color: var(--orange) !important;
+}
+.right_side {
+    width: 50%;
+    text-align: end;
+}
+.right_side p {
+    font-size: 1.5rem;
+}

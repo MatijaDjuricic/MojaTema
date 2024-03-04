@@ -3,14 +3,6 @@ import json
 class Topic:
     def __init__(self, Connect):
         self.Connect = Connect
-    def SelectStudentTopicBy(self, topic_id) -> dict:
-        with self.Connect as conn:
-            conn.row_factory = sqlite3.Row
-            cur = conn.cursor()
-            query = f"SELECT *, Ucenik.ime as ime, Ucenik.prezime as prezime FROM Tema \
-                LEFT JOIN Ucenik ON Tema.ucenik_id = Ucenik.ucenik_id WHERE Tema.tema_id = '{topic_id}'"
-            data = cur.execute(query).fetchone()
-            return json.loads(json.dumps(dict(data))) if data else None
     def SelectAllTopics(self) -> dict:
         with self.Connect as conn:
             conn.row_factory = sqlite3.Row
@@ -24,14 +16,34 @@ class Topic:
                 LEFT JOIN Profesor ON Tema.profesor_id = Profesor.profesor_id"
             results = cur.execute(query).fetchall()
             data = [dict(row) for row in results]
-            return json.dumps(data) if data else None
+            return json.loads(json.dumps(data)) if data else None
+    def SelectStudentTopicBy(self, user_id, topic_id) -> dict:
+        with self.Connect as conn:
+            conn.row_factory = sqlite3.Row
+            cur = conn.cursor()
+            data = cur.execute("SELECT *, Ucenik.ime as ime, Ucenik.prezime as prezime FROM prijavljenaTema \
+                LEFT JOIN Ucenik ON prijavljenaTema.ucenik_id = Ucenik.ucenik_id \
+                WHERE prijavljenaTema.tema_id = (?) AND prijavljenaTema.ucenik_id = (?)", (topic_id, user_id,)).fetchone()
+            return json.loads(json.dumps(dict(data))) if data else None
+    def SelectReportedTopics(self) -> dict:
+        with self.Connect as conn:
+            conn.row_factory = sqlite3.Row
+            cur = conn.cursor()
+            query = "SELECT Tema.tema_id, Tema.naziv, Ucenik.ucenik_id, \
+                Ucenik.ime as ucenik_ime, Ucenik.prezime as ucenik_prezime \
+                FROM PrijavljenaTema \
+                LEFT JOIN Ucenik ON PrijavljenaTema.ucenik_id = Ucenik.ucenik_id \
+                LEFT JOIN Tema ON Tema.tema_id = PrijavljenaTema.tema_id"
+            results = cur.execute(query).fetchall()
+            data = [dict(row) for row in results]
+            return json.loads(json.dumps(data)) if data else None
     def topicsRegistrationApply(self, user_id, topic_id):
         with self.Connect as conn:
             cur = conn.cursor()
-            cur.execute("UPDATE Tema SET ucenik_id = (?) WHERE tema_id = (?)", (user_id, topic_id))
+            cur.execute("INSERT INTO PrijavljenaTema (tema_id, ucenik_id) VALUES (?, ?)", (topic_id, user_id,))
             conn.commit()
-    def topicsRegistrationCencel(self, topic_id):
+    def topicsRegistrationCencel(self, user_id, topic_id):
         with self.Connect as conn:
             cur = conn.cursor()
-            cur.execute("UPDATE Tema SET ucenik_id = null WHERE tema_id = (?)", (topic_id,))
+            cur.execute("DELETE FROM PrijavljenaTema WHERE tema_id = (?) AND ucenik_id = (?)", (topic_id, user_id,))
             conn.commit()

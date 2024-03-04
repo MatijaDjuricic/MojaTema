@@ -11,6 +11,8 @@
   --text-prim: #f7f7f7;
   --orange: #f35b1a;
   --red: #ff0000;
+  --green: #4DC323;
+  --yellow: #C3A023;
 }
 body {
   font-family: 'Lato', sans-serif;

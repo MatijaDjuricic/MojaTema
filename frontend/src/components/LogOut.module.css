@@ -19,10 +19,15 @@
     border: none;
     cursor: pointer;
 }
+.logout_btn:hover .logout_icon {
+    stroke: var(--red);
+    transition: 400ms ease-in-out;
+}
 .logout_btn .logout_icon {
     width: 2rem;
     height: 2rem;
-    stroke: var(--red);
+    stroke: var(--orange);
+    transition: 400ms ease-in-out;
 }
 .close_btn {
     border: none;

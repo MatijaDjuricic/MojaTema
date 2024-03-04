@@ -28,6 +28,10 @@ export interface Topic {
     user_id: number,
     student_username: string,
     professor_username: string
+    reportedTopicUsers: [{
+        user_id: number | undefined,
+        student_username: string | undefined,
+    }]
 }
 export interface UsersState {
     users: User[],
@@ -40,13 +44,17 @@ export interface ProfessorsState {
     professors: Professor[]
 }
 export interface TopicsState {
-    topics: Topic[]
+    topics: Topic[],
+    reported_topics: {
+        current_number: number,
+        limit: number,
+    }
 }
 export type TokenData = {
     id: number,
     first_name: string,
     last_name: string,
-    theme_id: number,
+    topic_id: number,
     subject_id?: number,
     role_status: string,
     iat: number,

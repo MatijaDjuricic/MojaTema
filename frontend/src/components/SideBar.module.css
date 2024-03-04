@@ -68,7 +68,7 @@
     fill: var(--orange);
 }
 .profile_container .line {
-    margin: 2rem auto 2rem auto;
+    margin: 1rem auto 2rem auto;
 }
 .status_wrapper {
     display: flex;
@@ -96,10 +96,10 @@
 .profile_wrapper {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 1rem;
-    padding: 0 1rem 0 2rem;
+    padding: 0 1rem 0 1rem;
     background-color: transparent;
-    cursor: pointer;
     border: none;
 }
 .title_wrapper {

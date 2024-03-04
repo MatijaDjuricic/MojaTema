@@ -6,7 +6,6 @@ from Topic import Topic
 import sqlite3
 import hashlib
 import base64
-import json
 import jwt
 import os
 app = Flask(__name__)
@@ -31,7 +30,7 @@ def studentLogin():
                     "first_name": studentsData["ime"],
                     "last_name": studentsData["prezime"],
                     "topic_id": studentsData["tema_id"],
-                    "role_status": "učenik", 
+                    "role_status": "učenik",
                     "iat": datetime.utcnow(),
                     "exp": datetime.utcnow() + timedelta(minutes = TOKEN_DURATION)
                 }, app.secret_key)
@@ -54,10 +53,11 @@ def studentLogin():
         return make_response(jsonify({'message': e}), 400)
 @app.route('/topics/get')
 def getTopics():
-    topicData = json.loads(Topic(Connect()).SelectAllTopics())
+    topicsData = Topic(Connect()).SelectAllTopics()
+    reportedTopicsData = Topic(Connect()).SelectReportedTopics()
     allData = []
-    if topicData:
-        for topic in topicData:
+    if topicsData and reportedTopicsData:
+        for topic in topicsData:
             allData.append({
                 "id": topic["tema_id"],
                 "title": topic["naziv"],
@@ -65,8 +65,14 @@ def getTopics():
                 "subject_title": topic["predmet"],
                 "status": topic["status"],
                 "user_id": topic['ucenik_id'],
-                "student_username": f"{topic['ucenik_ime']} {topic['ucenik_prezime']}",
-                "professor_username": f"{topic['profesor_ime']} {topic['profesor_prezime']}"
+                "student_username": str(f"{topic['ucenik_ime']} {topic['ucenik_prezime']}")
+                if topic['ucenik_ime'] and topic['ucenik_prezime'] else None,
+                "professor_username": f"{topic['profesor_ime']} {topic['profesor_prezime']}",
+                "reportedTopicUsers": [dict({
+                    "user_id": reportedTopic['ucenik_id'],
+                    "student_username": f"{reportedTopic['ucenik_ime']} {reportedTopic['ucenik_prezime']}"
+                    }) for reportedTopic in reportedTopicsData if reportedTopic["tema_id"] == topic["tema_id"]
+                ]
             })
         return make_response(jsonify(allData), 200)
     return make_response(jsonify({"message": "no topics found"}), 404)
@@ -76,7 +82,7 @@ def topicsRegistrationApply():
         user_id = request.get_json()["user_id"]
         topic_id = request.get_json()["topic_id"]
         Topic(Connect()).topicsRegistrationApply(user_id, topic_id)
-        userData = Topic(Connect()).SelectStudentTopicBy(topic_id)
+        userData = Topic(Connect()).SelectStudentTopicBy(user_id, topic_id)
         data = {
             "user_id": user_id,
             "topic_id": topic_id,
@@ -87,15 +93,16 @@ def topicsRegistrationApply():
 @app.route('/topics/registrationCencel', methods=['POST'])
 def topicsRegistrationCencel():
     if request.method == 'POST':
+        user_id = request.get_json()["user_id"]
         topic_id = request.get_json()["topic_id"]
-        print(topic_id)
-        Topic(Connect()).topicsRegistrationCencel(topic_id)
+        Topic(Connect()).topicsRegistrationCencel(user_id, topic_id)
         data = {
+            "user_id": user_id,
             "topic_id": topic_id
         }
         return make_response(jsonify(data), 200)
     return make_response(jsonify({"message": "bad request"}), 400)
 if '__main__' == __name__:
-    from waitress import serve
-    serve(app, host = "0.0.0.0", port = os.getenv("PORT", 8080))
-    #app.run(host = "localhost", port = os.getenv("PORT", 8080), debug = True)
+    #from waitress import serve
+    #serve(app, host = "0.0.0.0", port = os.getenv("PORT", 8080))
+    app.run(host = "localhost", port = os.getenv("PORT", 8080), debug = True)

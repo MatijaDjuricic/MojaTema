@@ -18,7 +18,7 @@ const ModalPopup = () => {
   }
   return (
     <>
-      <button onClick={() => setShow(true)} className={LogOutModalCSS.logout_btn}>
+      <button onClick={() => setShow(true)} className={LogOutModalCSS.logout_btn} title='Odjavi se'>
           <ReactSVG src={logout_icon} className={LogOutModalCSS.logout_icon}/>
       </button>
       <Modal show={show} onHide={() => setShow(false)} contentClassName={LogOutModalCSS.modal_content} backdrop="static">

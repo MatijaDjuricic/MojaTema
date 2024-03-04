@@ -1,0 +1,96 @@
+.container {
+    margin-top: 2rem !important;
+    background-color: var(--background-sec) !important;
+    border: none !important;
+}
+.header_text {
+    display: flex;
+    align-items: end;
+    gap: .5rem;
+    padding: 1rem;
+}
+.header_text h1 {
+    color: var(--text-prim);
+    font-size: 2rem;
+}
+.header_text p {
+    color: var(--orange) !important;
+    font-size: 1rem;
+}
+.card_body {
+    padding: 0 2rem 0 2rem !important;
+}
+.body_text {
+    color: var(--text-prim) !important;
+    font-size: 1rem !important;
+}
+.body_text span {
+    color: var(--orange);
+    font-size: 1.2rem;
+}
+.toggle_btn {
+    position: absolute;
+    inset: 0;
+    background-color: transparent;
+    border: none;
+}
+.toggle_icon {
+    position: absolute;
+    top: 1.7rem;
+    right: 2rem;
+    width: 2rem;
+    height: 2rem;
+    fill: var(--orange);
+    transition: 300ms ease-in-out;
+}
+.toggle_icon_rotated {
+    rotate: -180deg;
+}
+.info_container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+.info_wrapper {
+    width: 50%;
+    padding: 1rem;
+    margin-top: 2rem 2rem 0 2rem;
+    border-radius: 10px;
+    background-color: var(--background-terc);
+}
+.reported_wrapper span {
+    padding-right: 5px;
+    font-size: 1.2rem;
+    color: var(--orange);
+}
+.reported_wrapper ul {
+    display: inline;
+    list-style: none;
+    padding: 0;
+}
+.reported_wrapper ul li {
+    display: inline;
+    font-size: 1rem;
+    color: var(--text-prim);
+}
+.reported_users_wrapper {
+    max-width: 100%;
+}
+.professor_wrapper {
+    text-align: end;
+    font-size: 1.5rem;
+}
+.professor_wrapper p {
+    color: var(--orange) !important;
+}
+.professor_wrapper span {
+    color: var(--text-prim);
+}
+.reported_container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin: 2rem 0 2rem 0;
+}
