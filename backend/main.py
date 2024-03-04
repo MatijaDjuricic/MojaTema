@@ -103,6 +103,6 @@ def topicsRegistrationCencel():
         return make_response(jsonify(data), 200)
     return make_response(jsonify({"message": "bad request"}), 400)
 if '__main__' == __name__:
-    #from waitress import serve
-    #serve(app, host = "0.0.0.0", port = os.getenv("PORT", 8080))
-    app.run(host = "localhost", port = os.getenv("PORT", 8080), debug = True)
+    from waitress import serve
+    serve(app, host = "0.0.0.0", port = os.getenv("PORT", 8080))
+    #app.run(host = "localhost", port = os.getenv("PORT", 8080), debug = True)
