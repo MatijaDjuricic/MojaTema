@@ -13,7 +13,7 @@ CORS(app, supports_credentials = True)
 app.secret_key = str(os.getenv("SECRET_KEY", ""))
 Hash = lambda string: hashlib.sha256(str(string).encode("utf-8")).hexdigest()
 HashBase64 = lambda string: base64.b64encode(str(string).encode("utf-8")).decode("utf-8")
-Connect = lambda: sqlite3.connect(os.getenv("DB_NAME", "./database.db"))
+Connect = lambda: sqlite3.connect(os.getenv("DB_NAME", "database.db"))
 TOKEN_DURATION = 60
 @app.route('/ping')
 def ping():
@@ -56,7 +56,7 @@ def getTopics():
     topicsData = Topic(Connect()).SelectAllTopics()
     reportedTopicsData = Topic(Connect()).SelectReportedTopics()
     allData = []
-    if topicsData and reportedTopicsData:
+    if topicsData:
         for topic in topicsData:
             allData.append({
                 "id": topic["tema_id"],
@@ -68,11 +68,11 @@ def getTopics():
                 "student_username": str(f"{topic['ucenik_ime']} {topic['ucenik_prezime']}")
                 if topic['ucenik_ime'] and topic['ucenik_prezime'] else None,
                 "professor_username": f"{topic['profesor_ime']} {topic['profesor_prezime']}",
-                "reportedTopicUsers": [dict({
+                "reportedTopicUsers": list([dict({
                     "user_id": reportedTopic['ucenik_id'],
                     "student_username": f"{reportedTopic['ucenik_ime']} {reportedTopic['ucenik_prezime']}"
                     }) for reportedTopic in reportedTopicsData if reportedTopic["tema_id"] == topic["tema_id"]
-                ]
+                ]) if reportedTopicsData else list([])
             })
         return make_response(jsonify(allData), 200)
     return make_response(jsonify({"message": "no topics found"}), 404)

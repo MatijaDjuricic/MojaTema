@@ -86,7 +86,7 @@ const TopicAccordion = ({topic, reported_topics, user}: TopicAccordionProps) => 
               </div>
               <div className={TopicAccordionCSS.cta_wrapper}>
                 {
-                  topic.reportedTopicUsers.find(reported_topic => reported_topic.user_id == user.id ? true : false) ?
+                  topic.reportedTopicUsers.length > 0 && topic.reportedTopicUsers.find(reported_topic => reported_topic.user_id == user.id ? true : false) ?
                   <CTA title="Odjavi temu" type='loading_btn' loading={btnLoading.btn_id == topic.id && btnLoading.loading}
                   size='sm' onClick={() => handleTopicsRegistrationCancel(topic.id)}
                   /> : 
