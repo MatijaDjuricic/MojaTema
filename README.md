@@ -1,3 +1,3 @@
 # MojaTema
  MojaTema - WebApp
-mojatema.netlify.app
+https://mojatema.netlify.app
