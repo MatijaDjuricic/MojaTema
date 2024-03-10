@@ -94,3 +94,11 @@
     align-items: end;
     margin: 2rem 0 2rem 0;
 }
+.line {
+    width: 60%;
+    height: 1px;
+    background: var(--orange);
+    border-radius: 10px;
+    margin: auto;
+    margin-bottom: 1.5rem;
+}

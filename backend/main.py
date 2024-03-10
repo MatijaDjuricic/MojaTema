@@ -58,7 +58,7 @@ def getTopics():
     allData = []
     if topicsData:
         for topic in topicsData:
-            allData.append({
+            allData.append(dict({
                 "id": topic["tema_id"],
                 "title": topic["naziv"],
                 "info": topic["info"],
@@ -73,7 +73,7 @@ def getTopics():
                     "student_username": f"{reportedTopic['ucenik_ime']} {reportedTopic['ucenik_prezime']}"
                     }) for reportedTopic in reportedTopicsData if reportedTopic["tema_id"] == topic["tema_id"]
                 ]) if reportedTopicsData else list([])
-            })
+            }))
         return make_response(jsonify(allData), 200)
     return make_response(jsonify({"message": "no topics found"}), 404)
 @app.route('/topics/registrationApply', methods=['POST'])

@@ -5,8 +5,8 @@
   box-sizing: border-box;
 }
 :root {
-  --background-prim: #1b1b1b;
-  --background-sec: #131313;
+  --background-prim: #131313;
+  --background-sec: #1b1b1b;
   --background-terc: #252525;
   --text-prim: #f7f7f7;
   --orange: #f35b1a;

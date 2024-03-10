@@ -1,14 +1,10 @@
 import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
 import usersReducer from "./usersSlice";
-//import studentsReducer from "./studentsSlice";
-//import professorsReducer from "./professorsSlice";
-import topicsSlice from "./topicsSlice";
+import topicsReducer from "./topicsSlice";
 export const store = configureStore({
     reducer: {
         users: usersReducer,
-        //students: studentsReducer,
-        //professors: professorsReducer,
-        topics: topicsSlice
+        topics: topicsReducer
     }
 });
 export type AppDispatch = typeof store.dispatch;

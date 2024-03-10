@@ -45,6 +45,7 @@ export interface ProfessorsState {
 }
 export interface TopicsState {
     topics: Topic[],
+    subjects: Topic[][],
     reported_topics: {
         current_number: number,
         limit: number,

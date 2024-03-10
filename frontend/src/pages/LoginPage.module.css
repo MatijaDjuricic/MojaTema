@@ -1,7 +1,7 @@
 .main_wrapper {
     position: absolute;
     inset: 0;
-    background-color: var(--background-prim);
+    background-color: var(--background-sec);
 }
 .main_wrapper h1 {
     text-align: center;
@@ -17,7 +17,7 @@
     margin: auto;
     max-width: 650px;
     height: 350px;
-    background-color: var(--background-sec);
+    background-color: var(--background-prim);
     border: 2px solid var(--orange);
     border-radius: 1rem;
 }
@@ -41,7 +41,7 @@
     margin: auto;
     padding: 15px;
     color: var(--text-prim);
-    background-color: var(--background-prim);
+    background-color: var(--background-sec);
     border: 3px solid var(--background-terc);
     font-size: 1.25rem;
     border-radius: 1rem;

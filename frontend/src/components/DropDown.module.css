@@ -1,23 +1,4 @@
-.header_container {
-    width: 100%;
-    display: flex;
-}
-.left_side {
-    position: relative;
-    width: 50%;
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-}
-.left_side p {
-    font-size: 1.5rem;
-    color: var(--orange) !important;
-}
-.right_side {
-    width: 50%;
-    text-align: end;
-}
-.filter_wrapper button {
+.button_wrapper button {
     display: flex;
     justify-content: start;
     align-items: center;
@@ -31,12 +12,12 @@
     background-color: var(--background-terc);
     transition: 400ms ease-in-out;
 }
-.filter_wrapper button:hover {
+.button_wrapper button:hover {
     color: var(--text-prim);
     border: 3px solid var(--background-terc);
     background-color: var(--background-sec);
 }
-.filter_wrapper p {
+.button_wrapper p {
     margin-right: 1rem;
 }
 .filter_icon svg {
@@ -57,9 +38,6 @@
 .rotate {
     transform: rotate(-180deg);
     transition: 200ms ease-in-out;
-}
-.right_side p {
-    font-size: 1.5rem;
 }
 .dropdown {
     position: absolute;
