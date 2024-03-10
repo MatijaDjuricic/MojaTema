@@ -15,6 +15,7 @@ const ModalPopup = () => {
   const LogOutSubmit = () => {
     dispatch(logOut());
     navigate('/');
+    scrollTo(0, 0);
   }
   return (
     <>
