@@ -3,7 +3,7 @@
 }
 .main_wrapper {
     width: 100%;
-    padding: 2rem 2rem 0 2rem;
+    padding: 5rem 2rem 0 2rem;
 }
 .main_wrapper h1, .main_wrapper p {
     color: var(--text-prim);

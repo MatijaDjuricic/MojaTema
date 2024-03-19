@@ -1,6 +1,14 @@
-.header_container {
-    width: 100%;
+header {
+    position: fixed;
     display: flex;
+    align-items: center;
+    top: 0;
+    left: 300px;
+    right: 2rem;
+    padding: 1.5rem;
+    z-index: 2;
+    background-color: var(--background-prim);
+    border-bottom: 1px solid var(--orange);
 }
 .left_side {
     position: relative;
@@ -13,12 +21,16 @@
     font-size: 1.5rem;
     color: var(--orange) !important;
 }
+.left_side h1 {
+    color: var(--text-prim);
+}
 .right_side {
     width: 50%;
     text-align: end;
 }
 .right_side p {
     font-size: 1.5rem;
+    color: var(--text-prim);
 }
 .input_wrapper {
     position: relative;

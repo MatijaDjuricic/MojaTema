@@ -24,7 +24,7 @@ const TopicsHeader = ({topics, search, onChange}: TopicsHeaderProps) => {
     }
   }, [topics.reported_topics.current_number]);
   return (
-    <header className={TopicsHeaderCSS.header_container}>
+    <header>
       <div className={TopicsHeaderCSS.left_side}>
         <h1>Teme</h1>
           <div className={TopicsHeaderCSS.input_wrapper} onClick={() => searchInputRef.current?.focus()}>

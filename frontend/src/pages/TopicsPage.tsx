@@ -30,8 +30,8 @@ const TopicsPage = () => {
   return (
     <div className={TopicsCSS.main_container}>
       <SideBar/>
+      <TopicsHeader topics={topics} search={search} onChange={e => setSearch(e.target.value)}/>
       <main className={TopicsCSS.main_wrapper}>
-        <TopicsHeader topics={topics} search={search} onChange={e => setSearch(e.target.value)}/>
         {
           loading ? <Loader/> : <>
             <div className={TopicsCSS.topics_wrapper}>
@@ -45,8 +45,8 @@ const TopicsPage = () => {
             { topics.reported_topics.current_number > 0 && <div className={TopicsCSS.line}></div> }
             <div className={TopicsCSS.subjects_wrapper}>
             {
-              topics.subjects.filter((item, index) => {
-                return searchValue ? item[index].subject_title.toLowerCase().includes(searchValue.trim()) : item;
+              topics.subjects.filter(item => {
+                return searchValue ? item[0].subject_title.toLowerCase().includes(searchValue.trim()) : item;
               }).map((topic, index) => ( 
                 <TopicAccordion key={index} topic={topic[0]} subject={topic} user={user} reported_topics={topics.reported_topics} type='subject'/>
               ))

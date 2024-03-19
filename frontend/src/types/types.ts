@@ -16,7 +16,6 @@ export interface Professor {
     id: number,
     first_name: string,
     last_name: string,
-    theme_id: number,
     subject_id: number
 }
 export interface Topic {
