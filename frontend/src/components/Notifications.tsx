@@ -9,16 +9,16 @@ const Notifications = () => {
   const [show, setShow] = useState(false);
   return (
     <>
-      <CustomNavButton title='Obaveštenja' icon={bell_icon} type='fill' onClick={() => setShow(true)}/>
+      <CustomNavButton title='Обавештења' icon={bell_icon} type='fill' onClick={() => setShow(true)}/>
       <Offcanvas className={NotificationCSS.canvas_bg} show={show} onHide={() => setShow(false)} placement='end'>
         <Offcanvas.Header>
-          <Offcanvas.Title className={NotificationCSS.canvas_title}>Obaveštenja</Offcanvas.Title>
+          <Offcanvas.Title className={NotificationCSS.canvas_title}>Обавештења</Offcanvas.Title>
           <button className={NotificationCSS.close_btn} onClick={() => setShow(false)}>
             <ReactSVG className={NotificationCSS.close_icon} src={close_icon}/>
           </button>
         </Offcanvas.Header>
         <Offcanvas.Body className={NotificationCSS.canvas_body}>
-          <p>Nema obaveštenja...</p>
+          <p>Нема обавештења...</p>
         </Offcanvas.Body>
       </Offcanvas>
     </>

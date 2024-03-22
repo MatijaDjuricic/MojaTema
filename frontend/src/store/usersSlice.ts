@@ -30,7 +30,7 @@ export const usersSlice = createSlice({
     reducers: {
         logOut: state => {
             removeCookie("access_token");
-            successMessage('Uspšena odjava');
+            successMessage('Успешна одјава');
             state.loggedIn = undefined;
         },
         resetState: () => initialState
@@ -40,9 +40,9 @@ export const usersSlice = createSlice({
             setCookie("access_token", action.payload.access_token);
             const tokenBody = jwtDecode<TokenData | User>(action.payload.access_token);
             state.loggedIn = tokenBody;
-            successMessage('Uspešna prijava');
+            successMessage('Успешна пријава');
         }).addCase(userLogin.rejected, () => {
-            errorMessage('Pogrešna lozinka');
+            errorMessage('Погрешна лозинка');
         });
     }
 });

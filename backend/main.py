@@ -14,7 +14,7 @@ app.secret_key = str(os.getenv("SECRET_KEY", ""))
 Hash = lambda string: hashlib.sha256(str(string).encode("utf-8")).hexdigest()
 HashBase64 = lambda string: base64.b64encode(str(string).encode("utf-8")).decode("utf-8")
 Connect = lambda: sqlite3.connect(os.getenv("DB_NAME", "database.db"))
-TOKEN_DURATION = 60
+TOKEN_DURATION = 24
 @app.route('/ping')
 def ping():
     return make_response(jsonify({"message": "success"}), 200)
@@ -30,9 +30,9 @@ def studentLogin():
                     "first_name": studentsData["ime"],
                     "last_name": studentsData["prezime"],
                     "topic_id": studentsData["tema_id"],
-                    "role_status": "učenik",
+                    "role_status": "ученик",
                     "iat": datetime.now(timezone.utc),
-                    "exp": datetime.now(timezone.utc) + timedelta(minutes = TOKEN_DURATION)
+                    "exp": datetime.now(timezone.utc) + timedelta(hours = TOKEN_DURATION)
                 }, app.secret_key)
                 return make_response(jsonify({"access_token": access_token, "message": "success"}), 200)
             professorsData = User(Connect()).SelectProfessorsBy("kod", password)
@@ -42,7 +42,7 @@ def studentLogin():
                     "first_name": professorsData["ime"],
                     "last_name": professorsData["prezime"],
                     "subject_id": professorsData["predmet_id"],
-                    "role_status": "profesor",
+                    "role_status": "професор",
                     "iat": datetime.now(timezone.utc),
                     "exp": datetime.now(timezone.utc) + timedelta(minutes = TOKEN_DURATION)
                 }, app.secret_key)

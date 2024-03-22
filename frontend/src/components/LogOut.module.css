@@ -12,7 +12,7 @@
 }
 .modal_body p {
     color: var(--text-prim) !important;
-    font-size: 1.5rem !important;
+    font-size: 1.3rem !important;
 }
 .logout_btn {
     background-color: transparent;

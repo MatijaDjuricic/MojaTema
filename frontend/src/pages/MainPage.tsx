@@ -5,7 +5,7 @@ const MainPage = () => {
     <div className={MainCSS.main_container}>
       <SideBar/>
       <main className={MainCSS.main_wrapper}>
-        <h1>Početna</h1>
+        <h1>Почетна</h1>
       </main>
     </div>
   );

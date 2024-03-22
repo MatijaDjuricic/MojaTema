@@ -61,7 +61,7 @@ const TopicsPage = () => {
             }
             {
               hasNoSearchResults(searchValue, topics.topics) &&
-              <p className={TopicsCSS.no_search_results}>Nema rezultata pretrage <span>"{searchValue}"</span></p>
+              <p className={TopicsCSS.no_search_results}>Нема резултата претраге <span>"{searchValue}"</span></p>
             }
             </div>
           </>

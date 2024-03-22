@@ -17,17 +17,17 @@ const LoginPage = () => {
       setLoading(true);
       dispatch(userLogin(password.trim())).finally(() => setLoading(false));
     }
-    else errorMessage('Polje za lozinku je prazno');
+    else errorMessage('Поље за лозинку је празно');
   }
   return (
     <main className={LoginCSS.main_wrapper}>
-      <h1><Link to = '/'>MojaTema</Link></h1>
+      <h1><Link to = '/'>МојаТема</Link></h1>
       <div className={LoginCSS.form_container}>
           <form className={LoginCSS.form}>
-            <h1>Prijavi se</h1>
-            <label>Lozinka:</label>
-            <input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} type="text" placeholder='Unesi lozinku...'/>
-            <CTA title='Prijavi se' type='loading_btn' loading={loading} size='lg' onClick={handleSubmit}/>
+            <h1>Пријави се</h1>
+            <label>Лозинка:</label>
+            <input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} type="text" placeholder='Унеси лозинку...'/>
+            <CTA title='Пријави се' type='loading_btn' loading={loading} size='lg' onClick={handleSubmit}/>
           </form>
       </div>
     </main>

@@ -9,16 +9,16 @@ const Chats = () => {
   const [show, setShow] = useState(false);
   return (
     <>
-      <CustomNavButton title='Poruke' icon={chats_icon} type='stroke' onClick={() => setShow(true)}/>
+      <CustomNavButton title='Поруке' icon={chats_icon} type='stroke' onClick={() => setShow(true)}/>
       <Offcanvas className={ChatsCSS.canvas_bg} show={show} onHide={() => setShow(false)} placement='end'>
         <Offcanvas.Header>
-          <Offcanvas.Title className={ChatsCSS.canvas_title}>Poruke</Offcanvas.Title>
+          <Offcanvas.Title className={ChatsCSS.canvas_title}>Поруке</Offcanvas.Title>
           <button className={ChatsCSS.close_btn} onClick={() => setShow(false)}>
             <ReactSVG className={ChatsCSS.close_icon} src={close_icon}/>
           </button>
         </Offcanvas.Header>
         <Offcanvas.Body className={ChatsCSS.canvas_body}>
-          <p>Nema poruka...</p>
+          <p>Нема порука...</p>
         </Offcanvas.Body>
       </Offcanvas>
     </>

@@ -26,14 +26,14 @@ const TopicsHeader = ({topics, search, onChange}: TopicsHeaderProps) => {
   return (
     <header>
       <div className={TopicsHeaderCSS.left_side}>
-        <h1>Teme</h1>
+        <h1>Теме</h1>
           <div className={TopicsHeaderCSS.input_wrapper} onClick={() => searchInputRef.current?.focus()}>
             <ReactSVG className={TopicsHeaderCSS.search_icon} src={search_icon}/>
-            <input className={TopicsHeaderCSS.input} value={search} onChange={e => onChange(e)} ref={searchInputRef} placeholder='Pretraži temu, predmet ili profesora...'/>
+            <input className={TopicsHeaderCSS.input} value={search} onChange={e => onChange(e)} ref={searchInputRef} placeholder='Претражи тему, предмет или професора...'/>
           </div>
         </div>
         <div className={TopicsHeaderCSS.right_side}>
-          <p>Broj prijavljenih tema: <span style={{color: `var(--${spanColor})`}}>{topics.reported_topics.current_number}/{topics.reported_topics.limit}</span></p>
+          <p>Број пријављених тема: <span style={{color: `var(--${spanColor})`}}>{topics.reported_topics.current_number}/{topics.reported_topics.limit}</span></p>
         </div>
     </header>
   );

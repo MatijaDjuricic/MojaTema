@@ -65,12 +65,12 @@ const TopicAccordion = ({type, subject, topic, reported_topics, user}: TopicAcco
                 <div className={TopicAccordionCSS.info_container}>
                   <div className={TopicAccordionCSS.info_wrapper}>
                     <p className={TopicAccordionCSS.body_text}>
-                      <span>Opis: </span>
+                      <span>Опис: </span>
                       {topic.info}
                     </p>
                   </div>
                   <div className={TopicAccordionCSS.professor_wrapper}>
-                    <p>Profesor</p>
+                    <p>Професор</p>
                     <span>{topic.professor_username}</span>
                   </div>
                 </div>
@@ -79,13 +79,13 @@ const TopicAccordion = ({type, subject, topic, reported_topics, user}: TopicAcco
                     <p>
                       {
                         topic.student_username && <>
-                          <span>Odobren učenik: </span>
+                          <span>Одобрен ученик: </span>
                           {topic.student_username}
                         </>
                       }
                     </p>
                     <div className={TopicAccordionCSS.reported_users_wrapper}>
-                        <span>Prijavljeni učenici: </span>
+                        <span>Пријављени ученици: </span>
                       <ul>
                         {
                           topic.reportedTopicUsers.length > 0 ? 
@@ -103,11 +103,11 @@ const TopicAccordion = ({type, subject, topic, reported_topics, user}: TopicAcco
                   <div className={TopicAccordionCSS.cta_wrapper}>
                     {
                       isReportedTopic(topic, user.id) ?
-                      <CTA title="Odjavi temu" type='loading_btn' loading={btnLoading.btn_id == topic.id && btnLoading.loading}
+                      <CTA title="Одјави тему" type='loading_btn' loading={btnLoading.btn_id == topic.id && btnLoading.loading}
                       size='sm' onClick={() => handleTopicsRegistrationCancel(topic.id)}
                       /> : 
                       reported_topics.current_number < reported_topics.limit ?
-                      <CTA title="Prijavi temu" type='loading_btn' loading={btnLoading.btn_id == topic.id && btnLoading.loading}
+                      <CTA title="Пријави тему" type='loading_btn' loading={btnLoading.btn_id == topic.id && btnLoading.loading}
                         size='sm' onClick={() => handleTopicsRegistrationApply(topic.id)}
                         /> :
                         <h3 style={{color: 'var(--red)'}}>3/3</h3>
@@ -123,12 +123,12 @@ const TopicAccordion = ({type, subject, topic, reported_topics, user}: TopicAcco
                       <div className={TopicAccordionCSS.info_container}>
                         <div className={TopicAccordionCSS.info_wrapper}>
                           <p className={TopicAccordionCSS.body_text}>
-                            <span>Opis: </span>
+                            <span>Опис: </span>
                             {topic.info}
                           </p>
                         </div>
                         <div className={TopicAccordionCSS.professor_wrapper}>
-                          <p>Profesor</p>
+                          <p>Професор</p>
                           <span>{topic.professor_username}</span>
                         </div>
                       </div>
@@ -137,13 +137,13 @@ const TopicAccordion = ({type, subject, topic, reported_topics, user}: TopicAcco
                           <p>
                             {
                               topic.student_username && <>
-                                <span>Odobren učenik: </span>
+                                <span>Одобрен ученик: </span>
                                 {topic.student_username}
                               </>
                             }
                           </p>
                           <div className={TopicAccordionCSS.reported_users_wrapper}>
-                              <span>Prijavljeni učenici: </span>
+                              <span>Пријављени ученици: </span>
                             <ul>
                               {
                                 topic.reportedTopicUsers.length > 0 ? 
@@ -161,11 +161,11 @@ const TopicAccordion = ({type, subject, topic, reported_topics, user}: TopicAcco
                         <div className={TopicAccordionCSS.cta_wrapper}>
                           {
                             isReportedTopic(topic, user.id) ?
-                            <CTA title="Odjavi temu" type='loading_btn' loading={btnLoading.btn_id == topic.id && btnLoading.loading}
+                            <CTA title="Одјави тему" type='loading_btn' loading={btnLoading.btn_id == topic.id && btnLoading.loading}
                             size='sm' onClick={() => handleTopicsRegistrationCancel(topic.id)}
                             /> : 
                             reported_topics.current_number < reported_topics.limit ?
-                            <CTA title="Prijavi temu" type='loading_btn' loading={btnLoading.btn_id == topic.id && btnLoading.loading}
+                            <CTA title="Пријави тему" type='loading_btn' loading={btnLoading.btn_id == topic.id && btnLoading.loading}
                               size='sm' onClick={() => handleTopicsRegistrationApply(topic.id)}
                             /> :
                             <h3 style={{color: 'var(--red)'}}>3/3</h3>
