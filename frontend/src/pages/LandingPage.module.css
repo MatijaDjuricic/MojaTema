@@ -6,17 +6,17 @@
 }
 .home_section {
     height: 100vh;
-    padding: 2rem 0 0 2rem;
+    padding: 2rem 2rem 0 2rem;
 }
 .theme_section {
     height: 100vh;
     padding: 2rem 0 0 2rem;
 }
 .text_wrapper {
-    width: 600px;
+    max-width: 600px;
 }
 .text_wrapper h1 {
-    font-size: 58px;
+    font-size: 4rem;
     letter-spacing: 3px;
     margin-bottom: 3rem;
     color: var(--text-prim);
@@ -25,7 +25,18 @@
     color: var(--orange);
 }
 .text_wrapper p {
-    font-size: 24px;
+    font-size: 1.5rem;
     color: var(--text-prim);
     margin-bottom: 3rem;
+}
+@media (max-width: 992px) {
+    .text_wrapper h1 {
+        font-size: 2rem;
+    }
+    .text_wrapper p {
+        font-size: 1.2rem;
+    }
+    .home_section button {
+        width: 100% !important;
+    }
 }

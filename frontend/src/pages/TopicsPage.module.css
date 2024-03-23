@@ -31,3 +31,18 @@
     width: 50%;
     word-wrap: break-word;
 }
+@media (max-width: 992px) {
+    .main_wrapper {
+        margin-top: 4rem;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .no_search_results {
+        font-size: 1rem;
+    }
+}
+@media (max-width: 576px) {
+    .main_wrapper {
+        padding-right: 0;
+    }
+}

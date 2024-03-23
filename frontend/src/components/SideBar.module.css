@@ -4,7 +4,7 @@
 .main_wrapper {
     width: 270px;
     position: fixed;
-    height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -111,4 +111,42 @@
 .title_wrapper p {
     font-size: 1.2rem;
     color: var(--text-prim);
+}
+@media (max-width: 992px) {
+    .sidebar_container {
+        min-width: 120px;
+    }
+    .main_wrapper {
+        width: 120px;
+        gap: 3rem;
+    }
+    .head a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .head p {
+        font-size: 2rem;
+    }
+    .head span {
+        font-size: 1rem;
+        padding: 0;
+    }
+    .status_wrapper span,  .title_wrapper p {
+        display: none;
+    }
+    .profile_wrapper {
+        justify-content: center;
+    }
+    .login a {
+        font-size: 1.2rem;
+    }
+}
+@media (max-width: 576px) {
+    .sidebar_container {
+        min-width: 90px;
+    }
+    .main_wrapper {
+        width: 90px;
+    }
 }

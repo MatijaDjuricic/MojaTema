@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap');
 * {
   margin: 0;
   padding: 0;
@@ -13,9 +13,14 @@
   --red: #ff0000;
   --green: #4DC323;
   --yellow: #C3A023;
+  --sm: 576px;
+  --md: 768px;
+  --lg: 992px;
+  --xl: 1200px;
+  --xxl: 1400px;
 }
 body {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Play', sans-serif;
   background-color: var(--background-prim);
 }
 ::-webkit-scrollbar {

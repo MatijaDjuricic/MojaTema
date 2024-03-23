@@ -15,7 +15,7 @@ const LandingPage = () => {
           </div>
           <CTA title='Пријави се' type='normal_btn' size='lg' onClick={() => navigate('/login')}/>
         </section>
-        <section className={LandingCSS.theme_section} id='theme_section'>
+        <section className={LandingCSS.theme_section} id='topic_section'>
           <h1 style={{color: "var(--orange)"}}>Теме</h1>
         </section>
       </main>

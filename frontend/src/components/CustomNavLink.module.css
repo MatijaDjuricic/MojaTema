@@ -48,3 +48,11 @@
 .not_active:hover p {
     color: var(--background-sec);
 }
+@media (max-width: 992px) {
+    .nav_item p {
+        display: none;
+    }
+    .nav_item {
+        justify-content: center;
+    }
+}

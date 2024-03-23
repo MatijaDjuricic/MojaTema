@@ -65,3 +65,39 @@ header {
     left: .75rem;
     fill: var(--text-prim);
 }
+@media (max-width: 1400px) {
+    .left_side {
+        width: 100%;
+    }
+}
+@media (max-width: 1330px) {
+    .input_wrapper .input::placeholder {
+        font-size: 11px;
+    }
+    .right_side p {
+        font-size: 1rem;
+    }
+}
+@media (max-width: 992px) {
+    header {
+        left: 130px;
+        padding: 1rem;
+        flex-direction: column;
+        right: 0;
+    }
+    .left_side {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .right_side {
+        width: 100%;
+        margin-top: 10px;
+        text-align: center;
+    }
+}
+@media (max-width: 576px) {
+    header {
+        left: 100px;
+        padding: 10px 5px 0 5px;
+    }
+}

@@ -102,3 +102,47 @@
     margin: auto;
     margin-bottom: 1.5rem;
 }
+@media (max-width: 992px) {
+    .header_text h1 {
+        font-size: 1.5rem !important;
+    }
+    .professor_wrapper span {
+        font-size: 1.3rem !important;
+    }
+    .header_text p {
+        font-size: 1rem !important;
+    }
+}
+@media (max-width: 576px) {
+    .header_text h1 {
+        font-size: 1.2rem !important;
+    }
+    .professor_wrapper p, .card_body p {
+        font-size: 1rem !important;
+    }
+    .professor_wrapper span, .reported_users_wrapper span, .body_text span {
+        font-size: 1rem !important;
+    }
+    .header_text p {
+        font-size: .8rem !important;
+    }
+    .header_text {
+        width: 100%;
+        flex-direction: column;
+        align-items: start;
+    }
+    .info_container, .reported_container {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    .professor_wrapper {
+        text-align: center;
+    }
+    .info_wrapper {
+        width: 100%;
+    }
+    .toggle_icon {
+        right: 10px;
+    }
+}

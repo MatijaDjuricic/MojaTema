@@ -51,3 +51,14 @@
     color: var(--text-prim);
     opacity: 0.2;
 }
+@media (max-width: 576px) {
+   .form input {
+        width: 80%;
+   }
+   .form label {
+       margin: 0 0 .5rem 10%;
+   }
+   .form button {
+    width: 50% !important;
+   }
+}

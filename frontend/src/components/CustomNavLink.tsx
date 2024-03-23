@@ -16,13 +16,13 @@ const CustomNavLink = ({ title, type, to, icon }: CustomNavLinkProps) => {
       {
         type == "normal" ?
         <NavLink to={to} className={CustomNavLinkCSS.link_wrapper}>
-            <div className={`${CustomNavLinkCSS.nav_item} ${isActive ? CustomNavLinkCSS.active : CustomNavLinkCSS.not_active}`}>
+            <div className={`${CustomNavLinkCSS.nav_item} ${isActive ? CustomNavLinkCSS.active : CustomNavLinkCSS.not_active}`} title={title}>
                 <ReactSVG src={icon} className={CustomNavLinkCSS.nav_icons}/>
                 <p>{title}</p>
             </div>
         </NavLink> :
         <Link className={CustomNavLinkCSS.scroll_wrapper} activeClass={CustomNavLinkCSS.active} to={to} spy={true} smooth={true} duration={100}>
-          <div className={CustomNavLinkCSS.nav_item}>
+          <div className={CustomNavLinkCSS.nav_item} title={title}>
               <ReactSVG src={icon} className={CustomNavLinkCSS.nav_icons}/>
               <p>{title}</p>
           </div>
