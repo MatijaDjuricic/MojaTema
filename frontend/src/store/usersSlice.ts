@@ -14,9 +14,9 @@ const initialState: UsersState = {
     users: [],
     loggedIn: getAuth()
 };
-export const userLogin = createAsyncThunk('users/login', async (password: string | undefined) => {
+export const userLogin = createAsyncThunk('user/login', async (password: string) => {
     try {
-        const response = await axios.post(`${URL}/users/login`, {
+        const response = await axios.post(`${URL}/user/login`, {
             'password': password
         });
         return await response.data;

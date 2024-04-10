@@ -16,17 +16,17 @@ const initialState: TopicsState = {
         limit: 3,
     }
 };
-export const topicsFetchAll = createAsyncThunk('/topics/get', async () => {
+export const topicsFetchAll = createAsyncThunk('/topic/get', async () => {
     try {
-        const response = await axios.get(`${URL}/topics/get`);
+        const response = await axios.get(`${URL}/topic/get`);
         return await response.data as Topic[];
     } catch (err) {
         throw new Error(`Error: ${err}`);
     }
 });
-export const topicsRegistrationApply = createAsyncThunk('/topics/registrationApply', async ({ user_id, topic_id }: topicsRegistrationProps) => {
+export const topicsRegistrationApply = createAsyncThunk('/topic/reported/add', async ({ user_id, topic_id }: topicsRegistrationProps) => {
     try {
-        const response = await axios.post(`${URL}/topics/registrationApply`, {
+        const response = await axios.post(`${URL}/topic/reported/add`, {
             "user_id": user_id,
             "topic_id": topic_id
         });
@@ -35,9 +35,9 @@ export const topicsRegistrationApply = createAsyncThunk('/topics/registrationApp
         throw new Error(`Error: ${err}`);
     }
 });
-export const topicsRegistrationCancel = createAsyncThunk('/topics/registrationCancel', async ({ user_id, topic_id }: topicsRegistrationProps) => {
+export const topicsRegistrationCancel = createAsyncThunk('/topic/reported/remove', async ({ user_id, topic_id }: topicsRegistrationProps) => {
     try {
-        const response = await axios.post(`${URL}/topics/registrationCencel`, {
+        const response = await axios.post(`${URL}/topic/reported/remove`, {
             "user_id": user_id,
             "topic_id": topic_id
         });
