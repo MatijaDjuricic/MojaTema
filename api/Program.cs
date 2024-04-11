@@ -12,7 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(option => {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "MojaTema API", Version = "v1" });
-    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
         In = ParameterLocation.Header,
         Description = "Please enter a valid token",
         Name = "Authorization",
@@ -43,7 +44,8 @@ builder.Services.AddDbContext<DataContext>(options => {
 });
 #pragma warning disable CS8604
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
-    options.TokenValidationParameters = new TokenValidationParameters {
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,

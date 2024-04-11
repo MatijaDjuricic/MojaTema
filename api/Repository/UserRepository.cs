@@ -20,5 +20,8 @@ namespace api.Repository
         public async Task<User?> UserLoginAsync(string password) {
             return await context.Users.FirstOrDefaultAsync(x => x.password == password);
         }
+        public async Task<Mentor?> MentorLoginAsync(string password) {
+            return await context.Mentors.FirstOrDefaultAsync(x => x.password == password);
+        }
     }
 }

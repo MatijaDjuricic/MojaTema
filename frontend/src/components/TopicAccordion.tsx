@@ -70,7 +70,7 @@ const TopicAccordion = ({type, subject, topic, reported_topics, user}: TopicAcco
                     </p>
                   </div>
                   <div className={TopicAccordionCSS.professor_wrapper}>
-                    <p>Професор</p>
+                    <p>Ментор</p>
                     <span>{topic.professor_username}</span>
                   </div>
                 </div>
@@ -128,7 +128,7 @@ const TopicAccordion = ({type, subject, topic, reported_topics, user}: TopicAcco
                           </p>
                         </div>
                         <div className={TopicAccordionCSS.professor_wrapper}>
-                          <p>Професор</p>
+                          <p>Ментор</p>
                           <span>{topic.professor_username}</span>
                         </div>
                       </div>

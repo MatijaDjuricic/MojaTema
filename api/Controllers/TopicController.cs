@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using api.Dtos.ReportedTopicDto;
 namespace api.Controllers
 {
-    [Route("api/v1/topic")]
+    [Route("api/topic")]
     [ApiController]
     public class TopicController : ControllerBase
     {

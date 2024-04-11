@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace api.Controllers
 {
-    [Route("api/v1/user")]
+    [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -29,7 +29,11 @@ namespace api.Controllers
         public async Task<ActionResult<User>> UserLogin([FromBody] LoginDto loginDto) {
             if (!ModelState.IsValid) return BadRequest();
             var user = await userRepository.UserLoginAsync(loginDto.password);
-            if (user == null) return NotFound();
+            if (user == null) {
+                var mentor = await userRepository.MentorLoginAsync(loginDto.password);
+                if (mentor == null) return NotFound();
+                return Ok(new ResponseUserTokenDto { access_token = jwtService.GenerateMentorToken(mentor) });
+            }
             return Ok(new ResponseUserTokenDto { access_token = jwtService.GenerateUserToken(user) });
         }
     }

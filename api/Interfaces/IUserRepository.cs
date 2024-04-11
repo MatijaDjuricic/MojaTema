@@ -9,5 +9,6 @@ namespace api.Interfaces
     {
         Task<List<User>> GetUsersAsync();
         Task<User?> UserLoginAsync(string password);
+        Task<Mentor?> MentorLoginAsync(string password);
     }
 }

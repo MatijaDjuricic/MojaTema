@@ -28,7 +28,7 @@ namespace api.Service
                 new Claim("first_name", user.first_name),
                 new Claim("last_name", user.last_name),
                 new Claim("topic_id", user.topic_id.ToString()),
-                new Claim("role_status", RoleTypes.Ucenik.ToString())
+                new Claim("role_status", RoleTypes.ucenik.ToString())
             };
             #pragma warning restore CS8604
             var token = new JwtSecurityToken(
@@ -52,7 +52,7 @@ namespace api.Service
                 new Claim("last_name", mentor.last_name),
                 new Claim("mentor_id", mentor.mentor_id.ToString()),
                 new Claim("subject_id", mentor.subject_id.ToString()),
-                new Claim("role_status", RoleTypes.Mentor.ToString())
+                new Claim("role_status", RoleTypes.mentor.ToString())
             };
             var token = new JwtSecurityToken(
                 config["Jwt:Issuer"],
