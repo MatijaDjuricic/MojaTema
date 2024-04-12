@@ -27,8 +27,8 @@ builder.Services.AddSwaggerGen(option => {
             {
                 Reference = new OpenApiReference
                 {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
                 }
             },
             new string[]{}
@@ -63,7 +63,7 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwaggerUI();
 }
 app.UseHttpsRedirection();
-app.UseCors(x => x.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(origin => true).WithOrigins("https://localhost:5173"));
+app.UseCors(x => x.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(origin => true).WithOrigins("http://localhost:5173"));
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

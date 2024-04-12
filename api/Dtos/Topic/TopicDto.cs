@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +10,7 @@ namespace api.Dtos.Topic
         public int id { get; set; }
         public string title { get; set; } = null!;
         public string info { get; set; } = null!;
-        public string subject_title { get; set; } = null!;        
+        public string subject_title { get; set; } = null!;
         public int status { get; set; }
         public int? user_id { get; set; }
         public string student_username { get; set; } = null!;

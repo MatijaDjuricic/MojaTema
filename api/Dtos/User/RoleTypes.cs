@@ -1,4 +1,4 @@
-namespace api.Dtos.User
+﻿namespace api.Dtos.User
 {
     public enum RoleTypes
     {

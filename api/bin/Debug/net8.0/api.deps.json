@@ -9,19 +9,15 @@
       "api/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.0",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.0",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "8.0.0",
           "Microsoft.AspNetCore.OpenApi": "8.0.0",
-          "Microsoft.Data.Sqlite": "8.0.0",
-          "Microsoft.Data.Sqlite.Core": "8.0.0",
           "Microsoft.EntityFrameworkCore": "8.0.0",
           "Microsoft.EntityFrameworkCore.Design": "8.0.0",
           "Microsoft.EntityFrameworkCore.Sqlite": "8.0.0",
+          "Microsoft.EntityFrameworkCore.Sqlite.Core": "8.0.0",
           "Microsoft.EntityFrameworkCore.Tools": "8.0.0",
           "Newtonsoft.Json": "13.0.3",
-          "SQLite": "3.13.0",
-          "Swashbuckle.AspNetCore": "6.4.0",
-          "System.Text.Json": "8.0.0"
+          "Swashbuckle.AspNetCore": "6.4.0"
         },
         "runtime": {
           "api.dll": {}
@@ -41,24 +37,6 @@
         },
         "runtime": {
           "lib/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.23.53112"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.Cryptography.Internal/8.0.0": {},
-      "Microsoft.AspNetCore.Cryptography.KeyDerivation/8.0.0": {
-        "dependencies": {
-          "Microsoft.AspNetCore.Cryptography.Internal": "8.0.0"
-        }
-      },
-      "Microsoft.AspNetCore.Identity.EntityFrameworkCore/8.0.0": {
-        "dependencies": {
-          "Microsoft.EntityFrameworkCore.Relational": "8.0.0",
-          "Microsoft.Extensions.Identity.Stores": "8.0.0"
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll": {
             "assemblyVersion": "8.0.0.0",
             "fileVersion": "8.0.23.53112"
           }
@@ -330,12 +308,6 @@
         }
       },
       "Microsoft.CSharp/4.7.0": {},
-      "Microsoft.Data.Sqlite/8.0.0": {
-        "dependencies": {
-          "Microsoft.Data.Sqlite.Core": "8.0.0",
-          "SQLitePCLRaw.bundle_e_sqlite3": "2.1.6"
-        }
-      },
       "Microsoft.Data.Sqlite.Core/8.0.0": {
         "dependencies": {
           "SQLitePCLRaw.core": "2.1.6"
@@ -459,20 +431,6 @@
           }
         }
       },
-      "Microsoft.Extensions.Identity.Core/8.0.0": {
-        "dependencies": {
-          "Microsoft.AspNetCore.Cryptography.KeyDerivation": "8.0.0",
-          "Microsoft.Extensions.Logging": "8.0.0",
-          "Microsoft.Extensions.Options": "8.0.0"
-        }
-      },
-      "Microsoft.Extensions.Identity.Stores/8.0.0": {
-        "dependencies": {
-          "Microsoft.Extensions.Caching.Abstractions": "8.0.0",
-          "Microsoft.Extensions.Identity.Core": "8.0.0",
-          "Microsoft.Extensions.Logging": "8.0.0"
-        }
-      },
       "Microsoft.Extensions.Logging/8.0.0": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": "8.0.0",
@@ -592,30 +550,6 @@
           "lib/netstandard2.0/Newtonsoft.Json.Bson.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.2.22727"
-          }
-        }
-      },
-      "SQLite/3.13.0": {
-        "runtimeTargets": {
-          "runtimes/linux-x64/native/libsqlite3.so": {
-            "rid": "linux-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/osx-x64/native/libsqlite3.dylib": {
-            "rid": "osx-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win7-x64/native/sqlite3.dll": {
-            "rid": "win7-x64",
-            "assetType": "native",
-            "fileVersion": "3.13.0.0"
-          },
-          "runtimes/win7-x86/native/sqlite3.dll": {
-            "rid": "win7-x86",
-            "assetType": "native",
-            "fileVersion": "3.13.0.0"
           }
         }
       },
@@ -922,27 +856,6 @@
       "path": "microsoft.aspnetcore.authentication.jwtbearer/8.0.0",
       "hashPath": "microsoft.aspnetcore.authentication.jwtbearer.8.0.0.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.Cryptography.Internal/8.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-buuMMCTxFcVkOkEftb2OafYxrveNGre9KJF4Oi1DkR4rxIj6oLam7Wq3g0Fp9hNVpJteKEPiupsxYnPrD/oUGA==",
-      "path": "microsoft.aspnetcore.cryptography.internal/8.0.0",
-      "hashPath": "microsoft.aspnetcore.cryptography.internal.8.0.0.nupkg.sha512"
-    },
-    "Microsoft.AspNetCore.Cryptography.KeyDerivation/8.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-65w93R5wqUUs35R9wjHHDf75GqAbxJsNByKZo5TbQOWSXcUbLWrDUWBQHv78iXIT0PL1pXNqKQz7OHiHMvo0/A==",
-      "path": "microsoft.aspnetcore.cryptography.keyderivation/8.0.0",
-      "hashPath": "microsoft.aspnetcore.cryptography.keyderivation.8.0.0.nupkg.sha512"
-    },
-    "Microsoft.AspNetCore.Identity.EntityFrameworkCore/8.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-ua2LSZY/f0BkNUUVPPm83eq4Xnt+FZYutiMimRrzSmv2K2t2Ia/PuP4CfibYNSwnKl6fbZ49Bwn2mQGWnmmvOA==",
-      "path": "microsoft.aspnetcore.identity.entityframeworkcore/8.0.0",
-      "hashPath": "microsoft.aspnetcore.identity.entityframeworkcore.8.0.0.nupkg.sha512"
-    },
     "Microsoft.AspNetCore.JsonPatch/8.0.0": {
       "type": "package",
       "serviceable": true,
@@ -1012,13 +925,6 @@
       "sha512": "sha512-pTj+D3uJWyN3My70i2Hqo+OXixq3Os2D1nJ2x92FFo6sk8fYS1m1WLNTs0Dc1uPaViH0YvEEwvzddQ7y4rhXmA==",
       "path": "microsoft.csharp/4.7.0",
       "hashPath": "microsoft.csharp.4.7.0.nupkg.sha512"
-    },
-    "Microsoft.Data.Sqlite/8.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-H+iC5IvkCCKSNHXzL3JARvDn7VpkvuJM91KVB89sKjeTF/KX/BocNNh93ZJtX5MCQKb/z4yVKgkU2sVIq+xKfg==",
-      "path": "microsoft.data.sqlite/8.0.0",
-      "hashPath": "microsoft.data.sqlite.8.0.0.nupkg.sha512"
     },
     "Microsoft.Data.Sqlite.Core/8.0.0": {
       "type": "package",
@@ -1132,20 +1038,6 @@
       "path": "microsoft.extensions.dependencymodel/8.0.0",
       "hashPath": "microsoft.extensions.dependencymodel.8.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Identity.Core/8.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-hnXHyIQc+uc2uNMcIbr43+oNBAPEhMpW6lE8ux3MOegRz50WBna4AItlZDY7Y+Id1LLBbf73osUqeTw7CQ371w==",
-      "path": "microsoft.extensions.identity.core/8.0.0",
-      "hashPath": "microsoft.extensions.identity.core.8.0.0.nupkg.sha512"
-    },
-    "Microsoft.Extensions.Identity.Stores/8.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-DmDCpSpngZDBm44wVmxCeYs4HGJr/m32jMItp6pfb7KKtqWYw2vybHRg880j18k/eSFyM4v9uONsnEPgDdi9lg==",
-      "path": "microsoft.extensions.identity.stores/8.0.0",
-      "hashPath": "microsoft.extensions.identity.stores.8.0.0.nupkg.sha512"
-    },
     "Microsoft.Extensions.Logging/8.0.0": {
       "type": "package",
       "serviceable": true,
@@ -1243,13 +1135,6 @@
       "sha512": "sha512-QYFyxhaABwmq3p/21VrZNYvCg3DaEoN/wUuw5nmfAf0X3HLjgupwhkEWdgfb9nvGAUIv3osmZoD3kKl4jxEmYQ==",
       "path": "newtonsoft.json.bson/1.0.2",
       "hashPath": "newtonsoft.json.bson.1.0.2.nupkg.sha512"
-    },
-    "SQLite/3.13.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-MJfRiz2p6aMVOxrxGMdVzhpzI0oxTgZSwC8eVuOpV8L7yYaFUu8q/OFYwv9P0/aZ/pdEu24O6gma6wZJMTun9A==",
-      "path": "sqlite/3.13.0",
-      "hashPath": "sqlite.3.13.0.nupkg.sha512"
     },
     "SQLitePCLRaw.bundle_e_sqlite3/2.1.6": {
       "type": "package",
