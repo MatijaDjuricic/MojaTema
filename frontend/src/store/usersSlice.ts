@@ -7,8 +7,8 @@ import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 const URL = import.meta.env.VITE_API_URL;
-const { setCookie, removeCookie } = useCookie();
 const { getAuth } = useAuth();
+const { setCookie, removeCookie } = useCookie();
 const { successMessage, errorMessage } = useToastMessage()
 const initialState: UsersState = {
     users: [],

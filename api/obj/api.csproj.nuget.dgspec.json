@@ -78,10 +78,6 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
-              "target": "Package",
-              "version": "[8.0.0, )"
-            },
             "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
               "version": "[8.0.0, )"
@@ -107,14 +103,6 @@
             "System.Text.Json": {
               "target": "Package",
               "version": "[8.0.0, )"
-            },
-            "sqlite-net": {
-              "target": "Package",
-              "version": "[1.6.292, )"
-            },
-            "sqlite-net-pcl": {
-              "target": "Package",
-              "version": "[1.9.172, )"
             }
           },
           "imports": [

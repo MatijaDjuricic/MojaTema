@@ -27,16 +27,15 @@ builder.Services.AddSwaggerGen(option => {
             {
                 Reference = new OpenApiReference
                 {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
                 }
             },
             new string[]{}
         }
     });
 });
-builder.Services.AddControllers().AddNewtonsoftJson(options =>
-{
+builder.Services.AddControllers().AddNewtonsoftJson(options => {
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
 builder.Services.AddDbContext<DataContext>(options => {

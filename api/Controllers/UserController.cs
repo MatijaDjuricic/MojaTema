@@ -5,8 +5,8 @@ using api.Dtos.User;
 using api.Interfaces;
 using api.Models;
 using api.Service;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 namespace api.Controllers
 {
     [Route("api/user")]

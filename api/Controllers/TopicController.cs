@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using api.Interfaces;
 using api.Models;
-using Microsoft.AspNetCore.Mvc;
 using api.Dtos.ReportedTopicDto;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 namespace api.Controllers
 {
     [Route("api/topic")]
@@ -16,6 +17,7 @@ namespace api.Controllers
         public TopicController(ITopicRepository topicRepository) {
             this.topicRepository = topicRepository;
         }
+        [Authorize]
         [HttpGet("get")]
         public async Task<ActionResult<List<Topic>>> GetTopics() {
             if (!ModelState.IsValid) return BadRequest();
@@ -23,11 +25,13 @@ namespace api.Controllers
             if (!topics.Any()) return NotFound();
             return Ok(topics);
         }
+        [Authorize]
         [HttpPost("reported/add")]
         public async Task<ActionResult<ReportedTopic>> AddReportedTopic([FromBody] ReportedTopicDto reportedTopicDto) {
             if (!ModelState.IsValid) return BadRequest();
             return Ok(await topicRepository.AddReportedTopicAsync(reportedTopicDto));
         }
+        [Authorize]
         [HttpPost("reported/remove")]
         public async Task<ActionResult<ReportedTopicDto>> RemoveReportedTopic([FromBody] ReportedTopicDto reportedTopicDto) {
             if (!ModelState.IsValid) return BadRequest();

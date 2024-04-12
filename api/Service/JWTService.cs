@@ -28,6 +28,7 @@ namespace api.Service
                 new Claim("first_name", user.first_name),
                 new Claim("last_name", user.last_name),
                 new Claim("topic_id", user.topic_id.ToString()),
+                new Claim("user_class", user.user_class.ToString()),
                 new Claim("role_status", RoleTypes.ucenik.ToString())
             };
             #pragma warning restore CS8604

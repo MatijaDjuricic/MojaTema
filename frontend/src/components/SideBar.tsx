@@ -41,7 +41,7 @@ const SideBar = () => {
                     <div className={SideBarCSS.profile_container}>
                         <div className={SideBarCSS.status_wrapper} title={`${user.role_status}`}>
                             <ReactSVG src={success_icon} className={SideBarCSS.nav_icons_fill}/>
-                            <span>{user.role_status}</span>
+                            <span>{user.role_status == "ucenik" ? "učenik" : user.role_status}</span>
                         </div>
                         <div className={SideBarCSS.line}></div>
                         <div className={SideBarCSS.profile_wrapper}>
