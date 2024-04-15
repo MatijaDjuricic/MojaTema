@@ -9,8 +9,7 @@ namespace api.Mappers
 {
     public static class TopicMapper
     {
-        public static TopicDto ToTopicDto(this Topic topicModel, string subject_title, string student_username, string professor_username)
-        {
+        public static TopicDto ToTopicDto(this Topic topicModel, List<ReportedTopic> reportedTopics, string subject_title, string student_username, string professor_username) {
             return new TopicDto
             {
                 id = topicModel.topic_id,
@@ -18,13 +17,15 @@ namespace api.Mappers
                 status = topicModel.status,
                 info = topicModel.info,
                 user_id = topicModel.user_id,
+                mentor_id = topicModel.mentor_id,
+                subject_id = topicModel.subject_id,
                 subject_title = subject_title,
                 student_username = student_username,
                 professor_username = professor_username,
+                reportedTopicUsers = reportedTopics.Where(rt => rt.topic_id == topicModel.topic_id).ToList()
             };
         }
-        public static ReportedTopic ToReportedTopicDto(this ReportedTopic topicModel, string student_username)
-        {
+        public static ReportedTopic ToReportedTopicDto(this ReportedTopic topicModel, string student_username) {
             return new ReportedTopic
             {
                 topic_id = topicModel.topic_id,
@@ -32,16 +33,14 @@ namespace api.Mappers
                 student_username = student_username,
             };
         }
-        public static ReportedTopic ToTopicDtoFromAdd(this ReportedTopicDto topicModel)
-        {
+        public static ReportedTopic ToTopicDtoFromAdd(this ReportedTopicDto topicModel) {
             return new ReportedTopic
             {
                 user_id = topicModel.user_id,
                 topic_id = topicModel.topic_id
             };
         }
-        public static ReportedTopic ToResponseReportedTopic(this ReportedTopicDto topicModel, string student_username)
-        {
+        public static ReportedTopic ToResponseReportedTopic(this ReportedTopicDto topicModel, string student_username) {
             return new ReportedTopic
             {
                 topic_id = topicModel.topic_id,

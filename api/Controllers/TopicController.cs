@@ -14,30 +14,32 @@ namespace api.Controllers
     public class TopicController : ControllerBase
     {
         private readonly ITopicRepository topicRepository;
-        public TopicController(ITopicRepository topicRepository)
-        {
-            this.topicRepository = topicRepository;
-        }
+        public TopicController(ITopicRepository topicRepository) => this.topicRepository = topicRepository;
         [Authorize]
         [HttpGet("get")]
-        public async Task<ActionResult<List<Topic>>> GetTopics()
-        {
+        public async Task<ActionResult<List<Topic>>> GetTopics() {
             if (!ModelState.IsValid) return BadRequest();
             var topics = await topicRepository.GetTopicsWithReportedTopicsAsync();
             if (!topics.Any()) return NotFound();
             return Ok(topics);
         }
         [Authorize]
+        [HttpGet("reported/get/{id:int}")]
+        public async Task<ActionResult<ReportedTopic>> GetReportedTopicsByMentorId([FromRoute] int id) {
+            if (!ModelState.IsValid) return BadRequest();
+            var topics = await topicRepository.GetReportedTopicsByMentorIdAsync(id);
+            if (!topics.Any()) return NotFound();
+            return Ok(topics);
+        }
+        [Authorize]
         [HttpPost("reported/add")]
-        public async Task<ActionResult<ReportedTopic>> AddReportedTopic([FromBody] ReportedTopicDto reportedTopicDto)
-        {
+        public async Task<ActionResult<ReportedTopic>> AddReportedTopic([FromBody] ReportedTopicDto reportedTopicDto) {
             if (!ModelState.IsValid) return BadRequest();
             return Ok(await topicRepository.AddReportedTopicAsync(reportedTopicDto));
         }
         [Authorize]
         [HttpPost("reported/remove")]
-        public async Task<ActionResult<ReportedTopicDto>> RemoveReportedTopic([FromBody] ReportedTopicDto reportedTopicDto)
-        {
+        public async Task<ActionResult<ReportedTopicDto>> RemoveReportedTopic([FromBody] ReportedTopicDto reportedTopicDto) {
             if (!ModelState.IsValid) return BadRequest();
             return Ok(await topicRepository.RemoveReportedTopicAsync(reportedTopicDto));
         }

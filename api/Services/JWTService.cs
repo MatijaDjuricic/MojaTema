@@ -13,12 +13,8 @@ namespace api.Service
     public class JWTService
     {
         private readonly IConfiguration config;
-        public JWTService(IConfiguration config)
-        {
-            this.config = config;
-        }
-        public string GenerateUserToken(User user)
-        {
+        public JWTService(IConfiguration config) => this.config = config;
+        public string GenerateUserToken(User user) {
             #pragma warning disable CS8604
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
             #pragma warning restore CS8604
@@ -43,8 +39,7 @@ namespace api.Service
             );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-        public string GenerateMentorToken(Mentor mentor)
-        {
+        public string GenerateMentorToken(Mentor mentor) {
             #pragma warning disable CS8604
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
             #pragma warning restore CS8604

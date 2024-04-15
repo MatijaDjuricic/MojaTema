@@ -40,7 +40,7 @@ header {
 }
 .input_wrapper .input {
     width: 100%;
-    padding: 0.5rem 1rem 0.5rem 3rem;
+    padding: 0.5rem 2.5rem 0.5rem 3rem;
     color: var(--text-prim);
     background-color: var(--background-sec);
     border: 2px solid var(--orange);
@@ -64,6 +64,27 @@ header {
     top: .75rem;
     left: .75rem;
     fill: var(--text-prim);
+}
+.close_btn {
+    position: absolute;
+    height: 100%;
+    width: 1.7rem;
+    height: 1.7rem;
+    background-color: transparent;
+    border: none;
+    top: .5rem;
+    right: .5rem;
+    bottom: .5rem;
+}
+.close_icon svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    fill: var(--text-prim);
+    transition: 400ms ease-in-out;
+}
+.close_btn:hover .close_icon svg {
+    fill: var(--orange);
 }
 @media (max-width: 1400px) {
     .left_side {

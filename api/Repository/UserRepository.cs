@@ -11,21 +11,9 @@ namespace api.Repository
     public class UserRepository : IUserRepository
     {
         private readonly DataContext context;
-        public UserRepository(DataContext context)
-        {
-            this.context = context;
-        }
-        public async Task<List<User>> GetUsersAsync()
-        {
-            return await context.Users.ToListAsync();
-        }
-        public async Task<User?> UserLoginAsync(string password)
-        {
-            return await context.Users.FirstOrDefaultAsync(x => x.password == password);
-        }
-        public async Task<Mentor?> MentorLoginAsync(string password)
-        {
-            return await context.Mentors.FirstOrDefaultAsync(x => x.password == password);
-        }
+        public UserRepository(DataContext context) => this.context = context;
+        public async Task<List<User>> GetUsersAsync() => await context.Users.ToListAsync();
+        public async Task<User?> UserLoginAsync(string password) => await context.Users.FirstOrDefaultAsync(x => x.password == password);
+        public async Task<Mentor?> MentorLoginAsync(string password) => await context.Mentors.FirstOrDefaultAsync(x => x.password == password);
     }
 }

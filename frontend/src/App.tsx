@@ -4,6 +4,7 @@ import ToastMessage from './components/ToastMessage';
 import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
 import TopicsPage from './pages/TopicsPage';
+import ChatPage from './pages/ChatPage';
 import NotFoundPage from './pages/NotFoundPage';
 const App = () => {
   const { RequireAuth, AuthRedirect, TopicsRedirect } = useRedirect();
@@ -30,6 +31,13 @@ const App = () => {
           <TopicsRedirect>
             <TopicsPage/>
           </TopicsRedirect>
+        </RequireAuth>
+    },
+    {
+      path: '/chat',
+      element:
+        <RequireAuth>
+          <ChatPage/>
         </RequireAuth>
     }
   ]);

@@ -19,6 +19,7 @@ const Chats = () => {
         </Offcanvas.Header>
         <Offcanvas.Body className={ChatsCSS.canvas_body}>
           <p>Нема порука...</p>
+          <a href="/chat">Поруке</a>
         </Offcanvas.Body>
       </Offcanvas>
     </>

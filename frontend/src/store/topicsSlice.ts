@@ -24,6 +24,14 @@ export const topicsFetchAll = createAsyncThunk('/topic/get', async () => {
         throw new Error(`Error: ${err}`);
     }
 });
+export const topicsFetchByMentorId = createAsyncThunk('/topic/reported/get', async (id : number) => {
+    try {
+        const response = await axios.get(`${URL}/topic/reported/get/${id}`);
+        return await response.data as Topic[];
+    } catch (err) {
+        throw new Error(`Error: ${err}`);
+    }
+});
 export const topicsRegistrationApply = createAsyncThunk('/topic/reported/add', async ({ user_id, topic_id }: topicsRegistrationProps) => {
     try {
         const response = await axios.post(`${URL}/topic/reported/add`, {
@@ -57,6 +65,9 @@ export const topicsSlice = createSlice({
     },
     extraReducers(builder) {
         builder.addCase(topicsFetchAll.fulfilled, (state, action) => {
+            state.topics = action.payload;
+            state.subjects = setSubjects(state.topics);
+        }).addCase(topicsFetchByMentorId.fulfilled, (state, action) => {
             state.topics = action.payload;
             state.subjects = setSubjects(state.topics);
         }).addCase(topicsRegistrationApply.fulfilled, (state, action) => {

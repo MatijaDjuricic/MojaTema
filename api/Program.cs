@@ -2,6 +2,7 @@ using System.Text;
 using api.Data;
 using api.Interfaces;
 using api.Repository;
+using api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -10,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSignalR();
 builder.Services.AddSwaggerGen(option => {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "MojaTema API", Version = "v1" });
     option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -67,4 +69,5 @@ app.UseCors(x => x.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOri
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHub<WebSocketService>("/socketService");
 app.Run();

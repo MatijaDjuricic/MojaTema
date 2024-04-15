@@ -30,7 +30,7 @@ const TopicsPage = () => {
   return (
     <div className={TopicsCSS.main_container}>
       <SideBar/>
-      <TopicsHeader topics={topics} search={search} onChange={e => setSearch(e.target.value)}/>
+      <TopicsHeader topics={topics} search={search} onChange={e => setSearch(e.target.value)} onClear={() => setSearch('')}/>
       <main className={TopicsCSS.main_wrapper}>
         {
           loading ? <Loader/> : <>

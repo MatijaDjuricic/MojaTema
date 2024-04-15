@@ -11,6 +11,7 @@ namespace api.Interfaces
     {
         Task<List<Topic>> GetTopicsAsync();
         Task<List<TopicDto>> GetTopicsWithReportedTopicsAsync();
+        Task<List<TopicDto>> GetReportedTopicsByMentorIdAsync(int id);
         Task<ReportedTopic> AddReportedTopicAsync(ReportedTopicDto reportedTopicDto);
         Task<ReportedTopicDto> RemoveReportedTopicAsync(ReportedTopicDto reportedTopicDto);
     }

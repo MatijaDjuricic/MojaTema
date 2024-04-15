@@ -1,0 +1,56 @@
+.main_container {
+    display: flex;
+}
+.main_wrapper {
+    position: relative;
+    width: 100%;
+    padding: 7rem 2rem 0 2rem;
+}
+.main_container h1, .main_container p {
+    color: var(--text-prim);
+}
+.chat_wrapper {
+    position: absolute;
+    height: 100vh;
+    inset: 0 2rem 0 2rem;
+}
+.input_wrapper {
+    position: absolute;
+    display: flex;
+    height: 3rem;
+    width: 100%;
+    bottom: 1rem;
+}
+.input_wrapper textarea {
+    width: 100%;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    color: var(--text-prim);
+    background-color: var(--background-sec);
+    border: 1px solid var(--orange);
+    font-size: 1.2rem;
+    border-radius: 10px 0 0 10px;
+    justify-content: center;
+    outline: none;
+    resize: none;
+}
+.input_wrapper textarea::placeholder {
+    color: var(--text-prim);
+    opacity: 0.2;
+}
+.input_wrapper button {
+    width: 5rem;
+    height: 3rem;
+    border: none;
+    padding-right: 3px;
+    background-color: var(--orange);
+    border-radius: 0 10px 10px 0;
+    transition: 300ms ease-in-out;
+}
+.input_wrapper button svg {
+    width: 2.5rem;
+    height: 2.5rem;
+    fill: var(--text-prim);
+}
+.input_wrapper button:hover {
+    background-color: var(--background-sec);
+}

@@ -3,8 +3,12 @@
 }
 .main_wrapper {
     width: 100%;
-    padding: 2rem 2rem 0 2rem;
+    padding: 7rem 2rem 0 2rem;
 }
-.main_wrapper h1, .main_wrapper p {
+.reported_topics_header {
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+.main_container h1, .main_container p, ul li {
     color: var(--text-prim);
 }

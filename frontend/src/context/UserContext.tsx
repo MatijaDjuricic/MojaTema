@@ -12,7 +12,7 @@ export const UserContextProvider = ({ children }: { children: JSX.Element}) => {
     const { getUserAuth } = useAuth();
     const { getCookie } = useCookie();
     const user = getUserAuth();
-    axios.defaults.headers.common["Authorization"] = "Bearer " + getCookie('access_token');
+    axios.defaults.headers.common["Authorization"] = `Bearer ${getCookie('access_token')}`;
     return (
         <UserContext.Provider value={user}>
             {children}

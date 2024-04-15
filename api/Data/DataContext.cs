@@ -14,8 +14,7 @@ namespace api.Data
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Topic> Topics { get; set; }
         public DbSet<ReportedTopic> ReportedTopics { get; set; }
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
+        protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);
             builder.Entity<User>(x => x.HasKey(y => new { y.user_id }));
             builder.Entity<Subject>(x => x.HasKey(y => new { y.subject_id }));

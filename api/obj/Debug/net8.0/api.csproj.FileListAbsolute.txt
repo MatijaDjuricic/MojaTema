@@ -139,3 +139,4 @@ D:\Everything else\GitHub\MojaTema\api\obj\Debug\net8.0\refint\api.dll
 D:\Everything else\GitHub\MojaTema\api\obj\Debug\net8.0\api.pdb
 D:\Everything else\GitHub\MojaTema\api\obj\Debug\net8.0\api.genruntimeconfig.cache
 D:\Everything else\GitHub\MojaTema\api\obj\Debug\net8.0\ref\api.dll
+D:\Everything else\GitHub\MojaTema\api\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll

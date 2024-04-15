@@ -15,25 +15,21 @@ namespace api.Controllers
     {
         private readonly IUserRepository userRepository;
         private readonly JWTService jwtService;
-        public UserController(IUserRepository userRepository, IConfiguration config)
-        {
+        public UserController(IUserRepository userRepository, IConfiguration config) {
             this.userRepository = userRepository;
             jwtService = new(config);
         }
         [Authorize]
         [HttpGet("get")]
-        public async Task<ActionResult<List<User>>> GetUsers()
-        {
+        public async Task<ActionResult<List<User>>> GetUsers() {
             if (!ModelState.IsValid) return BadRequest();
             return Ok(await userRepository.GetUsersAsync());
         }
         [HttpPost("login")]
-        public async Task<ActionResult<User>> UserLogin([FromBody] LoginDto loginDto)
-        {
+        public async Task<ActionResult<User>> UserLogin([FromBody] LoginDto loginDto) {
             if (!ModelState.IsValid) return BadRequest();
             var user = await userRepository.UserLoginAsync(loginDto.password);
-            if (user == null)
-            {
+            if (user == null) {
                 var mentor = await userRepository.MentorLoginAsync(loginDto.password);
                 if (mentor == null) return NotFound();
                 return Ok(new ResponseUserTokenDto { access_token = jwtService.GenerateMentorToken(mentor) });

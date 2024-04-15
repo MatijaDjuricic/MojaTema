@@ -9,7 +9,7 @@ axios.defaults.withCredentials = true;
 const URL = import.meta.env.VITE_API_URL;
 const { getAuth } = useAuth();
 const { setCookie, removeCookie } = useCookie();
-const { successMessage, errorMessage } = useToastMessage()
+const { successMessage, errorMessage } = useToastMessage();
 const initialState: UsersState = {
     users: [],
     loggedIn: getAuth()
