@@ -1,8 +1,8 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Message, MessagesState } from "../types/types";
 import axios from "axios";
 axios.defaults.withCredentials = true;
-const URL = import.meta.env.VITE_API_URL;
+//const URL = import.meta.env.VITE_API_URL;
 const initialState: MessagesState = {
     messages: []
 };
@@ -15,9 +15,7 @@ export const messagesSlice = createSlice({
         },
         resetState: () => initialState
     },
-    extraReducers(builder) {
-        
-    }
+    //extraReducers(builder) {}
 });
 export const { addMessages, resetState } = messagesSlice.actions;
 export default messagesSlice.reducer;
