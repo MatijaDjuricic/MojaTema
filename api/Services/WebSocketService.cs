@@ -7,7 +7,7 @@ namespace api.Services
 {
     public class WebSocketService : Hub
     {
-        public async Task SendMessage(string id, string user, string message) {
+        public async Task SendMessage(string id, string user, String message) {
             await Clients.All.SendAsync("ReceiveMessage", id, user, message);
         }
     }
