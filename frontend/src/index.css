@@ -23,12 +23,12 @@ body {
   font-family: 'Play', sans-serif;
   background-color: var(--background-prim);
 }
-::-webkit-scrollbar {
+body::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 1rem;
   background-color: var(--text-prim);
 }
-::-webkit-scrollbar-thumb {
+body::-webkit-scrollbar-thumb {
   border-radius: 1rem;
   background-color: var(--orange);
 }

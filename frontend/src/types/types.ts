@@ -20,8 +20,9 @@ export interface Professor {
 }
 export interface Message {
     id: string,
+    user: string,
     content: string,
-    user: string
+    created_at: string
 }
 export interface Topic {
     id: number,

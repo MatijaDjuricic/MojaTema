@@ -4,25 +4,76 @@
 .main_wrapper {
     position: relative;
     width: 100%;
-    padding: 7rem 2rem 0 2rem;
+    height: 100%;
+    padding: 7rem 2rem 4rem 2rem;
 }
 .main_container h1, .main_container p {
     color: var(--text-prim);
 }
 .chat_wrapper {
-    position: absolute;
-    height: 100vh;
-    inset: 0 2rem 0 2rem;
+    width: 100%;
+    position: relative;
+    margin-bottom: 4rem;
+}
+.messages_wrapper {
+    height: 60%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 2rem;
+}
+.message_left {
+    display: flex;
+    justify-content: start;
+}
+.message_right {
+    display: flex;
+    justify-content: end;
+}
+.message_left .message_box {
+    width: 50%;
+    background-color: var(--background-sec);
+    padding: 1rem 1rem .5rem 1rem;
+    border-radius: 0 1rem 1rem 1rem;
+}
+.message_right .message_box {
+    width: 50%;
+    background-color: var(--orange);
+    padding: 1rem 1rem .5rem 1rem;
+    border-radius: 1rem 0 1rem 1rem;
+}
+.message_left span {
+    font-size: 14px;
+    color: var(--orange);
+} 
+.message_right span {
+    font-size: 14px;
+    color: var(--background-prim);
+}
+.message_left p, .message_right p {
+    font-size: 1.5rem;
+    color: var(--text-prim);
+    word-wrap: break-word;
+}
+.message_box .created_at {
+    float: right;
 }
 .input_wrapper {
-    position: absolute;
+    position: fixed;
     display: flex;
-    height: 3rem;
-    width: 100%;
-    bottom: 1rem;
+    align-items: center;
+    background-color: var(--background-prim);
+    padding: 4rem 0 4rem 0;
+    height: 4rem;
+    bottom: 0;
+    left: 300px;
+    right: 2rem;
+    z-index: 2;
 }
 .input_wrapper textarea {
     width: 100%;
+    height: 3rem;
     padding: 0.5rem 1rem 0.5rem 1rem;
     color: var(--text-prim);
     background-color: var(--background-sec);
@@ -53,4 +104,31 @@
 }
 .input_wrapper button:hover {
     background-color: var(--background-sec);
+}
+@media (max-width: 992px) {
+    .input_wrapper {
+        left: 130px;
+        right: 5px;
+    }
+    .message_left .message_box {
+        width: 100%;
+    }
+    .message_right .message_box {
+        width: 100%;
+    }
+}
+@media (max-width: 576px) {
+    .input_wrapper {
+        left: 100px;
+        right: 5px;
+    }
+    .message_left .message_box {
+        width: 100%;
+    }
+    .message_right .message_box {
+        width: 100%;
+    }
+    .input_wrapper textarea::placeholder {
+        font-size: 0.7rem;
+    }
 }
