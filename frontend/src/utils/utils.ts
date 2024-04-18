@@ -25,5 +25,5 @@ export const formatDateTime = (string: string) => {
     //const months_srp = ["Јануар", "Фебруар", "Март", "Април", "Мај", "Јун", "Јул", "Август", "Септембар", "Октобар", "Новембар", "Децембар"];
     const days_srp = ["Недеља", "Понедељак", "Уторак", "Среда", "Четвртак", "Петак", "Субота"];
     //const days_short_srp = ["Нед", "Пон", "Уто", "Сре", "Чет", "Пет", "Суб"];
-    return `${date.getHours()}:${date.getMinutes()} - ${days_srp[date.getDay()]}. ${date.getDate()}.${months_numbers[date.getMonth()]}.${date.getFullYear()}.`;
+    return `${date.getHours()}:${date.getMinutes()} - ${days_srp[date.getDay()]} ${date.getDate()}.${months_numbers[date.getMonth()]}.${date.getFullYear()}.`;
 }
