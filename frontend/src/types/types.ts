@@ -18,12 +18,6 @@ export interface Professor {
     last_name: string,
     subject_id: number
 }
-export interface Message {
-    id: string,
-    user: string,
-    content: string,
-    created_at: string
-}
 export interface Topic {
     id: number,
     title: string,
@@ -37,6 +31,12 @@ export interface Topic {
         user_id: number | undefined,
         student_username: string | undefined,
     }]
+}
+export interface Message {
+    id: number,
+    user: string,
+    content: string,
+    created_at: Date
 }
 export interface UsersState {
     users: User[],

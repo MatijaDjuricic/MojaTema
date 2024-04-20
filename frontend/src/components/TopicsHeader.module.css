@@ -119,6 +119,5 @@ header {
 @media (max-width: 576px) {
     header {
         left: 100px;
-        padding: 10px 5px 0 5px;
     }
 }

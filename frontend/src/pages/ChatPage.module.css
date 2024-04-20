@@ -1,27 +1,40 @@
 .main_container {
     display: flex;
+    height: 100vh;
+    width: 100%;
 }
 .main_wrapper {
     position: relative;
     width: 100%;
-    height: 100%;
     padding: 7rem 2rem 4rem 2rem;
 }
 .main_container h1, .main_container p {
     color: var(--text-prim);
 }
 .chat_wrapper {
-    width: 100%;
-    position: relative;
-    margin-bottom: 4rem;
-}
-.messages_wrapper {
-    height: 60%;
-    position: relative;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    gap: 2rem;
+}
+.messages_wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-end;
+    overflow-y: auto;
+    gap: 1rem;
+    padding-right: 1rem;
+    margin-bottom: 1rem;
+}
+.messages_wrapper::-webkit-scrollbar {
+    width: .5rem;
+    border-radius: 1rem;
+    background-color: var(--text-prim);
+}
+.messages_wrapper::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+    background-color: var(--orange);
 }
 .message_left {
     display: flex;
@@ -34,13 +47,13 @@
 .message_left .message_box {
     width: 50%;
     background-color: var(--background-sec);
-    padding: 1rem 1rem .5rem 1rem;
+    padding: .7rem .7rem .7rem .7rem;
     border-radius: 0 1rem 1rem 1rem;
 }
 .message_right .message_box {
     width: 50%;
     background-color: var(--orange);
-    padding: 1rem 1rem .5rem 1rem;
+    padding: .7rem .7rem .7rem .7rem;
     border-radius: 1rem 0 1rem 1rem;
 }
 .message_left span {
@@ -64,9 +77,7 @@
     display: flex;
     align-items: center;
     background-color: var(--background-prim);
-    padding: 4rem 0 4rem 0;
-    height: 4rem;
-    bottom: 0;
+    bottom: 1rem;
     left: 300px;
     right: 2rem;
     z-index: 2;
@@ -105,6 +116,13 @@
 .input_wrapper button:hover {
     background-color: var(--background-sec);
 }
+.date_line {
+    position: absolute;
+    text-align: center;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
 @media (max-width: 992px) {
     .input_wrapper {
         left: 130px;
@@ -115,6 +133,10 @@
     }
     .message_right .message_box {
         width: 100%;
+    }
+    .date_line {
+        position: relative;
+        display: flex;
     }
 }
 @media (max-width: 576px) {

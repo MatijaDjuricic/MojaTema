@@ -9,7 +9,7 @@ import { ReactSVG } from 'react-svg';
 import SideBar from "../components/SideBar";
 import send_icon from '../assets/send.svg';
 import ChatCSS from './ChatPage.module.css';
-import { formatDateTime } from '../utils/utils';
+import { formatDate, formatTime } from '../utils/utils';
 const ChatPage = () => {
     const URL = import.meta.env.VITE_SOCKET_SERVICE_URL;
     const user = useUserContext();
@@ -19,15 +19,16 @@ const ChatPage = () => {
     const [connection, setConnection] = useState<HubConnection>();
     const [message, setMessage] = useState<string>('');
     const useEffectRef = useRef<boolean>(false);
-    const messageEndRef = useRef<null | HTMLElement>(null);
+    const messagesEndRef = useRef<HTMLDivElement | null>(null);
+    const scrollToBottom = () => messagesEndRef.current && messagesEndRef.current.scrollIntoView();
     const sendMessage = async () => {
         if (connection && message) {
-            await connection.invoke('SendMessage', user.id.toString(), `${user.first_name} ${user.last_name}`, message, new Date().toString());
+            await connection.invoke('SendMessage', user.id.toString(), `${user.first_name} ${user.last_name}`, message);
             dispatch(addMessages({
-                id: user.id.toString(),
+                id: user.id,
                 user: `${user.first_name} ${user.last_name}`,
                 content: message,
-                created_at: formatDateTime(new Date().toString())
+                created_at: new Date()
             }));
             setMessage('');
         }
@@ -36,13 +37,13 @@ const ChatPage = () => {
     const startConnecton = async () => {
         try {
             const connection = new HubConnectionBuilder().withUrl(URL).configureLogging(LogLevel.Information).build();
-            connection.on('ReceiveMessage', (id, username, message, created_at) => {
+            connection.on('ReceiveMessage', (id, username, message) => {
                 if (user.id.toString() != id) {
                     dispatch(addMessages({
-                        id: id,
+                        id: parseInt(id),
                         content: message,
                         user: username,
-                        created_at: formatDateTime(created_at)
+                        created_at: new Date()
                     }));
                 }
             })
@@ -58,35 +59,34 @@ const ChatPage = () => {
             useEffectRef.current = true;
         }
     }, []);
-    useEffect(() => {
-        messageEndRef.current?.scrollIntoView();
-    }, [messages]);
+    useEffect(() => { scrollToBottom() }, [messages]);
     return (
         <div className={ChatCSS.main_container}>
             <SideBar/>
             <header>
                 <h1>Поруке</h1>
+                <div className={ChatCSS.date_line}><p>{formatDate(new Date())}</p></div>
             </header>
             <main className={ChatCSS.main_wrapper}>
+                <div className={ChatCSS.input_wrapper}>
+                    <textarea value={message} onChange={e => setMessage(e.target.value)} onKeyDown={e => e.key == 'Enter' && sendMessage()} placeholder='Унеси поруку...'></textarea>
+                    <button onClick={sendMessage}><ReactSVG src={send_icon}/></button>
+                </div>
                 <div className={ChatCSS.chat_wrapper}>
-                    <div className={ChatCSS.input_wrapper}>
-                        <textarea value={message} onChange={e => setMessage(e.target.value)} onKeyDown={e => e.key == 'Enter' && sendMessage()} placeholder='Унеси поруку...'></textarea>
-                        <button onClick={sendMessage}><ReactSVG src={send_icon}/></button>
-                    </div>
                     <div className={ChatCSS.messages_wrapper}>
                         {
-                            messages.messages.map((message, index) => message.content ? 
-                                <div key={index} className={message.id != user.id.toString() ? ChatCSS.message_left : ChatCSS.message_right}>
+                            messages.messages.map((message, index) => message.content &&
+                                <div key={index} className={message.id != user.id ? ChatCSS.message_left : ChatCSS.message_right}>
                                     <div className={ChatCSS.message_box}>
                                         <span>{message.user}</span>
                                         <p>{message.content}</p>
-                                        <span className={ChatCSS.created_at}>{message.created_at}</span>
+                                        <span className={ChatCSS.created_at}>{formatTime(message.created_at)}</span>
                                     </div>
-                                </div>  : null
+                                </div>
                             )
                         }
+                        <div ref={messagesEndRef} />
                     </div>
-                    
                 </div>
             </main>
         </div>
