@@ -30,14 +30,16 @@ namespace api.Mappers
             {
                 topic_id = topicModel.topic_id,
                 user_id = topicModel.user_id,
-                student_username = student_username,
+                mentor_id = topicModel.mentor_id,
+                student_username = student_username
             };
         }
         public static ReportedTopic ToTopicDtoFromAdd(this ReportedTopicDto topicModel) {
             return new ReportedTopic
             {
+                topic_id = topicModel.topic_id,
                 user_id = topicModel.user_id,
-                topic_id = topicModel.topic_id
+                mentor_id = topicModel.mentor_id
             };
         }
         public static ReportedTopic ToResponseReportedTopic(this ReportedTopicDto topicModel, string student_username) {
@@ -45,6 +47,7 @@ namespace api.Mappers
             {
                 topic_id = topicModel.topic_id,
                 user_id = topicModel.user_id,
+                mentor_id = topicModel.mentor_id,
                 student_username = student_username
             };
         }

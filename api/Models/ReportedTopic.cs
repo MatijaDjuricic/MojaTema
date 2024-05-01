@@ -14,6 +14,8 @@ namespace api.Models
         public int topic_id { get; set; }
         [Column("ucenik_id")]
         public int user_id { get; set; }
+        [Column("profesor_id")]
+        public int mentor_id { get; set; }
         [NotMapped]
         public string student_username { get; set; } = string.Empty;
     }

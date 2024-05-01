@@ -32,6 +32,22 @@ namespace api.Controllers
             return Ok(topics);
         }
         [Authorize]
+        [HttpGet("reported/get/user/{id:int}")]
+        public async Task<ActionResult> GetReportedUsersTopicsByMentorId([FromRoute] int id) {
+            if (!ModelState.IsValid) return BadRequest();
+            var topics = await topicRepository.GetReportedUsersTopicsByMentorIdAsync(id);
+            if (!topics.Any()) return NotFound();
+            return Ok(topics);
+        }
+        [Authorize]
+        [HttpGet("reported/get/mentor/{id:int}")]
+        public async Task<ActionResult> GetReportedMentorsTopicsByUserId([FromRoute] int id) {
+            if (!ModelState.IsValid) return BadRequest();
+            var topics = await topicRepository.GetReportedMentorsTopicsByUserIdAsync(id);
+            if (!topics.Any()) return NotFound();
+            return Ok(topics);
+        }
+        [Authorize]
         [HttpPost("reported/add")]
         public async Task<ActionResult<ReportedTopic>> AddReportedTopic([FromBody] ReportedTopicDto reportedTopicDto) {
             if (!ModelState.IsValid) return BadRequest();
