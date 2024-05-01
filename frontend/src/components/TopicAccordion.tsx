@@ -36,18 +36,18 @@ const ToggleButton = ({eventKey}: TopicAccordionToggleButtonProps) => {
 const TopicAccordion = ({type, subject, topic, reported_topics, user}: TopicAccordionProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const [btnLoading, setBtnLoading] = useState({btn_id: -1, loading: false});
-  const handleTopicsRegistrationApply = (topic_id: number) => {
+  const handleTopicsRegistrationApply = (topic_id: number, mentor_id: number) => {
     setBtnLoading({btn_id: topic_id, loading: true});
-    dispatch(topicsRegistrationApply({"user_id": user.id, "topic_id": topic_id})).finally(() => setBtnLoading({btn_id: -1, loading: false}));
+    dispatch(topicsRegistrationApply({"user_id": user.id, "topic_id": topic_id, "mentor_id": mentor_id})).finally(() => setBtnLoading({btn_id: -1, loading: false}));
   }
-  const handleTopicsRegistrationCancel = (topic_id: number) => {
+  const handleTopicsRegistrationCancel = (topic_id: number, mentor_id: number) => {
     setBtnLoading({btn_id: topic_id, loading: true});
-    dispatch(topicsRegistrationCancel({"user_id": user.id, "topic_id": topic_id})).finally(() => setBtnLoading({btn_id: -1, loading: false}));
+    dispatch(topicsRegistrationCancel({"user_id": user.id, "topic_id": topic_id, "mentor_id": mentor_id})).finally(() => setBtnLoading({btn_id: -1, loading: false}));
   }
   return (
     <Accordion defaultActiveKey="1">
       <Card className={TopicAccordionCSS.container}>
-        <Card.Header style={{position: 'relative', border: 'none'}}>
+        <Card.Header style={{position: 'relative', border: 'none', backgroundColor: 'var(--background-sec)'}}>
           <ToggleButton eventKey="0"/>
             <div className={TopicAccordionCSS.header_text}>
               {
@@ -104,11 +104,11 @@ const TopicAccordion = ({type, subject, topic, reported_topics, user}: TopicAcco
                     {
                       isReportedTopic(topic, user.id) ?
                       <CTA title="Одјави тему" type='loading_btn' loading={btnLoading.btn_id == topic.id && btnLoading.loading}
-                      size='sm' onClick={() => handleTopicsRegistrationCancel(topic.id)}
+                      size='sm' onClick={() => handleTopicsRegistrationCancel(topic.id, topic.mentor_id)}
                       /> : 
                       reported_topics.current_number < reported_topics.limit ?
                       <CTA title="Пријави тему" type='loading_btn' loading={btnLoading.btn_id == topic.id && btnLoading.loading}
-                        size='sm' onClick={() => handleTopicsRegistrationApply(topic.id)}
+                        size='sm' onClick={() => handleTopicsRegistrationApply(topic.id, topic.mentor_id)}
                         /> :
                         <h3 style={{color: 'var(--red)'}}>3/3</h3>
                       }
@@ -162,11 +162,11 @@ const TopicAccordion = ({type, subject, topic, reported_topics, user}: TopicAcco
                           {
                             isReportedTopic(topic, user.id) ?
                             <CTA title="Одјави тему" type='loading_btn' loading={btnLoading.btn_id == topic.id && btnLoading.loading}
-                            size='sm' onClick={() => handleTopicsRegistrationCancel(topic.id)}
+                            size='sm' onClick={() => handleTopicsRegistrationCancel(topic.id, topic.mentor_id)}
                             /> : 
                             reported_topics.current_number < reported_topics.limit ?
                             <CTA title="Пријави тему" type='loading_btn' loading={btnLoading.btn_id == topic.id && btnLoading.loading}
-                              size='sm' onClick={() => handleTopicsRegistrationApply(topic.id)}
+                              size='sm' onClick={() => handleTopicsRegistrationApply(topic.id, topic.mentor_id)}
                             /> :
                             <h3 style={{color: 'var(--red)'}}>3/3</h3>
                           }

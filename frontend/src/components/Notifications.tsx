@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { ReactSVG } from 'react-svg';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import CustomNavButton from './CustomNavButton';
 import bell_icon from '../assets/bell.svg';
 import close_icon from '../assets/close.svg';
 import NotificationCSS from './Notifications.module.css';
@@ -9,7 +8,9 @@ const Notifications = () => {
   const [show, setShow] = useState(false);
   return (
     <>
-      <CustomNavButton title='Обавештења' icon={bell_icon} type='fill' onClick={() => setShow(true)}/>
+      <button className={NotificationCSS.notification_btn} onClick={() => setShow(true)}>
+        <ReactSVG src={bell_icon} className={NotificationCSS.nav_icons_fill}/>
+      </button>
       <Offcanvas className={NotificationCSS.canvas_bg} show={show} onHide={() => setShow(false)} placement='end'>
         <Offcanvas.Header>
           <Offcanvas.Title className={NotificationCSS.canvas_title}>Обавештења</Offcanvas.Title>

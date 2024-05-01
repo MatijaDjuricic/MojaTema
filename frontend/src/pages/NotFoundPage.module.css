@@ -4,7 +4,7 @@
 }
 .content_container {
     margin: auto;
-    max-width: 400px;
+    max-width: 500px;
     height: 400px;
     text-align: center;
     padding-top: 20rem;
@@ -14,5 +14,5 @@
 }
 .main_wrapper p a {
     font-size: 1.5rem;
-    color: var(--orange)
+    color: var(--main)
 }

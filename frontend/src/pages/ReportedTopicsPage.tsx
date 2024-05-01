@@ -6,6 +6,7 @@ import { topicsFetchByMentorId } from "../store/topicsSlice";
 import SideBar from "../components/SideBar";
 import Loader from "../components/Loader";
 import ReportedTopicsCSS from './ReportedTopicsPage.module.css';
+import NavBar from "../components/NavBar";
 const ReportedTopicsPage = () => {
   const user = useUserContext();
   const topics = useSelector((state: RootState) => state.topics);
@@ -22,13 +23,14 @@ const ReportedTopicsPage = () => {
     }
   }, []);
   return (
-    <div className={ReportedTopicsCSS.main_container}>
+    <>
+      <NavBar/>
       <SideBar/>
-      <header className={ReportedTopicsCSS.reported_topics_header}>
-        <h1>Теме</h1>
-        <p>Broj tema: {topics.topics.length}</p>
-      </header>
-      <main className={ReportedTopicsCSS.main_wrapper}>
+      <main id='mainWrapper' className={ReportedTopicsCSS.main_wrapper}>
+        <header className={ReportedTopicsCSS.reported_topics_header}>
+          <h1>Теме</h1>
+          <p>Broj tema: {topics.topics.length}</p>
+        </header>
         {
           loading ? <Loader/> : <>
             <div className={ReportedTopicsCSS.reported_topics_wrapper}>
@@ -59,7 +61,7 @@ const ReportedTopicsPage = () => {
           </>
         }
       </main>
-    </div>
+    </>
   );
 }
 export default ReportedTopicsPage;

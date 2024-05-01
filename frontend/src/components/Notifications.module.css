@@ -1,7 +1,5 @@
 .canvas_bg {
     background: var(--background-prim) !important;
-    border-left: 2px solid var(--orange) !important;
-    border-radius: 10px 0 0 10px !important;
 }
 .canvas_title {
     color: var(--text-prim) !important;
@@ -11,7 +9,7 @@
     color: var(--text-prim) !important;
     font-size: 1.5rem !important;
 }
-.close_btn {
+.close_btn, .notification_btn {
     border: none;
     border-radius: 50%;
     background-color: transparent;
@@ -19,9 +17,14 @@
 .close_icon {
     width: 2rem;
     height: 2rem;
-    fill: var(--orange);
+    fill: var(--main);
     transition: 400ms ease-in-out;
 }
 .close_btn:hover .close_icon {
     fill: var(--text-prim);
+}
+.nav_icons_fill {
+    width: 1.8rem;
+    height: 1.8rem;
+    fill: var(--main);
 }

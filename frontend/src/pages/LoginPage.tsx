@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store/store';
 import { userLogin } from '../store/usersSlice';
-import { Link } from 'react-router-dom';
 import { useToastMessage } from '../hooks/useToastMessage';
 import LoginCSS from './LoginPage.module.css';
 import CTA from '../components/CTA';
+import Logo from '../components/Logo';
 const LoginPage = () => {
   const { errorMessage } = useToastMessage();
   const [password, setPassword] = useState<string>();
+  const [, setEmail] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -21,14 +22,19 @@ const LoginPage = () => {
   }
   return (
     <main className={LoginCSS.main_wrapper}>
-      <h1><Link to = '/'>МојаТема</Link></h1>
       <div className={LoginCSS.form_container}>
-          <form className={LoginCSS.form}>
-            <h1>Пријави се</h1>
-            <label>Лозинка:</label>
-            <input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} type="text" placeholder='Унеси лозинку...'/>
-            <CTA title='Пријави се' type='loading_btn' loading={loading} size='lg' onClick={handleSubmit}/>
-          </form>
+        <div className={LoginCSS.login_header}>
+          <Logo/>
+          <h1>МојаТема</h1>
+        </div>
+        <form className={LoginCSS.login_form}>
+          <h1>Пријави се</h1>
+          <label>ИМЕЈЛ АДРЕСА:</label>
+          <input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} type="text" placeholder='Унеси имејл адресу...'/>
+          <label>ЛОЗИКА:</label>
+          <input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} type="text" placeholder='Унеси лозинку...'/>
+          <CTA title='Пријави се' type='loading_btn' loading={loading} size='lg' onClick={handleSubmit}/>
+        </form>
       </div>
     </main>
   );

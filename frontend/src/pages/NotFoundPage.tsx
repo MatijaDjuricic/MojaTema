@@ -1,11 +1,11 @@
-import NotFoundCSS from './NotFoundPage.module.css';
 import { Link } from 'react-router-dom';
+import NotFoundCSS from './NotFoundPage.module.css';
 const NotFoundPage = () => {
   return (
     <div className={NotFoundCSS.main_wrapper}>
         <main className={NotFoundCSS.content_container}>
-            <h1>Page Not Found</h1>
-            <p><Link to = '/'>Back to main page</Link></p>
+            <h1>Страница није пронађена</h1>
+            <p><Link to = '/'>Врати се на почетну страницу</Link></p>
         </main>
     </div>
   );

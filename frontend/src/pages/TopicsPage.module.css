@@ -1,9 +1,8 @@
-.main_container {
-    display: flex;
-}
 .main_wrapper {
-    width: 100%;
-    padding: 5rem 2rem 0 2rem;
+    position: relative;
+    padding: 4rem 2rem 0 2rem;
+    margin-left: 300px;
+    transition: all 300ms;
 }
 .main_wrapper h1, .main_wrapper p {
     color: var(--text-prim);
@@ -15,7 +14,7 @@
 .line {
     width: 100%;
     height: 1px;
-    background: var(--orange);
+    background: var(--text-prim);
     border-radius: 10px;
     margin: auto;
     margin-bottom: 1.5rem;
@@ -27,22 +26,16 @@
     text-wrap: wrap;
 }
 .no_search_results span {
-    color: var(--orange);
+    color: var(--main);
     width: 50%;
     word-wrap: break-word;
 }
 @media (max-width: 992px) {
     .main_wrapper {
-        margin-top: 4rem;
-        padding-left: 10px;
-        padding-right: 10px;
+        margin-left: 0;
     }
     .no_search_results {
         font-size: 1rem;
     }
 }
-@media (max-width: 576px) {
-    .main_wrapper {
-        padding-right: 0;
-    }
-}
+@media (max-width: 576px) {}

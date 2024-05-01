@@ -1,64 +1,60 @@
 .main_wrapper {
-    position: absolute;
-    inset: 0;
-    background-color: var(--background-sec);
-}
-.main_wrapper h1 {
-    text-align: center;
-    margin: 150px 0 2rem 0;
-    font-size: 3rem;
-}
-.main_wrapper h1 a {
-    color: var(--text-prim);
-    text-decoration: none;
+    height: 100vh;
+    padding-top: 20vh;
 }
 .form_container {
-    position: relative;
     margin: auto;
-    max-width: 650px;
-    height: 350px;
-    background-color: var(--background-prim);
-    border: 2px solid var(--orange);
+    position: relative;
+    max-width: 600px;
+    background-color: var(--background-sec);
     border-radius: 1rem;
 }
-.form {
+.login_header {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
+}
+.login_header h1 {
+    text-align: center;
+    font-size: 1.5rem;
+}
+.login_form {
     display: flex;
     flex-direction: column;
 }
-.form h1 {
-    margin: 2rem 0 2rem 0;
+.login_form h1 {
+    margin: 0.5rem 0 1rem 0;
     text-align: center;
     color: var(--text-prim);
-    font-size: 2.5rem;
+    font-size: 2rem;
 }
-.form label {
+.login_form label {
     color: var(--text-prim);
-    margin: 0 0 .5rem 20%;
-    font-size: 1.5rem;
+    margin: 1rem 0 .5rem 20%;
+    font-size: 1rem;
 }
-.form input {
+.login_form input {
     width: 60%;
     margin: auto;
-    padding: 15px;
+    padding: 0 5px 0 5px;
     color: var(--text-prim);
+    border-bottom: 2px solid var(--text-prim);
     background-color: var(--background-sec);
-    border: 3px solid var(--background-terc);
     font-size: 1.25rem;
-    border-radius: 1rem;
-    outline: none;
 }
-.form input::placeholder {
+.login_form input::placeholder {
     color: var(--text-prim);
     opacity: 0.2;
 }
 @media (max-width: 576px) {
-   .form input {
+   .login_form input {
         width: 80%;
    }
-   .form label {
-       margin: 0 0 .5rem 10%;
+   .login_form label {
+        margin: 1rem 0 .5rem 10%;
    }
-   .form button {
-    width: 50% !important;
+   .login_form button {
+        width: 50% !important;
    }
 }

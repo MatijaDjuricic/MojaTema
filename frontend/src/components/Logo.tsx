@@ -1,7 +1,6 @@
-import { ReactSVG } from 'react-svg';
-import logo_icon from '../assets/profile.svg';
+import logo_icon from '../assets/logo.png';
 import LogoCSS from '../components/Logo.module.css';
 const Logo = () => {
-  return <ReactSVG src={logo_icon} className={LogoCSS.logo}/>
+  return <img src={logo_icon} className={LogoCSS.logo} alt="" />
 }
 export default Logo;

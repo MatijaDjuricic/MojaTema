@@ -6,13 +6,29 @@
 .main_wrapper {
     position: relative;
     width: 100%;
-    padding: 7rem 2rem 4rem 2rem;
+    padding: 4rem 2rem 0 2rem;
+    margin-left: 300px;
+    transition: all 300ms;
 }
 .main_container h1, .main_container p {
     color: var(--text-prim);
 }
+.chat_header {
+    position: sticky;
+    display: flex;
+    align-items: center;
+    top: 4rem;
+    padding: 1.5rem;
+    margin-bottom: 5px;
+    z-index: 2;
+    background-color: var(--background-prim);
+    border-bottom: 1px solid var(--main);
+}
+.chat_header h1 {
+    font-size: 2rem;
+}
 .chat_wrapper {
-    height: 100%;
+    height: 80%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -30,11 +46,10 @@
 .messages_wrapper::-webkit-scrollbar {
     width: .5rem;
     border-radius: 1rem;
-    background-color: var(--text-prim);
 }
 .messages_wrapper::-webkit-scrollbar-thumb {
     border-radius: 1rem;
-    background-color: var(--orange);
+    background-color: var(--background-terc);
 }
 .message_left {
     display: flex;
@@ -52,13 +67,13 @@
 }
 .message_right .message_box {
     width: 50%;
-    background-color: var(--orange);
+    background-color: var(--main);
     padding: .7rem .7rem .7rem .7rem;
     border-radius: 1rem 0 1rem 1rem;
 }
 .message_left span {
     font-size: 14px;
-    color: var(--orange);
+    color: var(--text-prim);
 } 
 .message_right span {
     font-size: 14px;
@@ -69,17 +84,21 @@
     color: var(--text-prim);
     word-wrap: break-word;
 }
+.message_right p {
+    font-size: 1.5rem;
+    color: var(--background-prim);
+    word-wrap: break-word;
+}
 .message_box .created_at {
     float: right;
 }
 .input_wrapper {
-    position: fixed;
+    position: sticky;
     display: flex;
     align-items: center;
+    padding-top: 10px;
     background-color: var(--background-prim);
     bottom: 1rem;
-    left: 300px;
-    right: 2rem;
     z-index: 2;
 }
 .input_wrapper textarea {
@@ -88,7 +107,7 @@
     padding: 0.5rem 1rem 0.5rem 1rem;
     color: var(--text-prim);
     background-color: var(--background-sec);
-    border: 1px solid var(--orange);
+    border: 1px solid var(--main);
     font-size: 1.2rem;
     border-radius: 10px 0 0 10px;
     justify-content: center;
@@ -97,24 +116,24 @@
 }
 .input_wrapper textarea::placeholder {
     color: var(--text-prim);
-    opacity: 0.2;
+    opacity: 0.6;
 }
 .input_wrapper button {
     width: 5rem;
     height: 3rem;
     border: none;
     padding-right: 3px;
-    background-color: var(--orange);
+    background-color: var(--main);
     border-radius: 0 10px 10px 0;
     transition: 300ms ease-in-out;
 }
 .input_wrapper button svg {
     width: 2.5rem;
     height: 2.5rem;
-    fill: var(--text-prim);
+    fill: var(--background-prim);
 }
 .input_wrapper button:hover {
-    background-color: var(--background-sec);
+    background-color: var(--text-prim);
 }
 .date_line {
     position: absolute;
@@ -124,9 +143,11 @@
     bottom: 0;
 }
 @media (max-width: 992px) {
-    .input_wrapper {
-        left: 130px;
-        right: 5px;
+    .main_wrapper {
+        margin-left: 0;
+    }
+    .chat_header {
+        gap: 2rem;
     }
     .message_left .message_box {
         width: 100%;
@@ -140,10 +161,6 @@
     }
 }
 @media (max-width: 576px) {
-    .input_wrapper {
-        left: 100px;
-        right: 5px;
-    }
     .message_left .message_box {
         width: 100%;
     }

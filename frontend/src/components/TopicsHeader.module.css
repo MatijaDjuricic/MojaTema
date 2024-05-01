@@ -1,36 +1,33 @@
-header {
-    position: fixed;
+.topic_header {
+    position: sticky;
     display: flex;
-    align-items: center;
-    top: 0;
-    left: 300px;
-    right: 2rem;
     padding: 1.5rem;
+    top: 4rem;
     z-index: 2;
     background-color: var(--background-prim);
-    border-bottom: 1px solid var(--orange);
+    border-bottom: 1px solid var(--text-prim);
+    align-items: center;
 }
 .left_side {
-    position: relative;
-    width: 50%;
+    width: 60%;
     display: flex;
     gap: 2rem;
     align-items: center;
 }
 .left_side p {
     font-size: 1.5rem;
-    color: var(--orange) !important;
+    color: var(--main) !important;
 }
 .left_side h1 {
     color: var(--text-prim);
 }
 .right_side {
-    width: 50%;
+    width: 40%;
     text-align: end;
 }
 .right_side p {
-    font-size: 1.5rem;
-    color: var(--text-prim);
+    font-size: 1rem;
+    color: var(--main);
 }
 .input_wrapper {
     position: relative;
@@ -42,10 +39,10 @@ header {
     width: 100%;
     padding: 0.5rem 2.5rem 0.5rem 3rem;
     color: var(--text-prim);
-    background-color: var(--background-sec);
-    border: 2px solid var(--orange);
+    background-color: var(--background-prim);
+    border: 2px solid var(--background-terc);
     font-size: 1rem;
-    border-radius: 2rem;
+    border-radius: 20px;
     outline: none;
 }
 .input_wrapper .input::placeholder {
@@ -54,7 +51,7 @@ header {
 }
 .search_icon {
     position: absolute;
-    border-right: 1px solid var(--orange);
+    border-right: 1px solid var(--background-terc);
     height: 100%;
     width: 2.5rem;
 }
@@ -84,40 +81,19 @@ header {
     transition: 400ms ease-in-out;
 }
 .close_btn:hover .close_icon svg {
-    fill: var(--orange);
+    fill: var(--main);
 }
 @media (max-width: 1400px) {
-    .left_side {
-        width: 100%;
-    }
+    
 }
 @media (max-width: 1330px) {
     .input_wrapper .input::placeholder {
-        font-size: 11px;
-    }
-    .right_side p {
-        font-size: 1rem;
+        font-size: .7rem;
     }
 }
 @media (max-width: 992px) {
-    header {
-        left: 130px;
-        padding: 1rem;
-        flex-direction: column;
-        right: 0;
-    }
-    .left_side {
-        flex-direction: column;
-        gap: 10px;
-    }
-    .right_side {
-        width: 100%;
-        margin-top: 10px;
-        text-align: center;
-    }
+    
 }
 @media (max-width: 576px) {
-    header {
-        left: 100px;
-    }
+    
 }

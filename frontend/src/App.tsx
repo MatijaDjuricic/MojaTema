@@ -2,18 +2,19 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { useRedirect } from './hooks/useRedirect';
 import ToastMessage from './components/ToastMessage';
 import LoginPage from './pages/LoginPage';
-import MainPage from './pages/MainPage';
+import HomePage from './pages/HomePage';
 import TopicsPage from './pages/TopicsPage';
+import ProfilePage from './pages/ProfilePage';
 import ChatPage from './pages/ChatPage';
 import NotFoundPage from './pages/NotFoundPage';
 const App = () => {
-  const { RequireAuth, AuthRedirect, TopicsRedirect } = useRedirect();
+  const { RequireAuth, AuthRedirect, TopicsRedirect, ChatRedirect } = useRedirect();
   const router = createBrowserRouter([
     {
       path: '/',
       element:
         <RequireAuth>
-          <MainPage/>
+          <HomePage/>
         </RequireAuth>,
       errorElement: <NotFoundPage/>
     },
@@ -34,10 +35,19 @@ const App = () => {
         </RequireAuth>
     },
     {
-      path: '/chat',
+      path: '/profile',
       element:
         <RequireAuth>
-          <ChatPage/>
+          <ProfilePage/>
+        </RequireAuth>
+    },
+    {
+      path: '/chat/:room',
+      element:
+        <RequireAuth>
+          <ChatRedirect>
+            <ChatPage/>
+          </ChatRedirect>
         </RequireAuth>
     }
   ]);
