@@ -1,5 +1,6 @@
 import { Navigate, useParams } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
+import PageLayout from "../components/PageLayout";
 import ReportedTopicsPage from "../pages/ReportedTopicsPage";
 import NotFoundPage from "../pages/NotFoundPage";
 export const useRedirect = () => {
@@ -14,7 +15,11 @@ export const useRedirect = () => {
     }
     const TopicsRedirect = ({ children }: { children: JSX.Element }): JSX.Element => {
         if (user.role_status == "ucenik") return children;
-        return <ReportedTopicsPage/>;
+        return (
+            <PageLayout>
+                <ReportedTopicsPage/>
+            </PageLayout>
+        );
     }
     const ChatRedirect = ({ children }: { children: JSX.Element }): JSX.Element => {
         const { room } = useParams();

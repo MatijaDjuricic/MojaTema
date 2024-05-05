@@ -1,12 +1,12 @@
 .topic_header {
     position: sticky;
     display: flex;
-    padding: 1.5rem;
+    align-items: center;
+    padding: 1rem;
     top: 4rem;
-    z-index: 2;
     background-color: var(--background-prim);
     border-bottom: 1px solid var(--text-prim);
-    align-items: center;
+    z-index: 2;
 }
 .left_side {
     width: 60%;
@@ -83,17 +83,25 @@
 .close_btn:hover .close_icon svg {
     fill: var(--main);
 }
-@media (max-width: 1400px) {
-    
-}
-@media (max-width: 1330px) {
-    .input_wrapper .input::placeholder {
-        font-size: .7rem;
+@media (max-width: 768px) {
+    .topic_header {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1rem 0;
+    }
+    .left_side, .right_side {
+        width: 100%;
+    }
+    .right_side {
+        text-align: start;
     }
 }
-@media (max-width: 992px) {
-    
-}
 @media (max-width: 576px) {
-    
+    .left_side {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .right_side {
+        text-align: center;
+    }
 }

@@ -25,14 +25,6 @@
     border: none;
     background: transparent;
 }
-.left_side a {
-    text-decoration: none;
-}
-.left_side p {
-    color: var(--text-prim);
-    font-weight: 700;
-    font-size: 2rem;
-}
 .right_side p {
     color: var(--text-prim);
     font-weight: 700;
@@ -81,4 +73,25 @@
 }
 .profile_btn:hover {
     background-color: var(--background-prim);
+}
+.hamburger_wrapper {
+    display: none;
+}
+@media (max-width: 768px) {
+    .nav_wrapper {
+        padding: 0 1rem;
+    }
+    .hamburger_wrapper {
+        display: block;
+    }
+    .left_side {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .left_side button {
+        display: none;
+    }
+    .right_side {
+        display: none;
+    }
 }

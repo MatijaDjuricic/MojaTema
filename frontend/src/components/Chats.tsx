@@ -12,7 +12,7 @@ import CTA from './CTA';
 import chats_icon from '../assets/chats.svg';
 import close_icon from '../assets/close.svg';
 import ChatsCSS from './Chats.module.css';
-const Chats = () => {
+const Chats = ({ type }: { type?: string}) => {
   const user = useUserContext();
   const topics = useSelector((state: RootState) => state.topics);
   const dispatch = useDispatch<AppDispatch>();
@@ -38,9 +38,16 @@ const Chats = () => {
   }, []);
   return (
     <>
-      <button className={ChatsCSS.chat_btn} onClick={() => setShow(true)}>
-        <ReactSVG src={chats_icon} className={ChatsCSS.nav_icons_stroke}/>
-      </button>
+      {
+        type == 'icon' ?
+        <button className={ChatsCSS.chat_btn} onClick={() => setShow(true)}>
+          <ReactSVG src={chats_icon} className={ChatsCSS.nav_icons_stroke}/>
+        </button> :
+        <button className={ChatsCSS.nav_chat_btn} onClick={() => setShow(true)} title='Поруке'>
+          <ReactSVG src={chats_icon} className={ChatsCSS.nav_chat_icon}/>
+          <p>Поруке</p>
+        </button>
+      }
       <Offcanvas className={ChatsCSS.canvas_bg} show={show} onHide={() => setShow(false)} placement='end'>
         <Offcanvas.Header>
           <Offcanvas.Title className={ChatsCSS.canvas_title}>Поруке</Offcanvas.Title>

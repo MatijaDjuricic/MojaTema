@@ -4,8 +4,6 @@ import { AppDispatch, RootState } from '../store/store';
 import { setReportedTopics, topicsFetchAll } from '../store/topicsSlice';
 import { useUserContext } from '../context/UserContext';
 import { hasNoSearchResults, isReportedTopic } from '../utils/utils';
-import NavBar from '../components/NavBar';
-import SideBar from '../components/SideBar';
 import Loader from '../components/Loader';
 import TopicsHeader from '../components/TopicsHeader';
 import TopicAccordion from '../components/TopicAccordion';
@@ -30,45 +28,41 @@ const TopicsPage = () => {
   }, []);
   return (
     <>
-      <NavBar/>
-      <SideBar/>
-      <main id='mainWrapper' className={TopicsCSS.main_wrapper}>
-        <TopicsHeader topics={topics} search={search} onChange={e => setSearch(e.target.value)} onClear={() => setSearch('')}/>
-        {
-          loading ? <Loader/> : <>
-            <div className={TopicsCSS.topics_wrapper}>
-              {
-                topics.topics.map((topic, index) => (
-                  isReportedTopic(topic, user.id) &&
-                  <TopicAccordion key={index} topic={topic} user={user} reported_topics={topics.reported_topics} type='topic'/>
-                ))
-              }
-            </div>
-            { topics.reported_topics.current_number > 0 && <div className={TopicsCSS.line}></div> }
-            <div className={TopicsCSS.subjects_wrapper}>
-              {
-                topics.subjects.filter(item => {
-                  return searchValue ? item[0].subject_title.toLowerCase().includes(searchValue.trim()) : item;
-                }).map((topic, index) => ( 
-                  <TopicAccordion key={index} topic={topic[0]} subject={topic} user={user} reported_topics={topics.reported_topics} type='subject'/>
-                ))
-              }
-              {
-                topics.topics.filter(item => {
-                  return searchValue ? item.title.toLowerCase().includes(searchValue.trim()) ||
-                  item.professor_username.toLowerCase().includes(searchValue.trim()) : null;
-                }).map((topic, index) => (
-                  <TopicAccordion key={index} topic={topic} user={user} reported_topics={topics.reported_topics} type='topic'/>
-                ))
-              }
-              {
-                hasNoSearchResults(searchValue, topics.topics) &&
-                <p className={TopicsCSS.no_search_results}>Нема резултата претраге <span>"{searchValue}"</span></p>
-              }
-            </div>
-          </>
-        }
-      </main>
+      <TopicsHeader topics={topics} search={search} onChange={e => setSearch(e.target.value)} onClear={() => setSearch('')}/>
+      {
+        loading ? <Loader/> : <>
+          <div className={TopicsCSS.topics_wrapper}>
+            {
+              topics.topics.map((topic, index) => (
+                isReportedTopic(topic, user.id) &&
+                <TopicAccordion key={index} topic={topic} user={user} reported_topics={topics.reported_topics} type='topic'/>
+              ))
+            }
+          </div>
+          { topics.reported_topics.current_number > 0 && <div className={TopicsCSS.line}></div> }
+          <div className={TopicsCSS.subjects_wrapper}>
+            {
+              topics.subjects.filter(item => {
+                return searchValue ? item[0].subject_title.toLowerCase().includes(searchValue.trim()) : item;
+              }).map((topic, index) => ( 
+                <TopicAccordion key={index} topic={topic[0]} subject={topic} user={user} reported_topics={topics.reported_topics} type='subject'/>
+              ))
+            }
+            {
+              topics.topics.filter(item => {
+                return searchValue ? item.title.toLowerCase().includes(searchValue.trim()) ||
+                item.professor_username.toLowerCase().includes(searchValue.trim()) : null;
+              }).map((topic, index) => (
+                <TopicAccordion key={index} topic={topic} user={user} reported_topics={topics.reported_topics} type='topic'/>
+              ))
+            }
+            {
+              hasNoSearchResults(searchValue, topics.topics) &&
+              <p className={TopicsCSS.no_search_results}>Нема резултата претраге <span>"{searchValue}"</span></p>
+            }
+          </div>
+        </>
+      }
     </>
   );
 }

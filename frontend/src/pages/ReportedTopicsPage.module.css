@@ -1,26 +1,12 @@
-.main_wrapper {
-    padding: 4rem 2rem 0 2rem;
-    margin-left: 300px;
-    transition: all 300ms;
-}
 .reported_topics_header {
     position: sticky;
     display: flex;
     justify-content: space-between;
     align-items: center;
     top: 4rem;
-    padding: 1.5rem;
+    padding: 1rem;
     margin-bottom: 1rem;
     z-index: 2;
     background-color: var(--background-prim);
     border-bottom: 1px solid var(--main);
 }
-.main_container h1, .main_container p, ul li {
-    color: var(--text-prim);
-}
-@media (max-width: 992px) {
-    .main_wrapper {
-        margin-left: 0;
-    }
-}
-@media (max-width: 576px) {}

@@ -1,6 +1,12 @@
-import logo_icon from '../assets/logo.png';
+import { NavLink } from 'react-router-dom';
+import logo_icon from '/logo.png';
 import LogoCSS from '../components/Logo.module.css';
 const Logo = () => {
-  return <img src={logo_icon} className={LogoCSS.logo} alt="" />
+  return (
+    <div className={LogoCSS.logo_wrapper}>
+      <img src={logo_icon} alt="" />
+      <NavLink to = '/'><p>МојаТема</p></NavLink>
+    </div>
+  );
 }
 export default Logo;

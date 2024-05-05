@@ -21,14 +21,11 @@ type TopicAccordionProps = {
     limit: number
   }
 }
-type TopicAccordionToggleButtonProps = {
-  eventKey: string
-}
-const ToggleButton = ({eventKey}: TopicAccordionToggleButtonProps) => {
+const ToggleButton = ({ eventKey }: { eventKey: string }) => {
   const [rotate, setRotate] = useState<boolean>(false);
-  const decoratedOnClick = useAccordionButton(eventKey, () => setRotate(!rotate));
+  const rotateOnClick = useAccordionButton(eventKey, () => setRotate(!rotate));
   return (
-    <button type="button" className={TopicAccordionCSS.toggle_btn} onClick={decoratedOnClick}>
+    <button type="button" className={TopicAccordionCSS.toggle_btn} onClick={rotateOnClick}>
       <ReactSVG className={`${TopicAccordionCSS.toggle_icon} ${rotate && TopicAccordionCSS.toggle_icon_rotated}`} src={arrow_icon}/>
     </button>
   );
@@ -47,7 +44,7 @@ const TopicAccordion = ({type, subject, topic, reported_topics, user}: TopicAcco
   return (
     <Accordion defaultActiveKey="1">
       <Card className={TopicAccordionCSS.container}>
-        <Card.Header style={{position: 'relative', border: 'none', backgroundColor: 'var(--background-sec)'}}>
+        <Card.Header style={{position: 'relative', padding: '0', border: 'none', backgroundColor: 'var(--background-sec)'}}>
           <ToggleButton eventKey="0"/>
             <div className={TopicAccordionCSS.header_text}>
               {

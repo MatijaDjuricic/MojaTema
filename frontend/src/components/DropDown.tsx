@@ -1,11 +1,11 @@
 import { ReactSVG } from 'react-svg';
 import { useDropdown } from '../hooks/useDropDown';
-import arrow_down_icon from '../assets/arrow_down.svg';
+import arrow_down_icon from '../assets/arrow.svg';
 import DropDownCSS from './DropDown.module.css';
 type DropDownProps = {
   title: string,
-  children: React.ReactNode,
-  outside?: React.ReactNode
+  children: JSX.Element,
+  outside?: JSX.Element
 }
 const DropDown = ({title, children, outside}: DropDownProps) => {
   const { dropdownRef, isOpen, toggleDropdown } = useDropdown();

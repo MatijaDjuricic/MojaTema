@@ -35,7 +35,28 @@
     fill: var(--text-prim);
 }
 .nav_icons_stroke {
-    width: 1.8rem;
-    height: 1.8rem;
+    width: 1.5rem;
+    height: 1.5rem;
     stroke: var(--main);
+}
+.nav_chat_btn {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: .5rem 1rem .5rem 1rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: 300ms ease-in-out;
+}
+.nav_chat_btn:hover {
+    background-color: var(--background-prim);
+}
+.nav_chat_btn .nav_chat_icon {
+    width: 2rem;
+    height: 2rem;
+    stroke: var(--main);
+    transition: 300ms ease-in-out;
 }

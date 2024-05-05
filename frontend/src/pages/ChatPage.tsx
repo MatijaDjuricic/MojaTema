@@ -1,17 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import { useParams } from 'react-router-dom';
+import { ReactSVG } from 'react-svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store/store';
-import { useParams } from 'react-router-dom';
 import { addMessages, resetState } from '../store/messagesSlice';
 import { useUserContext } from '../context/UserContext';
 import { useToastMessage } from '../hooks/useToastMessage';
 import { formatDate, formatTime } from '../utils/utils';
-import { ReactSVG } from 'react-svg';
-import SideBar from "../components/SideBar";
 import send_icon from '../assets/send.svg';
 import ChatCSS from './ChatPage.module.css';
-import NavBar from '../components/NavBar';
 const ChatPage = () => {
     const URL = import.meta.env.VITE_SOCKET_SERVICE_URL;
     const user = useUserContext();
@@ -94,36 +92,30 @@ const ChatPage = () => {
     }, []);
     useEffect(() => { scrollToBottom() }, [messages]);
     return (
-        <>
-            <NavBar/>
-            <SideBar/>
-            <div className={ChatCSS.main_container}>
-                <main id='mainWrapper' className={ChatCSS.main_wrapper}>
-                    <header className={ChatCSS.chat_header}>
-                        <h1>Поруке</h1>
-                        <div className={ChatCSS.date_line}><p>{formatDate(new Date())}</p></div>
-                    </header>
-                    <div className={ChatCSS.chat_wrapper}>
-                        <div className={ChatCSS.messages_wrapper}>
-                            {messages.messages.map((message, index) => message.content &&
-                                <div key={index} className={message.id !== user.id ? ChatCSS.message_left : ChatCSS.message_right}>
-                                    <div className={ChatCSS.message_box}>
-                                        <span>{message.user}</span>
-                                        <p>{message.content}</p>
-                                        <span className={ChatCSS.created_at}>{formatTime(message.created_at)}</span>
-                                    </div>
-                                </div>
-                            )}
-                            <div ref={messagesEndRef} />
+        <div className={ChatCSS.chat_container}>
+            <header className={ChatCSS.chat_header}>
+                <h1>Поруке</h1>
+                <div className={ChatCSS.date_line}><p>{formatDate(new Date())}</p></div>
+            </header>
+            <div className={ChatCSS.chat_wrapper}>
+                <div className={ChatCSS.messages_wrapper}>
+                    {messages.messages.map((message, index) => message.content &&
+                        <div key={index} className={message.id !== user.id ? ChatCSS.message_left : ChatCSS.message_right}>
+                            <div className={ChatCSS.message_box}>
+                                <span>{message.user}</span>
+                                <p>{message.content}</p>
+                                <span className={ChatCSS.created_at}>{formatTime(message.created_at)}</span>
+                            </div>
                         </div>
-                    </div>
-                    <div className={ChatCSS.input_wrapper}>
-                        <textarea value={message} onChange={e => setMessage(e.target.value)} onKeyDown={sendMessageOnEnter} placeholder='Унеси поруку...'></textarea>
-                        <button onClick={sendMessage}><ReactSVG src={send_icon}/></button>
-                    </div>
-                </main>
+                    )}
+                    <div ref={messagesEndRef} />
+                </div>
             </div>
-        </>
+            <div className={ChatCSS.input_wrapper}>
+                <textarea value={message} onChange={e => setMessage(e.target.value)} onKeyDown={sendMessageOnEnter} placeholder='Унеси поруку...'></textarea>
+                <button onClick={sendMessage}><ReactSVG src={send_icon}/></button>
+            </div>
+        </div>
     );
 }
 export default ChatPage;

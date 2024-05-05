@@ -4,13 +4,20 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import bell_icon from '../assets/bell.svg';
 import close_icon from '../assets/close.svg';
 import NotificationCSS from './Notifications.module.css';
-const Notifications = () => {
+const Notifications = ({ type }: { type?: string }) => {
   const [show, setShow] = useState(false);
   return (
     <>
-      <button className={NotificationCSS.notification_btn} onClick={() => setShow(true)}>
-        <ReactSVG src={bell_icon} className={NotificationCSS.nav_icons_fill}/>
-      </button>
+      {
+        type == 'icon' ?
+        <button className={NotificationCSS.notification_btn} onClick={() => setShow(true)}>
+          <ReactSVG src={bell_icon} className={NotificationCSS.nav_icons_fill}/>
+        </button> :
+        <button onClick={() => setShow(true)} className={NotificationCSS.nav_notification_btn} title='Обавештења'>
+          <ReactSVG src={bell_icon} className={NotificationCSS.nav_notification_icon}/>
+          <p>Обавештења</p>
+        </button>
+      }
       <Offcanvas className={NotificationCSS.canvas_bg} show={show} onHide={() => setShow(false)} placement='end'>
         <Offcanvas.Header>
           <Offcanvas.Title className={NotificationCSS.canvas_title}>Обавештења</Offcanvas.Title>

@@ -24,7 +24,28 @@
     fill: var(--text-prim);
 }
 .nav_icons_fill {
-    width: 1.8rem;
-    height: 1.8rem;
+    width: 1.5rem;
+    height: 1.5rem;
     fill: var(--main);
+}
+.nav_notification_btn {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: .5rem 1rem .5rem 1rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: 300ms ease-in-out;
+}
+.nav_notification_btn:hover {
+    background-color: var(--background-prim);
+}
+.nav_notification_btn .nav_notification_icon {
+    width: 2rem;
+    height: 2rem;
+    fill: var(--main);
+    transition: 300ms ease-in-out;
 }

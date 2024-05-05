@@ -3,6 +3,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scrollbar-width: thin;
 }
 :root {
   --background-prim: #F6F9FF;
@@ -44,5 +45,13 @@ input, textarea {
   }
   .toggle_sidebar #mainWrapper {
     margin-left: 300px;
+  }
+}
+@media (max-width: 768px) {
+  .toggle_sidebar #sideBar {
+    width: 100%;
+  }
+  .toggle_sidebar #mainWrapper {
+    margin-left: 0;
   }
 }

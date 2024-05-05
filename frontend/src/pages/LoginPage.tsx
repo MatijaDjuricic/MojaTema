@@ -12,21 +12,18 @@ const LoginPage = () => {
   const [, setEmail] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (password) {
       setLoading(true);
-      dispatch(userLogin(password.trim())).finally(() => setLoading(false));
+      await dispatch(userLogin(password.trim())).finally(() => setLoading(false));
     }
     else errorMessage('Поље за лозинку је празно');
   }
   return (
     <main className={LoginCSS.main_wrapper}>
       <div className={LoginCSS.form_container}>
-        <div className={LoginCSS.login_header}>
-          <Logo/>
-          <h1>МојаТема</h1>
-        </div>
+        <Logo/>
         <form className={LoginCSS.login_form}>
           <h1>Пријави се</h1>
           <label>ИМЕЈЛ АДРЕСА:</label>

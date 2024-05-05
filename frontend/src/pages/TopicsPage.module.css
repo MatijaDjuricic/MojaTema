@@ -1,12 +1,3 @@
-.main_wrapper {
-    position: relative;
-    padding: 4rem 2rem 0 2rem;
-    margin-left: 300px;
-    transition: all 300ms;
-}
-.main_wrapper h1, .main_wrapper p {
-    color: var(--text-prim);
-}
 .topics_wrapper, .subjects_wrapper {
     width: 100%;
     margin: 2rem 0 2rem 0;
@@ -30,12 +21,3 @@
     width: 50%;
     word-wrap: break-word;
 }
-@media (max-width: 992px) {
-    .main_wrapper {
-        margin-left: 0;
-    }
-    .no_search_results {
-        font-size: 1rem;
-    }
-}
-@media (max-width: 576px) {}

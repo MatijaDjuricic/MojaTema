@@ -1,0 +1,10 @@
+.main_wrapper {
+    padding: 4rem 2rem 0 2rem;
+    margin-left: 300px;
+    transition: all 300ms;
+}
+@media (max-width: 992px) {
+    .main_wrapper {
+        margin-left: 0;
+    }
+}

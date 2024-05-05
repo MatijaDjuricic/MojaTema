@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { useRedirect } from './hooks/useRedirect';
 import ToastMessage from './components/ToastMessage';
+import PageLayout from './components/PageLayout';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import TopicsPage from './pages/TopicsPage';
@@ -14,7 +15,9 @@ const App = () => {
       path: '/',
       element:
         <RequireAuth>
-          <HomePage/>
+          <PageLayout>
+            <HomePage/>
+          </PageLayout>
         </RequireAuth>,
       errorElement: <NotFoundPage/>
     },
@@ -30,7 +33,9 @@ const App = () => {
       element:
         <RequireAuth>
           <TopicsRedirect>
-            <TopicsPage/>
+            <PageLayout>
+              <TopicsPage/>
+            </PageLayout>
           </TopicsRedirect>
         </RequireAuth>
     },
@@ -38,7 +43,9 @@ const App = () => {
       path: '/profile',
       element:
         <RequireAuth>
-          <ProfilePage/>
+          <PageLayout>
+            <ProfilePage/>
+          </PageLayout>
         </RequireAuth>
     },
     {
@@ -46,7 +53,9 @@ const App = () => {
       element:
         <RequireAuth>
           <ChatRedirect>
-            <ChatPage/>
+            <PageLayout>
+              <ChatPage/>
+            </PageLayout>
           </ChatRedirect>
         </RequireAuth>
     }
@@ -54,7 +63,7 @@ const App = () => {
   return (
     <>
       <ToastMessage/>
-      <RouterProvider router = {router}/>
+      <RouterProvider router={router}/>
     </>
   );
 }
