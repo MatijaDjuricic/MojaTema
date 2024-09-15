@@ -1,0 +1,16 @@
+.logo_wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.logo_wrapper img {
+    width: 6rem;
+}
+.logo_wrapper a {
+    text-decoration: none;
+}
+.logo_wrapper p {
+    color: var(--text-prim);
+    font-weight: 700;
+    font-size: 2rem;
+}

@@ -1,0 +1,62 @@
+.cta_button {
+    color: var(--main);
+    background-color: var(--background-prim);
+    border: 1px solid var(--background-terc);
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+    transition: 400ms ease-in-out;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+}
+.button_lg {
+    width: 10rem;
+    height: 3.5rem;
+    padding: 10px;
+    font-size: 1.3rem;
+}
+.button_sm {
+    width: 10rem;
+    height: 2.5rem;
+    padding: 3px;
+    font-size: 1rem;
+}
+.loading_button {
+    display: grid;
+    place-items: center;
+}
+.loading_button_lg {
+    width: 25%;
+    height: 3.5rem;
+    margin: 2rem auto;
+    padding: 5px;
+    font-size: 1.3rem;
+}
+.loading_button_sm {
+    width: 10rem;
+    height: 2.5rem;
+    padding: 3px;
+    font-size: 1rem;
+}
+.button_green {
+    color: var(--green);
+    border: 1px solid var(--green);
+}
+.button_red {
+    color: var(--red);
+    border: 1px solid var(--red);
+    font-weight: bold;
+}
+.button_green:hover {
+    background-color: var(--green) !important;
+    color: var(--background-prim) !important;
+}
+.button_red:hover {
+    background-color: var(--red) !important;
+    color: var(--background-prim) !important;
+}
+.cta_button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--background-terc) -5px 5px;
+}

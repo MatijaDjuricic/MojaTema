@@ -1,0 +1,40 @@
+.reported_topics_header {
+    position: sticky;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    top: 4rem;
+    padding: 1rem;
+    z-index: 2;
+    background-color: var(--background-prim);
+    border-bottom: 1px solid var(--main);
+}
+.reported_topics_header h1 {
+    color: var(--text-prim);
+}
+.reported_topics_wrapper {
+    padding-top: 1rem;
+    color: var(--text-prim);
+}
+.reported_topics_wrapper .topic_item, .approved_users_wrapper, .reported_users_wrapper {
+    padding: 0 0 1rem 2rem;
+}
+.reported_topics_wrapper .topic_item h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.approved_users_wrapper {
+    padding-left: 2rem;
+    border-bottom: 1px solid var(--main);
+}
+.approved_users_options {
+    display: flex;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+.title_wrapper {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 1rem;
+}

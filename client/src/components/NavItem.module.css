@@ -1,0 +1,34 @@
+.link_wrapper {
+    text-decoration: none;
+}
+.nav_item {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: .5rem 1rem .5rem 1rem;
+    border-radius: 5px;
+    gap: 1rem;
+    transition: 300ms ease-in-out;
+}
+.nav_item p {
+    font-size: 1.3rem;
+    color: var(--text-prim);
+    text-decoration: none;
+    transition: 300ms ease-in-out;
+}
+.nav_icons {
+    width: 1.8rem;
+    height: 1.8rem;
+    fill: transparent;
+    stroke: var(--text-prim);
+    transition: 300ms ease-in-out;
+}
+.active {
+    background-color: var(--background-prim);
+}
+.not_active:hover .nav_icons, .active .nav_icons {
+    stroke: var(--main);
+}
+.not_active:hover p, .active p {
+    color: var(--main);
+}

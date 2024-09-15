@@ -1,0 +1,46 @@
+.loader_wrapper {
+    height: 70vh;
+    display: grid;
+    place-items: center;
+}
+.loader {
+    aspect-ratio: .75;
+    --c: no-repeat linear-gradient(var(--text-prim) 0 0);
+    background:
+    var(--c) 0% 50%,
+    var(--c) 50% 50%,
+    var(--c) 100% 50%;
+    animation: loading 1s infinite linear alternate;
+}
+.normal_loader {
+    width: 4rem;
+    height: 4rem;
+}
+.btn_lg_loader {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+.btn_sm_loader {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+@keyframes loading {
+    0% {
+        background-size: 20% 50%, 20% 50%, 20% 50%
+    }
+    20% {
+        background-size: 20% 20%, 20% 50%, 20% 50%
+    }
+    40% {
+        background-size: 20% 100%, 20% 20%, 20% 50%
+    }
+    60% {
+        background-size: 20% 50%, 20% 100%, 20% 20%
+    }
+    80% {
+        background-size: 20% 50%, 20% 50%, 20% 100%
+    }
+    100% {
+        background-size: 20% 50%, 20% 50%, 20% 50%
+    }
+}
