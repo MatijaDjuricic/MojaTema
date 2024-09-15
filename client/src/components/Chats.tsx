@@ -11,7 +11,7 @@ import chats_icon from "../assets/chats.svg";
 import close_icon from "../assets/close.svg";
 type ChatsProps = {
   type?: 'icon' | 'link',
-  receiverId: number
+  receiverId?: number
 }
 const Chats = ({ type, receiverId }: ChatsProps) => {
   const user = useUserContext();
@@ -48,7 +48,7 @@ const Chats = ({ type, receiverId }: ChatsProps) => {
         <button className={styles.chat_btn} onClick={() => setShow(true)}>
           <ReactSVG src={chats_icon} className={styles.nav_icons_stroke} />
         </button> : type == 'link' ?
-        <button className={styles.chat_btn} onClick={() => toChat(receiverId)}>
+        <button className={styles.chat_btn} onClick={() => toChat(receiverId!)}>
           <ReactSVG src={chats_icon} className={styles.nav_icons_stroke} />
         </button> :
         <button className={styles.nav_chat_btn} onClick={() => setShow(true)} title="Поруке">
