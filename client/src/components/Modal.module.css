@@ -1,0 +1,69 @@
+.modal_wrapper {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    border: none;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    animation: fadeIn 300ms ease-in forwards;
+    z-index: 5;
+}
+.modal_content {
+    background: var(--background-sec);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 500px;
+    margin-top: 3rem;
+    padding: 1rem;
+    position: relative;
+    opacity: 0;
+    animation: fadeIn 300ms ease-in forwards;
+}
+.modal_title {
+    color: var(--text-prim);
+    font-size: 2rem;
+}
+.modal_header {
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.modal_body {
+    padding: 2rem 0;
+}
+.modal_body p {
+    color: var(--text-prim);
+    font-size: 1.2rem;
+}
+.modal_footer {
+    display: flex;
+    justify-content: end;
+}
+.close_btn {
+    border: none;
+    border-radius: 50%;
+    background-color: transparent;
+    cursor: pointer;
+}
+.close_icon {
+    width: 2rem;
+    height: 2rem;
+    fill: var(--main);
+}
+.close_btn:hover .close_icon {
+    fill: var(--text-prim);
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
