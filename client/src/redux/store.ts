@@ -1,9 +1,11 @@
 import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
-import usersReducer from "./usersSlice";
-import topicsReducer from "./topicsSlice";
-import messagesReducer from "./messagesSlice";
+import rootReducer from "./slices/rootSlice";
+import usersReducer from "./slices/usersSlice";
+import topicsReducer from "./slices/topicsSlice";
+import messagesReducer from "./slices/messagesSlice";
 export const store = configureStore({
     reducer: {
+        root: rootReducer,
         users: usersReducer,
         topics: topicsReducer,
         messages: messagesReducer

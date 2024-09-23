@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../store/store";
-import { deleteTopic, fetchTopicsByProfessorId, updateTopicStatus } from "../store/topicsSlice";
+import { AppDispatch, RootState } from "../redux/store";
+import { deleteTopic, fetchTopicsByProfessorId, updateTopicStatus } from "../redux/slices/topicsSlice";
 import { useUserContext } from "../context/UserContext";
 import { topicStatusEnum } from "../utils/constants";
 import { useToastMessage } from "../hooks/useToastMessage";
@@ -39,7 +39,9 @@ const ReportedTopicsPage = () => {
   }, []);
   return (
     <>
-      <Header><h1>Теме</h1></Header>
+      <Header>
+        <h1>Теме</h1>
+      </Header>
       {
         loading ? <Loader/> :
         <div className={styles.reported_topics_wrapper}>
@@ -50,6 +52,7 @@ const ReportedTopicsPage = () => {
                 {
                   topics.subjects[index].map((topic, index) => (
                     <div key={index} className={styles.topic_item}>
+                      { index > 0 && <div className={styles.line}></div> }
                       <div className={styles.title_wrapper}>
                         <h1>{topic.title}</h1>
                         <CTA title="Обриши тему"
@@ -63,8 +66,7 @@ const ReportedTopicsPage = () => {
                         {
                           topic.studentUserId != null ? <>
                             <h1>Одобрен ученик: {topic.studentUsername}</h1>
-                            <div key={index} className={styles.approved_users_item}>
-                              <div className={styles.approved_users_options}>
+                              <div className={styles.approved_users_actions}>
                                 <Chats type="link" receiverId={topic.studentUserId}/>
                                 <CTA title="Врати на пријаву"
                                   color='red'
@@ -86,7 +88,6 @@ const ReportedTopicsPage = () => {
                                   />
                                 }
                               </div>
-                            </div>
                           </> : <h1>Одобрен ученик: /</h1>
                         }
                       </div>

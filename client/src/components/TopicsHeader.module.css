@@ -75,19 +75,20 @@
 .close_btn:hover .close_icon svg {
     fill: var(--main);
 }
+@media (max-width: 992px) {
+    .header_wrapper {
+        width: 100%;
+    }
+}
 @media (max-width: 768px) {
+    .header_wrapper {
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+    }
     .topic_header {
         flex-direction: column;
         gap: 0.5rem;
         padding: 1rem 0;
-    }
-}
-@media (max-width: 576px) {
-    .header_wrapper {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    .header_wrapper {
-        text-align: center;
     }
 }

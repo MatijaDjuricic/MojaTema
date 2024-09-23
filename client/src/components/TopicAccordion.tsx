@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../store/store';
-import { updateTopic } from '../store/topicsSlice';
+import { AppDispatch } from '../redux/store';
+import { updateTopic } from '../redux/slices/topicsSlice';
 import { isReportedTopic } from '../utils/utils';
 import { Topic, User } from '../types/types';
 import { ReactSVG } from 'react-svg';

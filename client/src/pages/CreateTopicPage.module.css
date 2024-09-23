@@ -3,8 +3,8 @@
     margin: 2rem auto;
     padding: 20px;
     background-color: var(--background-sec);
-    border-radius: 8px;
     box-shadow: 0 5px 10px var(--background-terc);
+    border-radius: 10px;
 }
 .create_form label {
     display: block;

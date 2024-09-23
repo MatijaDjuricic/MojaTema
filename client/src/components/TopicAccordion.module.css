@@ -143,7 +143,7 @@
     .info_container, .reported_container {
         flex-direction: column;
         align-items: center;
-        margin-top: 1rem;
+        gap: 1rem;
     }
     .professor_wrapper {
         text-align: center;

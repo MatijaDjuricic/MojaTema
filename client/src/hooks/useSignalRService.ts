@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../store/store";
-import { addMessages, fetchReceiverUserById } from "../store/messagesSlice";
+import { AppDispatch, RootState } from "../redux/store";
+import { addMessages, fetchReceiverUserById } from "../redux/slices/messagesSlice";
 import { useCookie } from "../hooks/useCookie";
 import * as signalR from "@microsoft/signalr";
 const useSignalRService = (receiver: string | undefined) => {

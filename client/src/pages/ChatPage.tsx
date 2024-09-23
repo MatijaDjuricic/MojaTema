@@ -2,13 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../store/store';
-import { addMessages } from '../store/messagesSlice';
+import { AppDispatch, RootState } from '../redux/store';
+import { addMessages } from '../redux/slices/messagesSlice';
 import { useUserContext } from '../context/UserContext';
 import { useToastMessage } from '../hooks/useToastMessage';
 import { formatDate, formatTime } from '../utils/utils';
 import useSignalRService from '../hooks/useSignalRService';
-import Header from '../components/Header';
 import send_icon from '../assets/send.svg';
 import styles from './ChatPage.module.css';
 const ChatPage = () => {
@@ -50,12 +49,10 @@ const ChatPage = () => {
     useEffect(() => { scrollToBottom() }, [messages]);
     return (
         <div className={styles.chat_container}>
-            <Header>
-                <>
-                    <h1>Поруке - {messages.receiverUser?.firstName} {messages.receiverUser?.lastName}</h1>
-                    <div className={styles.date_line}><p>{formatDate(new Date())}</p></div>
-                </>
-            </Header>
+            <header className={styles.chat_header}>
+                <h1>Поруке - {messages.receiverUser?.firstName} {messages.receiverUser?.lastName}</h1>
+                <p>{formatDate(new Date())}</p>
+            </header>
             <div className={styles.chat_wrapper}>
                 <div className={styles.messages_wrapper}>
                 {

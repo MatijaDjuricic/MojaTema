@@ -1,3 +1,4 @@
+// interfaces
 export interface TokenData {
     id: number,
     first_name: string,
@@ -87,3 +88,27 @@ export interface TopicsState {
     subjects: Topic[][],
     registeredStudent: boolean
 }
+// types
+export type UpdateTopicProps = {
+    id: number,
+    userId: number
+}
+export type TopicStatusProps = {
+    id: number,
+    professorId: number,
+    topicStatus: number
+}
+export type CreateTopicProps = {
+    title: string,
+    description: string,
+    subjectId: number,
+    professorId: number
+}
+export type DeleteTopicProps = {
+    id: number,
+    professorId: number,
+}
+export type ModalHandle = {
+    open: () => void;
+    close: () => void;
+};

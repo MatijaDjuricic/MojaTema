@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ReactSVG } from "react-svg";
-import { AppDispatch } from "../store/store";
-import { userLogin } from "../store/usersSlice";
+import { AppDispatch } from "../redux/store";
+import { userLogin } from "../redux/slices/usersSlice";
 import { useToastMessage } from "../hooks/useToastMessage";
 import CTA from "../components/CTA";
 import Logo from "../components/Logo";
@@ -39,11 +39,13 @@ const LoginPage = () => {
             <input ref={passwordRef} type={passwordVisible ? "text" : "password"} placeholder="Унеси лозинку..."/>
             <button type="button" className={styles.eye_button} onClick={togglePasswordVisibility} aria-label={passwordVisible ? "Hide password" : "Show password"}>
             {
-              passwordVisible ? <ReactSVG src={eyeSlash} className={styles.eye_icon}/> : <ReactSVG src={eye} className={styles.eye_icon}/>
+              passwordVisible ? <ReactSVG src={eye} className={styles.eye_icon}/> : <ReactSVG src={eyeSlash} className={styles.eye_icon}/>
             }
             </button>
           </div>
-          <CTA title="Пријави се" loading={loading} size="lg" onClick={handleSubmit}/>
+          <div className={styles.submit_wrapper}>
+            <CTA title="Пријави се" loading={loading} size="lg" onClick={handleSubmit}/>
+          </div>
         </form>
       </div>
     </main>

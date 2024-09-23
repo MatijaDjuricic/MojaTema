@@ -38,21 +38,18 @@
     color: var(--text-prim);
     opacity: 0.2;
 }
-.login_form button {
-    margin: 1.5rem auto;
-}
 .password_wrapper {
-    position: relative;
+    display: flex;
+    gap: 0;
     width: 60%;
-    margin: auto;
+    margin: 0 auto;
 }
 .password_wrapper input {
-    width: calc(100% - 1.5rem);
+    width: 100%;
 }
 .eye_button {
-    position: absolute;
-    top: -1.5rem;
-    right: 0;
+    height: 1.5rem;
+    max-width: 1.5rem;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -68,6 +65,14 @@
     stroke: var(--text-prim);
     transition: 300ms ease-in-out;
 }
+.submit_wrapper {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+}
+.submit_wrapper button {
+    margin: 0;
+}
 @media (max-width: 576px) {
    .login_form input {
         width: 80%;
@@ -75,7 +80,17 @@
    .login_form label {
         margin: 1rem 0 .5rem 10%;
    }
-   .login_form button {
+   .submit_wrapper button {
         width: 50% !important;
+   }
+   .password_wrapper input {
+        width: 100%;
+   }
+   .password_wrapper {
+        width: auto;
+        margin: 0 10%;
+   }
+   .submit_wrapper {
+        padding: 2rem 0;
    }
 }

@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
-import { AppDispatch, RootState } from "../store/store";
+import { AppDispatch, RootState } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { ReactSVG } from "react-svg";
-import { fetchChatsByUserId } from "../store/messagesSlice";
+import { fetchChatsByUserId } from "../redux/slices/messagesSlice";
 import CTA from "./CTA";
 import styles from "./Chats.module.css";
 import chats_icon from "../assets/chats.svg";

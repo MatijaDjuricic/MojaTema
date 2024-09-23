@@ -27,7 +27,6 @@
     place-items: center;
 }
 .loading_button_lg {
-    width: 25%;
     height: 3.5rem;
     margin: 2rem auto;
     padding: 5px;
@@ -41,10 +40,12 @@
 }
 .button_green {
     color: var(--green);
+    background-color: var(--background-sec) !important;
     border: 1px solid var(--green);
 }
 .button_red {
     color: var(--red);
+    background-color: var(--background-sec) !important;
     border: 1px solid var(--red);
     font-weight: bold;
 }

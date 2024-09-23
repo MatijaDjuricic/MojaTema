@@ -7,6 +7,7 @@
 .chat_header {
     position: sticky;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     background-color: var(--background-prim);
     border-bottom: 1px solid var(--main);
@@ -119,16 +120,12 @@
 .input_wrapper button:hover {
     background-color: var(--text-prim);
 }
-.date_line {
-    position: absolute;
-    text-align: center;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
 @media (max-width: 992px) {
     .chat_header {
-        gap: 2rem;
+        justify-content: space-between;
+    }
+    .chat_header h1 {
+        font-size: 1.5rem;
     }
     .message_left .message_box {
         width: 100%;
@@ -136,15 +133,17 @@
     .message_right .message_box {
         width: 100%;
     }
-    .date_line {
-        position: relative;
-        display: flex;
-    }
 }
-@media (max-width: 576px) {
+@media (max-width: 768px) {
     .chat_header {
         flex-direction: column;
         padding-bottom: 5px;
         gap: 5px;
+    }
+
+}
+@media (max-width: 576px) {
+    .chat_header h1 {
+        font-size: 1rem;
     }
 }

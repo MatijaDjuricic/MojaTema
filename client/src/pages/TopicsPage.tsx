@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useDeferredValue } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../store/store';
-import { fetchTopics } from '../store/topicsSlice';
+import { AppDispatch, RootState } from '../redux/store';
+import { fetchTopics } from '../redux/slices/topicsSlice';
 import { useUserContext } from '../context/UserContext';
 import { hasNoSearchResults, isReportedTopic } from '../utils/utils';
 import Loader from '../components/Loader';

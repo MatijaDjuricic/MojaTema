@@ -1,8 +1,8 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 import { useCookie } from "./useCookie";
 import { jwtDecode } from "jwt-decode";
 import { TokenData, User } from "../types/types";
-import { useSelector } from "react-redux";
-import { RootState } from '../store/store';
 export const useAuth = () => {
     const { getCookie, removeCookie } = useCookie();
     const getAuth = (): TokenData | User | undefined => {
@@ -22,8 +22,7 @@ export const useAuth = () => {
         return undefined;
     }
     const getUserAuth = (): TokenData | User | undefined => {
-        const user = useSelector((state: RootState) => state.users.loggedIn);
-        return user;
+        return useSelector((state: RootState) => state.users.loggedIn);
     }
     return { getAuth, getUserAuth }
 }
