@@ -6,6 +6,7 @@ import { useToastMessage } from "../../hooks/useToastMessage";
 import { useCookie } from "../../hooks/useCookie";
 import { useAuth } from "../../hooks/useAuth";
 import { jwtDecode } from "jwt-decode";
+import { RootState } from "../store";
 const { getAuth } = useAuth();
 const { setCookie, removeCookie } = useCookie();
 const { successMessage, errorMessage } = useToastMessage();
@@ -37,5 +38,6 @@ export const usersSlice = createSlice({
         });
     }
 });
+export const selectUser = (state: RootState) => state.users.loggedIn; 
 export const { logOut, resetState } = usersSlice.actions;
 export default usersSlice.reducer;

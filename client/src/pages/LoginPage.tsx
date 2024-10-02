@@ -38,9 +38,7 @@ const LoginPage = () => {
           <div className={styles.password_wrapper}>
             <input ref={passwordRef} type={passwordVisible ? "text" : "password"} placeholder="Унеси лозинку..."/>
             <button type="button" className={styles.eye_button} onClick={togglePasswordVisibility} aria-label={passwordVisible ? "Hide password" : "Show password"}>
-            {
-              passwordVisible ? <ReactSVG src={eye} className={styles.eye_icon}/> : <ReactSVG src={eyeSlash} className={styles.eye_icon}/>
-            }
+            { passwordVisible ? <ReactSVG src={eye} className={styles.eye_icon}/> : <ReactSVG src={eyeSlash} className={styles.eye_icon}/> }
             </button>
           </div>
           <div className={styles.submit_wrapper}>

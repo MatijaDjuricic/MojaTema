@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ReactSVG } from 'react-svg';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../redux/store';
-import { addMessages } from '../redux/slices/messagesSlice';
+import { AppDispatch } from '../redux/store';
+import { addMessages, selectMessages, selectReceiverUser } from '../redux/slices/messagesSlice';
 import { useUserContext } from '../context/UserContext';
 import { useToastMessage } from '../hooks/useToastMessage';
 import { formatDate, formatTime } from '../utils/utils';
@@ -12,7 +12,8 @@ import send_icon from '../assets/send.svg';
 import styles from './ChatPage.module.css';
 const ChatPage = () => {
     const user = useUserContext();
-    const messages = useSelector((state: RootState) => state.messages);
+    const messages = useSelector(selectMessages);
+    const receiverUser = useSelector(selectReceiverUser);
     const dispatch = useDispatch<AppDispatch>();
     const { errorMessage } = useToastMessage();
     const { receiver: receiver } = useParams<{ receiver: string }>();
@@ -50,13 +51,13 @@ const ChatPage = () => {
     return (
         <div className={styles.chat_container}>
             <header className={styles.chat_header}>
-                <h1>Поруке - {messages.receiverUser?.firstName} {messages.receiverUser?.lastName}</h1>
+                <h1>Поруке - {receiverUser?.firstName} {receiverUser?.lastName}</h1>
                 <p>{formatDate(new Date())}</p>
             </header>
             <div className={styles.chat_wrapper}>
                 <div className={styles.messages_wrapper}>
                 {
-                    messages.messages.map((message, index) => message.content &&
+                    messages.map((message, index) => message.content &&
                         <div key={index} className={message.id !== user.id ? styles.message_left : styles.message_right}>
                             <div className={styles.message_box}>
                                 <span>{message.receiveUsername}</span>

@@ -7,7 +7,6 @@ using System.Security.Claims;
 using System.Text;
 using api.Models;
 using Microsoft.IdentityModel.Tokens;
-using api.Helpers;
 namespace api.Service
 {
     public class JWTService
@@ -27,7 +26,7 @@ namespace api.Service
                 new Claim("firstName", user.firstName),
                 new Claim("lastName", user.lastName),
                 new Claim("email", user.Email?.ToString()),
-                new Claim("roleStatus", Helper.GetRoleName(user.roleStatus))
+                new Claim("roleStatus", user.roleStatus.ToString())
             };
             #pragma warning restore CS8604
             var token = new JwtSecurityToken(

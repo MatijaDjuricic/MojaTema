@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useUserContext } from '../context/UserContext';
 import { useToastMessage } from '../hooks/useToastMessage';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../redux/store';
-import { createTopic, fetchTopicsByProfessorId } from "../redux/slices/topicsSlice";
+import { AppDispatch } from '../redux/store';
+import { createTopic, fetchTopicsByProfessorId, selectSubjects, selectTopics } from "../redux/slices/topicsSlice";
 import Header from '../components/Header';
 import CTA from '../components/CTA';
 import styles from './CreateTopicPage.module.css';
@@ -12,7 +12,8 @@ const CreateTopicPage = () => {
   const { successMessage, errorMessage } = useToastMessage();
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
-  const topics = useSelector((state: RootState) => state.topics);
+  const topics = useSelector(selectTopics);
+  const subjects = useSelector(selectSubjects);
   const titleRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const subjectRef = useRef<HTMLSelectElement>(null);
@@ -47,7 +48,7 @@ const CreateTopicPage = () => {
     const fetchReportedTopics = async () => {
       await dispatch(fetchTopicsByProfessorId(user.id)).finally(() => setLoading(false));
     }
-    if (useEffectRef.current == false && topics.topics.length == 0) fetchReportedTopics();
+    if (useEffectRef.current == false && topics.length == 0) fetchReportedTopics();
     else setLoading(false);
     return () => {
       useEffectRef.current = true;
@@ -60,7 +61,7 @@ const CreateTopicPage = () => {
         <label>ПРЕДМЕТ:</label>
         <select ref={subjectRef} defaultValue="">
           {
-            topics.subjects.map((topic, index) => (
+            subjects.map((topic, index) => (
               <option key={index} value={topic[0].subjectId}>
                 {topic[0].subjectTitle}
               </option>

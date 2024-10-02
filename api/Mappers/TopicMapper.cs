@@ -15,7 +15,7 @@ namespace api.Mappers
                 Id = topicModel.Id,
                 Title = topicModel.Title,
                 Description = topicModel.Description,
-                Status = Helpers.Helper.getTopicStatus(topicModel.Status),
+                Status = topicModel.Status.ToString(),
                 studentId = topicModel.studentId,
                 professorId = topicModel.professorId,
                 subjectId = topicModel.subjectId,

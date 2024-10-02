@@ -1,8 +1,9 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { resetAllStates } from "./rootSlice";
+import { RootState } from "../store";
 import { useAuth } from "../../hooks/useAuth";
 import { isReportedUser, setSubjects } from "../../utils/utils";
-import { TopicsState } from "../../types/types";
+import { CreateTopicProps, DeleteTopicProps, Topic, TopicsState, TopicStatusProps, UpdateTopicProps } from "../../types/types";
 import {
     createTopicAsync,
     deletedTopicAsync,
@@ -17,12 +18,12 @@ const initialState: TopicsState = {
     subjects: [],
     registeredStudent: false,
 };
-export const fetchTopics = createAsyncThunk('fetchTopics', fetchTopicsAsync);
-export const fetchTopicsByProfessorId = createAsyncThunk('fetchTopicsByProfessorId', fetchTopicsByProfessorIdAsync);
-export const updateTopic = createAsyncThunk('updateTopic', updatedTopicAsync);
-export const updateTopicStatus = createAsyncThunk('updateTopicStatus', updateTopicStatusAsync);
-export const createTopic = createAsyncThunk('createTopic', createTopicAsync);
-export const deleteTopic = createAsyncThunk('deleteTopic', deletedTopicAsync);
+export const fetchTopics = createAsyncThunk<Topic[], void>('topics/fetchTopics', fetchTopicsAsync);
+export const fetchTopicsByProfessorId = createAsyncThunk<Topic[], number>('topics/fetchTopicsByProfessorId', fetchTopicsByProfessorIdAsync);
+export const updateTopic = createAsyncThunk<Topic, UpdateTopicProps>('topics/updateTopic', updatedTopicAsync);
+export const updateTopicStatus = createAsyncThunk<Topic, TopicStatusProps>('topics/updateTopicStatus', updateTopicStatusAsync);
+export const createTopic = createAsyncThunk<Topic, CreateTopicProps>('topics/createTopic', createTopicAsync);
+export const deleteTopic = createAsyncThunk<Topic, DeleteTopicProps>('topics/deleteTopic', deletedTopicAsync);
 export const topicsSlice = createSlice({
     name: 'topics',
     initialState,
@@ -31,15 +32,15 @@ export const topicsSlice = createSlice({
     },
     extraReducers(builder) {
         builder.addCase(resetAllStates, () => initialState);
-        builder.addCase(fetchTopics.fulfilled, (state, action) => {
+        builder.addCase(fetchTopics.fulfilled, (state, action: PayloadAction<Topic[]>) => {
             state.topics = action.payload;
             state.subjects = setSubjects(state.topics);
             const user = getAuth();
             if (user) state.registeredStudent = isReportedUser(action.payload, user.id)
-        }).addCase(fetchTopicsByProfessorId.fulfilled, (state, action) => {
+        }).addCase(fetchTopicsByProfessorId.fulfilled, (state, action: PayloadAction<Topic[]>) => {
             state.topics = action.payload;
             state.subjects = setSubjects(state.topics);
-        }).addCase(updateTopic.fulfilled, (state, action) => {
+        }).addCase(updateTopic.fulfilled, (state, action: PayloadAction<Topic>) => {
             const updatedTopic = action.payload;
             const index = state.topics.findIndex(topic => topic.id === updatedTopic.id);
             if (index !== -1) {
@@ -47,14 +48,14 @@ export const topicsSlice = createSlice({
                 state.subjects = setSubjects(state.topics);
             }
             state.registeredStudent = !state.registeredStudent;
-        }).addCase(updateTopicStatus.fulfilled, (state, action) => {
+        }).addCase(updateTopicStatus.fulfilled, (state, action: PayloadAction<Topic>) => {
             const updatedTopic = action.payload;
             const index = state.topics.findIndex(topic => topic.id === updatedTopic.id);
             if (index !== -1) {
                 state.topics[index] = updatedTopic;
                 state.subjects = setSubjects(state.topics);
             }
-        }).addCase(createTopic.fulfilled, (state, action) => {
+        }).addCase(createTopic.fulfilled, (state, action: PayloadAction<Topic>) => {
             state.topics.push(action.payload);
             state.subjects = setSubjects(state.topics);
         }).addCase(deleteTopic.fulfilled, (state, action) => {
@@ -63,5 +64,8 @@ export const topicsSlice = createSlice({
         })
     }
 });
+export const selectTopics = (state: RootState) => state.topics.topics;
+export const selectSubjects = (state: RootState) => state.topics.subjects;
+export const selectRegisteredStudent = (state: RootState) => state.topics.registeredStudent;
 export const { resetState } = topicsSlice.actions;
 export default topicsSlice.reducer;

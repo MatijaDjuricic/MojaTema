@@ -1,4 +1,4 @@
-import Cookie from "js-cookie";
+import Cookie from 'js-cookie';
 export const useCookie = () => {
     const setCookie = (name: string, token: string): void => {
         Cookie.set(name, token, {

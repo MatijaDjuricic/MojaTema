@@ -15,9 +15,9 @@ export interface User {
     lastName: string,
     email: string,
     password: string,
+    roleStatus: number
     createdAt: Date,
     editedAt: Date,
-    roleStatus: string
 }
 export interface Student {
     Id: number,
@@ -45,7 +45,7 @@ export interface Topic {
     id: number,
     title: string,
     description: string,
-    status: string,
+    status: number,
     subjectTitle: string,
     subjectId: number,
     userId?: number,
@@ -87,6 +87,9 @@ export interface TopicsState {
     topics: Topic[],
     subjects: Topic[][],
     registeredStudent: boolean
+}
+export interface EnumObject {
+    [key: string]: { id: number, nameCyrillic: string }
 }
 // types
 export type UpdateTopicProps = {

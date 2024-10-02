@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { ReactSVG } from "react-svg";
 import { useUserContext } from "../context/UserContext";
 import { Divide as Hamburger } from "hamburger-react";
-import { ModalHandle } from "../types/types";
 import { resetAllStates } from "../redux/slices/rootSlice";
 import { logOut } from "../redux/slices/usersSlice";
+import { roleEnum } from "../utils/constants";
+import { getCyrillicName } from "../utils/utils";
+import { ModalHandle } from "../types/types";
+import { ReactSVG } from "react-svg";
 import Notifications from "./Notifications";
 import Logo from "./Logo";
 import Chats from "./Chats";
@@ -74,7 +76,7 @@ const NavBar = () => {
                   {user.firstName} {user.lastName}
                 </p>
                 <p className={styles.status}>
-                  {user.roleStatus === "ucenik" ? "ученик" : user.roleStatus}
+                  {getCyrillicName(roleEnum, user.roleStatus)}
                 </p>
               </div>
               <NavLink

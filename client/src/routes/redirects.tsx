@@ -1,7 +1,8 @@
 import { Navigate, useParams } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
-import PageLayout from "../components/PageLayout";
+import { roleEnum } from "../utils/constants";
 import ReportedTopicsPage from "../pages/ReportedTopicsPage";
+import PageLayout from "../components/PageLayout";
 import NotFoundPage from "../pages/NotFoundPage";
 export const RequireAuth = ({ children }: { children: JSX.Element }): JSX.Element => {
     const user = useUserContext();
@@ -15,7 +16,7 @@ export const AuthRedirect = ({ children }: { children: JSX.Element }): JSX.Eleme
 }
 export const TopicsRedirect = ({ children }: { children: JSX.Element }): JSX.Element => {
     const user = useUserContext();
-    if (user.roleStatus == 'ученик') return children;
+    if (user.roleStatus == roleEnum.UCENIK.id) return children;
     return (
         <PageLayout>
             <ReportedTopicsPage/>
@@ -24,7 +25,7 @@ export const TopicsRedirect = ({ children }: { children: JSX.Element }): JSX.Ele
 }
 export const CreateTopicRedirect = ({ children }: { children: JSX.Element }): JSX.Element => {
     const user = useUserContext();
-    if (user.roleStatus == 'професор') return children;
+    if (user.roleStatus == roleEnum.PROFESOR.id) return children;
     return <NotFoundPage/>;
 }
 export const ChatRedirect = ({ children }: { children: JSX.Element }): JSX.Element => {

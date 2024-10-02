@@ -6,17 +6,18 @@ import { logOut } from '../redux/slices/usersSlice';
 import { resetAllStates } from "../redux/slices/rootSlice";
 import { ReactSVG } from 'react-svg';
 import { ModalHandle } from '../types/types';
+import { roleEnum } from '../utils/constants';
 import NavItem from './NavItem';
 import Notifications from './Notifications';
 import Chats from './Chats';
+import CTA from './CTA';
+import Modal from './Modal';
 import home_icon from '../assets/home.svg';
 import theme_icon from '../assets/theme.svg';
 import profile_icon from '../assets/profile.svg';
 import add_icon from '../assets/add.svg';
-import styles from './SideBar.module.css';
-import CTA from './CTA';
-import Modal from './Modal';
 import logout_icon from '../assets/logout.svg';
+import styles from './SideBar.module.css';
 const SideBar = () => {
     const user = useUserContext();
     const navigate = useNavigate();
@@ -35,7 +36,7 @@ const SideBar = () => {
                     <NavItem title='Почетна' to='/' icon={home_icon} onClick={closeSideBar}/>
                     <NavItem title='Теме' to='/topics' icon={theme_icon} onClick={closeSideBar}/>
                     {
-                        user.roleStatus == 'професор' &&
+                        user.roleStatus == roleEnum.PROFESOR.id &&
                         <NavItem title='Додај Тему' to='/create-topic' icon={add_icon} onClick={closeSideBar}/>
                     }
                     <NavItem title='Мој Профил' to='/profile' icon={profile_icon} onClick={closeSideBar}/>

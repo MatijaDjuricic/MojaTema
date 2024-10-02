@@ -6,9 +6,9 @@ import styles from './TopicsHeader.module.css';
 type TopicsHeaderProps = {
   search: string,
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
-  onClear: () => void
+  onClear: () => void,
 }
-const TopicsHeader = ({search, onChange, onClear}: TopicsHeaderProps) => {
+const TopicsHeader = ({ search, onChange, onClear }: TopicsHeaderProps) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
   return (
     <header className={styles.topic_header}>

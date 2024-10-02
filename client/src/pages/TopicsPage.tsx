@@ -1,63 +1,67 @@
-import { useState, useEffect, useRef, useDeferredValue } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../redux/store';
-import { fetchTopics } from '../redux/slices/topicsSlice';
-import { useUserContext } from '../context/UserContext';
-import { hasNoSearchResults, isReportedTopic } from '../utils/utils';
-import Loader from '../components/Loader';
-import TopicsHeader from '../components/TopicsHeader';
-import TopicAccordion from '../components/TopicAccordion';
-import styles from './TopicsPage.module.css';
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTopics, selectRegisteredStudent, selectSubjects, selectTopics } from "../redux/slices/topicsSlice";
+import { useUserContext } from "../context/UserContext";
+import { useTopicSearch } from "../hooks/useTopicSearch";
+import { hasNoSearchResults, isReportedTopic } from "../utils/utils";
+import { AppDispatch } from "../redux/store";
+import Loader from "../components/Loader";
+import TopicsHeader from "../components/TopicsHeader";
+import SubjectAccordion from "../components/SubjectAccordion";
+import TopicAccordion from "../components/TopicAccordion";
+import styles from "./TopicsPage.module.css";
 const TopicsPage = () => {
   const user = useUserContext();
-  const topics = useSelector((state: RootState) => state.topics);
+  const topics = useSelector(selectTopics);
+  const subjects = useSelector(selectSubjects);
+  const registeredStudent = useSelector(selectRegisteredStudent);
+  const { search: searchValue, setSearch, clearSearch } = useTopicSearch();
   const dispatch = useDispatch<AppDispatch>();
-  const [search, setSearch] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
-  const searchValue = useDeferredValue(search.toLowerCase());
   const useEffectRef = useRef<boolean>(false);
   useEffect(() => {
     const fetchAllTopics = async () => {
       await dispatch(fetchTopics()).finally(() => setLoading(false));
-    }
-    if (useEffectRef.current == false && topics.topics.length == 0) fetchAllTopics();
+    };
+    if (useEffectRef.current == false && topics.length == 0) fetchAllTopics();
     else setLoading(false);
     return () => {
       useEffectRef.current = true;
-    }
+    };
   }, []);
+  if (loading) return <Loader />;
   return (
     <>
-      <TopicsHeader search={search} onChange={e => setSearch(e.target.value)} onClear={() => setSearch('')}/>
+      <TopicsHeader search={searchValue} onChange={e => setSearch(e.target.value)} onClear={() => clearSearch()}/>
       {
-        loading ? <Loader/> : <>
+        <>
           <div className={styles.topics_wrapper}>
             {
-              topics.topics.map((topic, index) => (
+              topics.map((topic, index) => (
                 isReportedTopic(topic, user.id) &&
-                <TopicAccordion key={index} topic={topic} user={user} isRegisteredStudent={topics.registeredStudent} type='topic'/>
+                <TopicAccordion key={index} topic={topic} user={user} isRegisteredStudent={registeredStudent}/>
               )) 
             }
           </div>
-          { topics.registeredStudent && <div className={styles.line}></div> }
+          { registeredStudent && <div className={styles.line}></div> }
           <div className={styles.subjects_wrapper}>
             {
-              topics.subjects.filter(item => {
-                return searchValue ? item[0].subjectTitle.toLowerCase().includes(searchValue.trim()) : item;
+              subjects.filter(item => {
+                return searchValue ? item[0].subjectTitle.toLowerCase().includes(searchValue.toLowerCase().trim()) : item;
               }).map((topic, index) => ( 
-                <TopicAccordion key={index} topic={topic[0]} subject={topic} user={user} isRegisteredStudent={topics.registeredStudent} type='subject'/>
+                <SubjectAccordion key={index} subject={topic} user={user} isRegisteredStudent={registeredStudent}/>
               ))
             }
             {
-              topics.topics.filter(item => {
-                return searchValue ? item.title.toLowerCase().includes(searchValue.trim()) ||
-                item.professorUsername.toLowerCase().includes(searchValue.trim()) : null;
+              topics.filter(item => {
+                return searchValue ? item.title.toLowerCase().includes(searchValue.toLowerCase().trim()) ||
+                item.professorUsername.toLowerCase().includes(searchValue.toLowerCase().trim()) : null;
               }).map((topic, index) => (
-                <TopicAccordion key={index} topic={topic} user={user} isRegisteredStudent={topics.registeredStudent} type='topic'/>
+                <TopicAccordion key={index} topic={topic} user={user} isRegisteredStudent={registeredStudent}/>
               ))
             }
             {
-              hasNoSearchResults(searchValue, topics.topics) &&
+              hasNoSearchResults(searchValue.toLowerCase(), topics) &&
               <p className={styles.no_search_results}>Нема резултата претраге <span>"{searchValue}"</span></p>
             }
           </div>

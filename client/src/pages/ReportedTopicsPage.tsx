@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../redux/store";
-import { deleteTopic, fetchTopicsByProfessorId, updateTopicStatus } from "../redux/slices/topicsSlice";
+import { AppDispatch } from "../redux/store";
+import { deleteTopic, fetchTopicsByProfessorId, selectSubjects, selectTopics, updateTopicStatus } from "../redux/slices/topicsSlice";
 import { useUserContext } from "../context/UserContext";
-import { topicStatusEnum } from "../utils/constants";
 import { useToastMessage } from "../hooks/useToastMessage";
+import { topicStatusEnum } from "../utils/constants";
+import { getCyrillicName } from "../utils/utils";
 import Loader from "../components/Loader";
 import CTA from "../components/CTA";
 import Chats from "../components/Chats";
@@ -13,7 +14,8 @@ import styles from './ReportedTopicsPage.module.css';
 const ReportedTopicsPage = () => {
   const user = useUserContext();
   const { successMessage, errorMessage } = useToastMessage();
-  const topics = useSelector((state: RootState) => state.topics);
+  const topics = useSelector(selectTopics);
+  const subjects = useSelector(selectSubjects);
   const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState<boolean>(true);
   const useEffectRef = useRef<boolean>(false);
@@ -31,7 +33,7 @@ const ReportedTopicsPage = () => {
     const fetchReportedTopics = async () => {
       await dispatch(fetchTopicsByProfessorId(user.id)).finally(() => setLoading(false));
     }
-    if (useEffectRef.current == false && topics.topics.length == 0) fetchReportedTopics();
+    if (useEffectRef.current == false && topics.length == 0) fetchReportedTopics();
     else setLoading(false);
     return () => {
       useEffectRef.current = true;
@@ -46,11 +48,11 @@ const ReportedTopicsPage = () => {
         loading ? <Loader/> :
         <div className={styles.reported_topics_wrapper}>
           {
-            topics.subjects.map((topic, index) => (
+            subjects.map((topic, index) => (
               <div key={index} className={styles.subject_item}>
                 <h1>{topic[0].subjectTitle}</h1>
                 {
-                  topics.subjects[index].map((topic, index) => (
+                  subjects[index].map((topic, index) => (
                     <div key={index} className={styles.topic_item}>
                       { index > 0 && <div className={styles.line}></div> }
                       <div className={styles.title_wrapper}>
@@ -61,7 +63,7 @@ const ReportedTopicsPage = () => {
                           onClick={() => handleTopicDelete(topic.id)}
                         />
                       </div>
-                      <p>Статус теме: {topic.status}</p>
+                      <p>Статус теме: {getCyrillicName(topicStatusEnum, topic.status)}</p>
                       <div className={styles.approved_users_wrapper}>
                         {
                           topic.studentUserId != null ? <>
@@ -71,20 +73,20 @@ const ReportedTopicsPage = () => {
                                 <CTA title="Врати на пријаву"
                                   color='red'
                                   size='sm'
-                                  onClick={() => handleTopicStatusUpdate(topic.id, topicStatusEnum.SLOBODNA)}
+                                  onClick={() => handleTopicStatusUpdate(topic.id, topicStatusEnum.SLOBODNA.id)}
                                 />
                                 {
-                                  topic.status == "резервисана" ?
+                                  topic.status == topicStatusEnum.REZERVISANA.id ?
                                   <CTA title="Постави на чекање"
                                     color='green'
                                     size='sm'
-                                    onClick={() => handleTopicStatusUpdate(topic.id, topicStatusEnum.NA_CEKANJU)}
+                                    onClick={() => handleTopicStatusUpdate(topic.id, topicStatusEnum.NA_CEKANJU.id)}
                                   />
                                   : 
                                   <CTA title="Предај тему"
                                     color='green'
                                     size='sm'
-                                    onClick={() => handleTopicStatusUpdate(topic.id, topicStatusEnum.REZERVISANA)}
+                                    onClick={() => handleTopicStatusUpdate(topic.id, topicStatusEnum.REZERVISANA.id)}
                                   />
                                 }
                               </div>
