@@ -85,13 +85,16 @@ export interface MessagesState {
 }
 export interface TopicsState {
     topics: Topic[],
-    subjects: Topic[][],
-    registeredStudent: boolean
+    subjects: Topic[][]
 }
 export interface EnumObject {
     [key: string]: { id: number, nameCyrillic: string }
 }
 // types
+export type UserAuthResponse = {
+    user: User,
+    accessToken: string
+}
 export type UpdateTopicProps = {
     id: number,
     userId: number

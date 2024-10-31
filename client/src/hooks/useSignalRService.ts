@@ -1,13 +1,14 @@
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
-import { addMessages, fetchReceiverUserById } from "../redux/slices/messagesSlice";
-import { useCookie } from "../hooks/useCookie";
+import { addMessages } from "../redux/slices/messagesSlice";
+import { useAuthContext } from "../context/AuthContext";
+import { useMessageService } from "../services/api/useMessageService";
 import * as signalR from "@microsoft/signalr";
-const useSignalRService = (receiver: string | undefined) => {
+export const useSignalRService = (receiver: string | undefined) => {
     const URL = import.meta.env.VITE_SOCKET_SERVICE_URL;
-    const { getCookie } = useCookie();
-    const token = getCookie('accessToken');
+    const { accessToken } = useAuthContext();
+    const { fetchReceiverUserByIdAsync } = useMessageService();
     const receiverUser = useSelector((state: RootState) => state.messages.receiverUser);
     const dispatch = useDispatch<AppDispatch>();
     const [hubConnection, setHubConnection] = useState<signalR.HubConnection | null>(null);
@@ -15,7 +16,7 @@ const useSignalRService = (receiver: string | undefined) => {
     const useEffectRef = useRef<boolean>(false);
     useEffect(() => {
       const fetchReceiverUser = async () => {
-        await dispatch(fetchReceiverUserById(parseInt(receiver!)));
+        await fetchReceiverUserByIdAsync(parseInt(receiver!));
       };
       if (useEffectRef.current == false && receiver) fetchReceiverUser();
       return () => {
@@ -24,7 +25,7 @@ const useSignalRService = (receiver: string | undefined) => {
     }, []);
     useEffect(() => {
         if (!receiverUser) return;
-        const connection = new signalR.HubConnectionBuilder().withUrl(URL, { accessTokenFactory: () => token || '' }).build();
+        const connection = new signalR.HubConnectionBuilder().withUrl(URL, { accessTokenFactory: () => accessToken || '' }).build();
         const handleReceiveMessage = (messageDto: { receiverId: string, userIdentifier: string, message: string }) => {
             if (receiverUser) {
                 dispatch(addMessages({
@@ -45,7 +46,7 @@ const useSignalRService = (receiver: string | undefined) => {
             connection.off("ReceiveMessage", handleReceiveMessage);
             connection.stop();
         };
-    }, [dispatch, receiverUser, URL, token]);
+    }, [dispatch, receiverUser, URL, accessToken]);
     const sendMessage = async (message: string) => {
         if (hubConnection && connectionState === signalR.HubConnectionState.Connected) {
             try {
@@ -57,4 +58,3 @@ const useSignalRService = (receiver: string | undefined) => {
     };
     return sendMessage;
 };
-export default useSignalRService;

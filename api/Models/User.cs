@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 namespace api.Models
 {
     [Table("Korisnik")]
@@ -17,6 +14,7 @@ namespace api.Models
         [Column("i_mejl")]
         public string Email { get; set; } = null!;
         [Column("lozinka")]
+        [JsonIgnore]
         public string Password { get; set; } = null!;
         [Column("uloga")]
         public int roleStatus { get; set; }

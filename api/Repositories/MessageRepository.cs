@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using api.Data;
-using api.Dtos.Message;
 using api.Enums;
 using api.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using api.Dtos.Message;
 namespace api.Repositories
 {
     public class MessageRepository : IMessageRepository

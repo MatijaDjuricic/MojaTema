@@ -4,17 +4,17 @@ import { ReactSVG } from 'react-svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../redux/store';
 import { addMessages, selectMessages, selectReceiverUser } from '../redux/slices/messagesSlice';
-import { useUserContext } from '../context/UserContext';
+import { useAuthContext } from '../context/AuthContext';
 import { useToastMessage } from '../hooks/useToastMessage';
-import { formatDate, formatTime } from '../utils/utils';
-import useSignalRService from '../hooks/useSignalRService';
+import { formatDate, formatTime } from '../utils/formatting';
+import { useSignalRService } from '../hooks/useSignalRService';
 import send_icon from '../assets/send.svg';
 import styles from './ChatPage.module.css';
 const ChatPage = () => {
-    const user = useUserContext();
     const messages = useSelector(selectMessages);
     const receiverUser = useSelector(selectReceiverUser);
     const dispatch = useDispatch<AppDispatch>();
+    const { currentUser } = useAuthContext();
     const { errorMessage } = useToastMessage();
     const { receiver: receiver } = useParams<{ receiver: string }>();
     const [message, setMessage] = useState<string>('');
@@ -24,12 +24,14 @@ const ChatPage = () => {
     const handleSendMessage = async () => {
         if (message.trim() !== "") {
             await sendMessage(message);
-            dispatch(addMessages({
-                id: user.id,
-                receiveUsername: `${user.firstName} ${user.lastName}`,
+            dispatch(
+              addMessages({
+                id: currentUser.id,
+                receiveUsername: `${currentUser.firstName} ${currentUser.lastName}`,
                 content: message,
-                createdAt: new Date()
-            }));
+                createdAt: new Date(),
+              })
+            );
             setMessage('');
         } else errorMessage("Поље за поруку је празно");
     };    
@@ -58,7 +60,7 @@ const ChatPage = () => {
                 <div className={styles.messages_wrapper}>
                 {
                     messages.map((message, index) => message.content &&
-                        <div key={index} className={message.id !== user.id ? styles.message_left : styles.message_right}>
+                        <div key={index} className={message.id !== currentUser.id ? styles.message_left : styles.message_right}>
                             <div className={styles.message_box}>
                                 <span>{message.receiveUsername}</span>
                                 <p>{message.content}</p>

@@ -1,5 +1,5 @@
-import NavBar from './NavBar';
-import SideBar from './SideBar';
+import NavBar from '../components/NavBar';
+import SideBar from '../components/SideBar';
 import styles from './PageLayout.module.css';
 const PageLayout = ({ children }: { children: JSX.Element }) => {
   return (

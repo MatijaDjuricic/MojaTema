@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../redux/store";
-import { updateTopic } from "../redux/slices/topicsSlice";
-import { getCyrillicName, isReportedTopic } from "../utils/utils";
+import { useTopicService } from "../services/api/useTopicService";
+import { getCyrillicName, isReportedTopic } from "../utils/helpers";
 import { topicStatusEnum } from "../utils/constants";
 import { Topic, User } from "../types/types";
 import { ReactSVG } from "react-svg";
@@ -15,12 +13,12 @@ type SubjectAccordionProps = {
   user: User;
 };
 const SubjectAccordion = ({ subject, user, isRegisteredStudent }: SubjectAccordionProps) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const { updateTopicAsync } = useTopicService();
   const [btnLoading, setBtnLoading] = useState({ btn_id: -1, loading: false });
   const [open, setOpen] = useState(false);
-  const handleTopicUpdate = (topic_id: number, user_id: number) => {
+  const handleTopicUpdate = async (topic_id: number, user_id: number) => {
     setBtnLoading({ btn_id: topic_id, loading: true });
-    dispatch(updateTopic({ id: topic_id, userId: user_id })).finally(() => setBtnLoading({ btn_id: -1, loading: false }));
+    await updateTopicAsync({ id: topic_id, userId: user_id }).finally(() => setBtnLoading({ btn_id: -1, loading: false }));
   };
   return (
     <div className={styles.container}>

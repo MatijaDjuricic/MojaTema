@@ -1,28 +1,33 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using api.Data;
 using api.Enums;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
 using api.Dtos.Topic;
-using Microsoft.EntityFrameworkCore;
 namespace api.Repositories
 {
     public class TopicRepository : ITopicRepository
     {
         private readonly DataContext context;
-        public TopicRepository(DataContext context) => this.context = context;
-        public async Task<List<TopicDto>> GetTopicsAsync() {
+        private readonly ICacheService cacheService;
+        public TopicRepository(DataContext context, ICacheService cacheService) {
+            this.context = context;
+            this.cacheService = cacheService;
+        }
+        public async Task<List<TopicDto>> GetTopicsAsync(string cacheKey) {
+            var cachedTopics = await cacheService.VerifyCacheList<TopicDto>(cacheKey);
+            if (cachedTopics != null) return cachedTopics;
             var topics = await context.Topics.Include(t => t.User)
             .Include(t => t.Student).ThenInclude(s => s != null ? s.User : null)
             .Include(t => t.Subject).ToListAsync();
-            return topics.Select(t => t.ToTopicDto()).ToList();
+            var topicsDto = topics.Select(t => t.ToTopicDto()).ToList();
+            await cacheService.SetCache(topicsDto, cacheKey);
+            return topicsDto;
         }
-        public async Task<List<TopicDto>?> GetTopicsByProfessorIdAsync(int id) {
+        public async Task<List<TopicDto>?> GetTopicsByProfessorIdAsync(int id, string cacheKey) {
+            var cachedTopics = await cacheService.VerifyCacheList<TopicDto>(cacheKey);
+            if (cachedTopics != null) return cachedTopics;
             var topics = await context.Topics.Include(t => t.User)
             .Include(t => t.Student)
             .ThenInclude(s => s != null ? s.User : null)
@@ -30,6 +35,7 @@ namespace api.Repositories
             .Where(t => t.professorId == id).ToListAsync();
             if (topics == null || !topics.Any()) return null;
             var topicsDto = topics.Select(t => t.ToTopicDto()).ToList();
+            await cacheService.SetCache(topicsDto, cacheKey);
             return topicsDto;
         }
         public async Task<TopicDto?> UpdateTopicAsync(int id, UpdateTopicRequestDto updateTopicDto) {

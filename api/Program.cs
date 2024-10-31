@@ -1,17 +1,18 @@
 using System.Text;
-using api.Data;
-using api.Interfaces;
-using api.Repositories;
-using api.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using api.Data;
+using api.Services;
+using api.Repositories;
+using api.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddSwaggerGen(option => {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "MojaTema API", Version = "v1" });
     option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -29,11 +30,11 @@ builder.Services.AddSwaggerGen(option => {
             {
                 Reference = new OpenApiReference
                 {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
                 }
             },
-            new string[]{}
+            new string[] {}
         }
     });
 });
@@ -43,7 +44,10 @@ builder.Services.AddControllers().AddNewtonsoftJson(options => {
 builder.Services.AddDbContext<DataContext>(options => {
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-#pragma warning disable CS8604
+builder.Services.AddStackExchangeRedisCache(options => {
+    options.Configuration = builder.Configuration["Redis:ConnectionString"];
+    options.InstanceName = "RedisInstance";
+});
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -53,7 +57,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
     };
     options.Events = new JwtBearerEvents
     {
@@ -70,7 +74,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         }
     };
 });
-#pragma warning restore CS8604
+builder.Services.AddScoped<ICacheService, CacheService>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITopicRepository, TopicRepository>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();

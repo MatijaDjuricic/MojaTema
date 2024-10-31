@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUserContext } from "../context/UserContext";
-import { AppDispatch } from "../redux/store";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAuthContext } from "../context/AuthContext";
+import { useMessageService } from "../services/api/useMessageService";
 import { ReactSVG } from "react-svg";
-import { fetchChatsByUserId, selectChats } from "../redux/slices/messagesSlice";
+import { selectChats } from "../redux/slices/messagesSlice";
 import CTA from "./CTA";
 import styles from "./Chats.module.css";
 import chats_icon from "../assets/chats.svg";
@@ -14,9 +14,9 @@ type ChatsProps = {
   receiverId?: number
 }
 const Chats = ({ type, receiverId }: ChatsProps) => {
-  const user = useUserContext();
+  const { currentUser } = useAuthContext();
+  const { fetchChatsByUserIdAsync } = useMessageService();
   const chats = useSelector(selectChats);
-  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -25,8 +25,8 @@ const Chats = ({ type, receiverId }: ChatsProps) => {
     setShow(false);
   }
   const fetchChats = useCallback(async () => {
-    await dispatch(fetchChatsByUserId(user.id));
-  }, [user.id]);
+    await fetchChatsByUserIdAsync(currentUser.id);
+  }, [currentUser.id]);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (panelRef.current && !panelRef.current.contains(event.target as Node)) {

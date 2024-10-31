@@ -1,6 +1,6 @@
 import Header from '../components/Header';
 import styles from './HomePage.module.css';
-const HomePage: React.FC = () => {
+const HomePage = () => {
   return (
     <>
       <Header>

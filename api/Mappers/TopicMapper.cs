@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using api.Dtos.Topic;
+﻿using api.Dtos.Topic;
 using api.Models;
 namespace api.Mappers
 {

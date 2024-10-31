@@ -1,37 +1,37 @@
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../redux/store";
-import { deleteTopic, fetchTopicsByProfessorId, selectSubjects, selectTopics, updateTopicStatus } from "../redux/slices/topicsSlice";
-import { useUserContext } from "../context/UserContext";
+import { useSelector } from "react-redux";
+import { selectSubjects, selectTopics } from "../redux/slices/topicsSlice";
+import { useAuthContext } from "../context/AuthContext";
+import { useTopicService } from "../services/api/useTopicService";
 import { useToastMessage } from "../hooks/useToastMessage";
 import { topicStatusEnum } from "../utils/constants";
-import { getCyrillicName } from "../utils/utils";
+import { getCyrillicName } from "../utils/helpers";
 import Loader from "../components/Loader";
 import CTA from "../components/CTA";
 import Chats from "../components/Chats";
 import Header from "../components/Header";
 import styles from './ReportedTopicsPage.module.css';
 const ReportedTopicsPage = () => {
-  const user = useUserContext();
+  const { currentUser } = useAuthContext();
   const { successMessage, errorMessage } = useToastMessage();
+  const { fetchTopicsByProfessorIdAsync, updateTopicStatusAsync, deleteTopicAsync } = useTopicService();
   const topics = useSelector(selectTopics);
   const subjects = useSelector(selectSubjects);
-  const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState<boolean>(true);
   const useEffectRef = useRef<boolean>(false);
   const handleTopicStatusUpdate = async (topicId: number, topicStatus: number) => {
-    await dispatch(updateTopicStatus({ 'id': topicId, 'professorId': user.id, 'topicStatus': topicStatus }))
+    await updateTopicStatusAsync({ 'id': topicId, 'professorId': currentUser.id, 'topicStatus': topicStatus })
     .catch(e => errorMessage(e))
     .finally(() => successMessage('Успешно додавање новог статуса теме'));
   }
   const handleTopicDelete = async (topicId: number ) => {
-    await dispatch(deleteTopic({ 'id': topicId, 'professorId': user.id }))
+    await deleteTopicAsync({ 'id': topicId, 'professorId': currentUser.id })
     .catch(e => errorMessage(e))
     .finally(() => successMessage('Успешно брисање теме'));
   }
   useEffect(() => {
     const fetchReportedTopics = async () => {
-      await dispatch(fetchTopicsByProfessorId(user.id)).finally(() => setLoading(false));
+      await fetchTopicsByProfessorIdAsync(currentUser.id).finally(() => setLoading(false));
     }
     if (useEffectRef.current == false && topics.length == 0) fetchReportedTopics();
     else setLoading(false);

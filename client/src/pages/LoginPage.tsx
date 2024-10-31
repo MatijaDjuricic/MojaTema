@@ -1,31 +1,60 @@
-import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { ReactSVG } from "react-svg";
-import { AppDispatch } from "../redux/store";
-import { userLogin } from "../redux/slices/usersSlice";
+import { useEffect, useRef, useState } from "react";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useAuthService } from "../services/api/useAuthService";
+import { useAuthContext } from "../context/AuthContext";
 import { useToastMessage } from "../hooks/useToastMessage";
+import { ReactSVG } from "react-svg";
 import CTA from "../components/CTA";
 import Logo from "../components/Logo";
-import eye from "../assets/eye.svg";
+import Loader from "../components/Loader";
 import eyeSlash from "../assets/eye_slash.svg";
+import eye from "../assets/eye.svg";
 import styles from "./LoginPage.module.css";
 const LoginPage = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { errorMessage } = useToastMessage();
+  const { accessToken, setAuth } = useAuthContext();
+  const { userLoginAsync, userVerifyTokenAsync } = useAuthService();
+  const { successMessage, errorMessage } = useToastMessage();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setLoading] = useState<boolean>(false);
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
+  const [authCheckLoading, setAuthCheckLoading] = useState<boolean>(true);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const from = location.state?.from || "/";
+  const togglePasswordVisibility = () => setPasswordVisible(!passwordVisible);
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     const email = emailRef.current?.value.trim();
     const password = passwordRef.current?.value.trim();
     if (email && password) {
       setLoading(true);
-      await dispatch(userLogin({ email: email, password: password })).finally(() => setLoading(false));
-    } else errorMessage("Поља форме су празна");
+      const response = await userLoginAsync({ email, password }).finally(() =>
+        setLoading(false)
+      );
+      if (response) {
+        setAuth({ user: response.user, accessToken: response.accessToken });
+        navigate(from, { replace: true });
+        successMessage("Успешна пријава");
+      } else {
+        errorMessage("Имејл или лозинка су погрешни");
+      }
+    } else {
+      errorMessage("Поља форме су празна");
+    }
   };
-  const togglePasswordVisibility = () => setPasswordVisible(!passwordVisible);
+  useEffect(() => {
+    const verifyAuthToken = async () => {
+      const auth = await userVerifyTokenAsync().finally(() => setAuthCheckLoading(false));
+      if (auth) {
+        setAuth(auth);
+      }
+    };
+    if (!accessToken) verifyAuthToken();
+    else setAuthCheckLoading(false);
+  }, []);
+  if (authCheckLoading) return <Loader/>;
+  if (accessToken) return <Navigate to={from} replace />;
   return (
     <main className={styles.main_wrapper}>
       <div className={styles.form_container}>
@@ -42,7 +71,7 @@ const LoginPage = () => {
             </button>
           </div>
           <div className={styles.submit_wrapper}>
-            <CTA title="Пријави се" loading={loading} size="lg" onClick={handleSubmit}/>
+            <CTA title="Пријави се" loading={loading} disabled={loading} size="lg" onClick={handleSubmit}/>
           </div>
         </form>
       </div>

@@ -1,30 +1,29 @@
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchTopics, selectRegisteredStudent, selectSubjects, selectTopics } from "../redux/slices/topicsSlice";
-import { useUserContext } from "../context/UserContext";
+import { useSelector } from "react-redux";
+import { selectSubjects, selectTopics } from "../redux/slices/topicsSlice";
+import { useTopicService } from "../services/api/useTopicService";
 import { useTopicSearch } from "../hooks/useTopicSearch";
-import { hasNoSearchResults, isReportedTopic } from "../utils/utils";
-import { AppDispatch } from "../redux/store";
+import { hasNoSearchResults, isReportedTopic, isReportedUser } from "../utils/helpers";
+import { useAuthContext } from "../context/AuthContext";
 import Loader from "../components/Loader";
 import TopicsHeader from "../components/TopicsHeader";
 import SubjectAccordion from "../components/SubjectAccordion";
 import TopicAccordion from "../components/TopicAccordion";
 import styles from "./TopicsPage.module.css";
 const TopicsPage = () => {
-  const user = useUserContext();
+  const { currentUser } = useAuthContext();
+  const { fetchTopicsAsync } = useTopicService();
   const topics = useSelector(selectTopics);
   const subjects = useSelector(selectSubjects);
-  const registeredStudent = useSelector(selectRegisteredStudent);
+  const registeredStudent = isReportedUser(topics, currentUser.id);
   const { search: searchValue, setSearch, clearSearch } = useTopicSearch();
-  const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState<boolean>(true);
   const useEffectRef = useRef<boolean>(false);
   useEffect(() => {
     const fetchAllTopics = async () => {
-      await dispatch(fetchTopics()).finally(() => setLoading(false));
+      await fetchTopicsAsync().finally(() => setLoading(false));
     };
-    if (useEffectRef.current == false && topics.length == 0) fetchAllTopics();
-    else setLoading(false);
+    if (!useEffectRef.current) fetchAllTopics().finally(() => setLoading(false));
     return () => {
       useEffectRef.current = true;
     };
@@ -38,8 +37,8 @@ const TopicsPage = () => {
           <div className={styles.topics_wrapper}>
             {
               topics.map((topic, index) => (
-                isReportedTopic(topic, user.id) &&
-                <TopicAccordion key={index} topic={topic} user={user} isRegisteredStudent={registeredStudent}/>
+                isReportedTopic(topic, currentUser.id) &&
+                <TopicAccordion key={index} topic={topic} user={currentUser} isRegisteredStudent={registeredStudent}/>
               )) 
             }
           </div>
@@ -49,7 +48,7 @@ const TopicsPage = () => {
               subjects.filter(item => {
                 return searchValue ? item[0].subjectTitle.toLowerCase().includes(searchValue.toLowerCase().trim()) : item;
               }).map((topic, index) => ( 
-                <SubjectAccordion key={index} subject={topic} user={user} isRegisteredStudent={registeredStudent}/>
+                <SubjectAccordion key={index} subject={topic} user={currentUser} isRegisteredStudent={registeredStudent}/>
               ))
             }
             {
@@ -57,7 +56,7 @@ const TopicsPage = () => {
                 return searchValue ? item.title.toLowerCase().includes(searchValue.toLowerCase().trim()) ||
                 item.professorUsername.toLowerCase().includes(searchValue.toLowerCase().trim()) : null;
               }).map((topic, index) => (
-                <TopicAccordion key={index} topic={topic} user={user} isRegisteredStudent={registeredStudent}/>
+                <TopicAccordion key={index} topic={topic} user={currentUser} isRegisteredStudent={registeredStudent}/>
               ))
             }
             {

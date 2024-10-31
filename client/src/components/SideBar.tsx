@@ -1,12 +1,9 @@
 import { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { useUserContext } from '../context/UserContext';
-import { logOut } from '../redux/slices/usersSlice';
-import { resetAllStates } from "../redux/slices/rootSlice";
 import { ReactSVG } from 'react-svg';
 import { ModalHandle } from '../types/types';
+import { useAuthContext } from '../context/AuthContext';
 import { roleEnum } from '../utils/constants';
+import useLogOut from '../services/api/useLogOut';
 import NavItem from './NavItem';
 import Notifications from './Notifications';
 import Chats from './Chats';
@@ -19,27 +16,27 @@ import add_icon from '../assets/add.svg';
 import logout_icon from '../assets/logout.svg';
 import styles from './SideBar.module.css';
 const SideBar = () => {
-    const user = useUserContext();
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const { currentUser } = useAuthContext();
+    const logOut = useLogOut();
+    const logOutSubmit = async () => await logOut();
     const modal = useRef<ModalHandle>(null);
-    const closeSideBar = () => document.body.classList.remove('toggle_sidebar');
-    const logOutSubmit = () => {
-        dispatch(resetAllStates());
-        dispatch(logOut());
-        navigate("/");
-    };
     return (
         <aside id='sideBar' className={styles.sidebar_container}>
             <main className={styles.main_wrapper}>
                 <div className={styles.nav_items}>
-                    <NavItem title='Почетна' to='/' icon={home_icon} onClick={closeSideBar}/>
-                    <NavItem title='Теме' to='/topics' icon={theme_icon} onClick={closeSideBar}/>
+                    <NavItem title='Почетна' to='/' icon={home_icon}/>
                     {
-                        user.roleStatus == roleEnum.PROFESOR.id &&
-                        <NavItem title='Додај Тему' to='/create-topic' icon={add_icon} onClick={closeSideBar}/>
+                        currentUser.roleStatus == roleEnum.UCENIK.id && <>
+                            <NavItem title='Теме' to='/student/topics' icon={theme_icon}/>
+                        </>
                     }
-                    <NavItem title='Мој Профил' to='/profile' icon={profile_icon} onClick={closeSideBar}/>
+                    {
+                        currentUser.roleStatus == roleEnum.PROFESOR.id && <>
+                            <NavItem title='Теме' to='/professor/topics' icon={theme_icon}/>
+                            <NavItem title='Додај Тему' to='/topics/create' icon={add_icon}/>
+                        </>
+                    }
+                    <NavItem title='Мој Профил' to='/profile' icon={profile_icon}/>
                 </div>
                 <div className={styles.nav_buttons}>
                     <Chats/>

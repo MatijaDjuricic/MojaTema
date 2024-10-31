@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useUserContext } from "../context/UserContext";
+import { NavLink } from "react-router-dom";
 import { Divide as Hamburger } from "hamburger-react";
-import { resetAllStates } from "../redux/slices/rootSlice";
-import { logOut } from "../redux/slices/usersSlice";
+import { useAuthContext } from "../context/AuthContext";
 import { roleEnum } from "../utils/constants";
-import { getCyrillicName } from "../utils/utils";
+import { getCyrillicName } from "../utils/helpers";
 import { ModalHandle } from "../types/types";
 import { ReactSVG } from "react-svg";
+import useLogOut from "../services/api/useLogOut";
 import Notifications from "./Notifications";
 import Logo from "./Logo";
 import Chats from "./Chats";
@@ -20,21 +18,16 @@ import styles from "./NavBar.module.css";
 import Modal from "./Modal";
 import CTA from "./CTA";
 const NavBar = () => {
-  const user = useUserContext();
+  const { currentUser } = useAuthContext();
+  const logOut = useLogOut();
   const [isOpen, setOpen] = useState(false);
   const modal = useRef<ModalHandle>(null);
-  const dispatch = useDispatch()
-  const navigate = useNavigate();
   const toggleSideBar = () => document.body.classList.toggle("toggle_sidebar");
   const toggleHamburger = () => {
     toggleSideBar();
     setOpen(!isOpen);
   };
-  const logOutSubmit = () => {
-    dispatch(resetAllStates());
-    dispatch(logOut());
-    navigate("/");
-  };
+  const logOutSubmit = async () => await logOut();
   useEffect(() => {
     setOpen(document.body.className === "toggle_sidebar");
   }, [document.body.className]);
@@ -69,14 +62,14 @@ const NavBar = () => {
         <div className={styles.right_side}>
           <Notifications type="icon" />
           <Chats type="icon" />
-          <DropDown title={`${user.firstName} ${user.lastName}`}>
+          <DropDown title={`${currentUser?.firstName} ${currentUser?.lastName}`}>
             <div className={styles.dropdown}>
               <div className={styles.dropdown_header}>
                 <p className={styles.username}>
-                  {user.firstName} {user.lastName}
+                  {currentUser?.firstName} {currentUser?.lastName}
                 </p>
                 <p className={styles.status}>
-                  {getCyrillicName(roleEnum, user.roleStatus)}
+                  {getCyrillicName(roleEnum, currentUser.roleStatus)}
                 </p>
               </div>
               <NavLink

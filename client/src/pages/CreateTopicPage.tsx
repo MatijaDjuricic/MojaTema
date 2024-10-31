@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
-import { useUserContext } from '../context/UserContext';
+import { useSelector } from 'react-redux';
+import { selectSubjects, selectTopics } from "../redux/slices/topicsSlice";
+import { useAuthContext } from '../context/AuthContext';
+import { useTopicService } from '../services/api/useTopicService';
 import { useToastMessage } from '../hooks/useToastMessage';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../redux/store';
-import { createTopic, fetchTopicsByProfessorId, selectSubjects, selectTopics } from "../redux/slices/topicsSlice";
 import Header from '../components/Header';
 import CTA from '../components/CTA';
 import styles from './CreateTopicPage.module.css';
 const CreateTopicPage = () => {
-  const user = useUserContext();
+  const { currentUser } = useAuthContext();
+  const { createTopicAsync, fetchTopicsByProfessorIdAsync } = useTopicService();
   const { successMessage, errorMessage } = useToastMessage();
   const [loading, setLoading] = useState<boolean>(false);
-  const dispatch = useDispatch<AppDispatch>();
   const topics = useSelector(selectTopics);
   const subjects = useSelector(selectSubjects);
   const titleRef = useRef<HTMLInputElement>(null);
@@ -30,12 +30,12 @@ const CreateTopicPage = () => {
     const subjectId = subjectRef.current?.value ? parseInt(subjectRef.current?.value, 10) : null;
     if (title && description && subjectId) {
       setLoading(true);
-      await dispatch(createTopic({
+      await createTopicAsync({
         'title': title,
         'description': description,
         'subjectId': subjectId,
-        'professorId': user.id
-      })).finally(() => {
+        'professorId': currentUser.id
+      }).finally(() => {
         setLoading(false);
         handleClear(e);
         successMessage('Успешно додата тема');
@@ -46,7 +46,7 @@ const CreateTopicPage = () => {
   };
   useEffect(() => {
     const fetchReportedTopics = async () => {
-      await dispatch(fetchTopicsByProfessorId(user.id)).finally(() => setLoading(false));
+      await fetchTopicsByProfessorIdAsync(currentUser.id).finally(() => setLoading(false));
     }
     if (useEffectRef.current == false && topics.length == 0) fetchReportedTopics();
     else setLoading(false);
