@@ -3,4 +3,5 @@ obj/
 Properties
 appsettings.json
 appsettings.Development.json
+compose.yaml
 database.db

@@ -7,7 +7,7 @@ namespace api.Controllers
 {
     [Route("api/auth")]
     [ApiController]
-    sealed public class AuthController : ControllerBase
+    public sealed class AuthController : ControllerBase
     {
         private readonly IAuthRepository authRepository;
         private readonly IUserRepository userRepository;

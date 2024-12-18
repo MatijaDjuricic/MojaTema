@@ -55,12 +55,14 @@ namespace api.Repositories
                 topic.Status = (int)TopicEnum.NA_CEKANJU;
             }
             await context.SaveChangesAsync();
-            var topicDto = await context.Topics.Include(t => t.User)
-            .Include(t => t.Student)
-            .ThenInclude(s => s != null ? s.User : null)
-            .Include(t => t.Subject)
-            .FirstOrDefaultAsync(t => t.Id == id);
-            return topicDto?.ToTopicDto();
+            return await context.Topics
+                    .Include(t => t.User)
+                    .Include(t => t.Student)
+                    .ThenInclude(s => s.User)
+                    .Include(t => t.Subject)
+                    .Where(t => t.Id == id)
+                    .Select(t => t.ToTopicDto())
+                    .FirstOrDefaultAsync();
         }
         public async Task<TopicDto?> UpdateTopicStatusAsync(int id, TopicStatusRequestDto topicStatusDto) {
             var topic = await context.Topics.Include(t => t.User)

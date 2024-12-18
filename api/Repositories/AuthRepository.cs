@@ -58,19 +58,26 @@ namespace api.Repositories
         }
         public void SetHttpOnlyCookie(string cookie, string token, DateTime expiration) {
             var responseCookies = httpContextAccessor.HttpContext?.Response.Cookies;
-            if (responseCookies != null) {
-                responseCookies.Append(cookie, token, new CookieOptions
-                {
-                    HttpOnly = true,
-                    Secure = false,
-                    SameSite = SameSiteMode.Strict,
-                    Expires = expiration
-                });
-            }
+            responseCookies?.Append(cookie, token, new CookieOptions
+            {
+                HttpOnly = true,
+                // Secure = true,
+                SameSite = SameSiteMode.Strict, // SameSiteMode.None
+                Expires = expiration,
+                // Path = "/",
+                // Domain = "mojatema.azurewebsites.net"
+            });
         }
         public void DeleteHttpOnlyCookie(string cookie) {
             var responseCookies = httpContextAccessor.HttpContext?.Response.Cookies;
-            if (responseCookies != null) responseCookies.Delete(cookie);
+            responseCookies?.Delete(cookie, new CookieOptions
+            {
+                HttpOnly = true,
+                // Secure = true,
+                SameSite = SameSiteMode.Strict, // SameSiteMode.None
+                // Path = "/",
+                // Domain = "mojatema.azurewebsites.net"
+            });
         }
     }
 }

@@ -6,7 +6,6 @@ import { useToastMessage } from "../hooks/useToastMessage";
 import { ReactSVG } from "react-svg";
 import CTA from "../components/CTA";
 import Logo from "../components/Logo";
-import Loader from "../components/Loader";
 import eyeSlash from "../assets/eye_slash.svg";
 import eye from "../assets/eye.svg";
 import styles from "./LoginPage.module.css";
@@ -18,7 +17,6 @@ const LoginPage = () => {
   const location = useLocation();
   const [loading, setLoading] = useState<boolean>(false);
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
-  const [authCheckLoading, setAuthCheckLoading] = useState<boolean>(true);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const from = location.state?.from || "/";
@@ -45,15 +43,13 @@ const LoginPage = () => {
   };
   useEffect(() => {
     const verifyAuthToken = async () => {
-      const auth = await userVerifyTokenAsync().finally(() => setAuthCheckLoading(false));
+      const auth = await userVerifyTokenAsync();
       if (auth) {
         setAuth(auth);
       }
     };
     if (!accessToken) verifyAuthToken();
-    else setAuthCheckLoading(false);
   }, []);
-  if (authCheckLoading) return <Loader/>;
   if (accessToken) return <Navigate to={from} replace />;
   return (
     <main className={styles.main_wrapper}>

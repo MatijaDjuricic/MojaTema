@@ -6,7 +6,7 @@ namespace api.Controllers
 {
     [Route("api/user")]
     [ApiController]
-    sealed public class UserController : ControllerBase
+    public sealed class UserController : ControllerBase
     {
         private readonly IUserRepository userRepository;
         public UserController(IUserRepository userRepository) => this.userRepository = userRepository;

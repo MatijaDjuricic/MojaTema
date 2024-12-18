@@ -32,6 +32,7 @@ export const topicsSlice = createSlice({
         },
         updateTopicStatus: (state, action: PayloadAction<Topic>) => {
             const updatedTopic = action.payload;
+            console.log(action.payload)
             const index = state.topics.findIndex(topic => topic.id === updatedTopic.id);
             if (index !== -1) {
                 state.topics[index] = updatedTopic;

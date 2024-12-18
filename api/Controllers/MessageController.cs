@@ -6,7 +6,7 @@ namespace api.Controllers
 {
     [Route("api/message")]
     [ApiController]
-    sealed public class MessageController : ControllerBase
+    public sealed class MessageController : ControllerBase
     {
         private readonly IMessageRepository messageRepository;
         public MessageController(IMessageRepository messageRepository) => this.messageRepository = messageRepository;

@@ -6,7 +6,7 @@ namespace api.Controllers
 {
     [Route("api/topic")]
     [ApiController]
-    sealed public class TopicController : ControllerBase
+    public sealed class TopicController : ControllerBase
     {
         private readonly ITopicRepository topicRepository;
         public TopicController(ITopicRepository topicRepository) => this.topicRepository = topicRepository;
@@ -15,7 +15,7 @@ namespace api.Controllers
         public async Task<ActionResult<List<TopicDto>>> GetTopics() {
             if (!ModelState.IsValid) return BadRequest();
             var topics = await topicRepository.GetTopicsAsync();
-            if (topics == null) return NotFound();
+            if (!topics.Any()) return NotFound();
             return Ok(topics);
         }
         [Authorize]
