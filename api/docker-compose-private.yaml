@@ -8,8 +8,6 @@ services:
       - "8080:8080"
     environment:
       - Redis__ConnectionString=redis:6379
-    volumes:
-      - ./database.db:/app/database.db
   redis:
     image: redis
     ports:

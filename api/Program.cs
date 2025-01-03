@@ -42,12 +42,17 @@ builder.Services.AddControllers().AddNewtonsoftJson(options => {
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
 builder.Services.AddDbContext<DataContext>(options => {
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddStackExchangeRedisCache(options => {
-    options.Configuration = builder.Configuration["Redis:Private:ConnectionString"]; // Redis -> Public / Private
-    options.InstanceName = "RedisInstance";
-});
+try {
+    builder.Services.AddStackExchangeRedisCache(options => {
+        options.Configuration = builder.Configuration["Redis:Private:ConnectionString"];
+        options.InstanceName = "RedisInstance";
+    });
+}
+catch (Exception e) {
+    Console.WriteLine($"Error connecting to Redis: {e.Message}");
+}
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
     options.TokenValidationParameters = new TokenValidationParameters
     {
