@@ -1,17 +1,19 @@
 .modal_wrapper {
-    width: 100%;
-    height: 100%;
     position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     align-items: flex-start;
     justify-content: center;
     border: none;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 5;
+    color: var(--text-prim);
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 4;
 }
 .modal_content {
     background: var(--background-sec);
-    border-radius: 10px;
+    border-radius: 5px;
     width: 100%;
     max-width: 500px;
     margin-top: 3rem;
@@ -21,7 +23,6 @@
     animation: fadeIn 300ms ease-in forwards;
 }
 .modal_title {
-    color: var(--text-prim);
     font-size: 2rem;
 }
 .modal_header {
@@ -33,32 +34,14 @@
 .modal_body {
     padding: 2rem 0;
 }
-.modal_body p {
-    color: var(--text-prim);
-    font-size: 1.2rem;
-}
 .modal_footer {
     display: flex;
     justify-content: end;
 }
-.close_btn {
-    border: none;
-    border-radius: 50%;
-    background-color: transparent;
-    cursor: pointer;
-}
-.close_icon {
-    width: 2rem;
-    height: 2rem;
-    fill: var(--main);
-}
-.close_btn:hover .close_icon {
-    fill: var(--text-prim);
-}
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(-1rem);
+        transform: translateY(-3rem);
     }
     to {
         opacity: 1;

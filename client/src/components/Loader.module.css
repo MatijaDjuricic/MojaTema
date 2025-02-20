@@ -12,7 +12,7 @@
     var(--c) 100% 50%;
     animation: loading 1s infinite linear alternate;
 }
-.normal_loader {
+.content_loader {
     width: 4rem;
     height: 4rem;
 }

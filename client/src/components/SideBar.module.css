@@ -4,9 +4,9 @@
     top: 4rem;
     left: 0;
     bottom: 0;
-    transition: all 300ms;
+    transition: all 300ms ease;
     background-color: var(--background-sec);
-    box-shadow: 0px 0px 20px rgba(1, 40, 110, 0.2);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
     z-index: 3;
 }
 .main_wrapper {
@@ -27,6 +27,21 @@
     width: 100%;
     display: none;
 }
+.logout_btn {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: .5rem 1rem;
+    background-color: transparent;
+    border: none;
+    transition: background-color 300ms ease-in-out;
+    color: var(--red);
+    font-size: 1rem;
+}
+.logout_btn:hover {
+    background-color: var(--background-prim);
+}
 @media (max-width: 992px) {
     .sidebar_container {
         left: -300px;
@@ -36,29 +51,4 @@
     .nav_buttons {
         display: block;
     }
-}
-.logout_btn {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    gap: 1rem;
-    width: 100%;
-    padding: .5rem 1rem;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    transition: background-color 300ms ease-in-out;
-    color: var(--red);
-    font-size: 1rem;
-}
-.logout_btn:hover {
-    background-color: var(--background-prim);
-}
-.logout_btn:hover .logout_icon {
-    stroke: var(--red);
-}
-.logout_btn .logout_icon {
-    width: 2rem;
-    height: 2rem;
-    stroke: var(--main);
 }

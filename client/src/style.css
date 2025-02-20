@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --font-prim: "Nunito", sans-serif;
+  --sm: 576px;
+  --md: 768px;
+  --lg: 992px;
+  --xl: 1200px;
+  --xxl: 1400px;
+}
+[data-theme='light'] {
+  --main: #0770D1;
+  --text-prim: #182433;
+  --background-prim: #F6F8FB;
+  --background-sec: #FFFFFF;
+  --background-terc: #DCE1E7;
+  --red: #D31313;
+  --green: #31AE05;
+}
+[data-theme='dark'] {
+  --main: #0770D1;
+  --text-prim: #DCE1E7;
+  --background-prim: #151F2C;
+  --background-sec: #182433;
+  --background-terc: #1F2E41;
+  --red: #D31313;
+  --green: #31AE05;
+}
+body {
+  font-family: var(--font-prim);
+  background-color: var(--background-prim);
+}
+h1 {
+  font-weight: 600;
+}
+h1, a {
+  color: var(--text-prim);
+  text-decoration: none;
+}
+button {
+  outline: none;
+  cursor: pointer;
+}
+input {
+  border: none;
+  outline: none;
+}
+.toggle_sidebar #sideBar {
+  left: -300px;
+}
+.toggle_sidebar #mainWrapper {
+  margin-left: 0;
+}
+[data-theme='dark'] .icon {
+  filter: invert(1) brightness(2);
+}
+[data-theme='light'] .icon {
+  filter: none;
+}
+@media (max-width: 992px) {
+  .toggle_sidebar #sideBar {
+    left: 0;
+  }
+  .toggle_sidebar #mainWrapper {
+    margin-left: 300px;
+  }
+}
+@media (max-width: 768px) {
+  .toggle_sidebar #sideBar {
+    width: 100%;
+  }
+  .toggle_sidebar #mainWrapper {
+    margin-left: 0;
+  }
+}

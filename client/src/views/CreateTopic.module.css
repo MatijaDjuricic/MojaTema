@@ -1,0 +1,70 @@
+.create_form {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: var(--background-sec);
+    color: var(--text-prim);
+    box-shadow: 0 5px 10px var(--background-terc);
+    border-radius: 5px;
+}
+.create_form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+.create_form input, .create_form select, .create_form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 1rem;
+    border: 1px solid var(--background-terc);
+    background-color: var(--background-prim);
+    border-radius: 5px;
+    font-size: 1rem;
+    color: var(--text-prim);
+    font-family: var(--font-prim);
+}
+.create_form input:focus, .create_form select:focus, .create_form textarea:focus {
+    border-color: var(--main);
+    outline: none;
+}
+.create_form select {
+    cursor: pointer;
+}
+.create_form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+.create_form .cta_wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.cta_wrapper {
+    flex-direction: row-reverse;
+}
+.upload_file_btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-sec);
+    color: var(--text-prim);
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    border: 1px solid var(--background-terc);
+    transition: all 300ms ease;
+}
+.upload_file_btn input {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+.upload_file_btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--background-terc) -5px 5px;
+}

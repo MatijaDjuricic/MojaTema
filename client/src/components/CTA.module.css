@@ -1,25 +1,24 @@
 .cta_button {
-    color: var(--main);
-    background-color: var(--background-prim);
-    border: 1px solid var(--background-terc);
+    min-width: 10em;
+    color: #FFFFFF;
+    background-color: var(--main);
+    border: none;
     font-weight: bold;
     cursor: pointer;
     outline: none;
     transition: 400ms ease-in-out;
-    border-radius: 10px;
+    border-radius: 5px;
     display: grid;
     place-items: center;
 }
 .button_lg {
-    width: 10rem;
     height: 3.5rem;
-    padding: 10px;
+    padding: 1rem;
     font-size: 1.3rem;
 }
 .button_sm {
-    width: 10rem;
     height: 2.5rem;
-    padding: 3px;
+    padding: 0.5rem;
     font-size: 1rem;
 }
 .loading_button {
@@ -29,13 +28,12 @@
 .loading_button_lg {
     height: 3.5rem;
     margin: 2rem auto;
-    padding: 5px;
+    padding: 0.5rem;
     font-size: 1.3rem;
 }
 .loading_button_sm {
-    width: 10rem;
     height: 2.5rem;
-    padding: 3px;
+    padding: 0.5rem;
     font-size: 1rem;
 }
 .button_green {

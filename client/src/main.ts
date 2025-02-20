@@ -1,0 +1,15 @@
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
+import App from './App.vue';
+import router from './router';
+import piniaPersistedState from 'pinia-plugin-persistedstate';
+import toast from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
+import './style.css';
+const pinia = createPinia();
+pinia.use(piniaPersistedState);
+const app = createApp(App);
+app.use(router);
+app.use(pinia);
+app.use(toast);
+app.mount('#app');

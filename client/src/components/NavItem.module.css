@@ -1,5 +1,6 @@
 .link_wrapper {
     text-decoration: none;
+    color: var(--text-prim);
 }
 .nav_item {
     display: flex;
@@ -12,23 +13,9 @@
 }
 .nav_item p {
     font-size: 1.3rem;
-    color: var(--text-prim);
     text-decoration: none;
-    transition: 300ms ease-in-out;
 }
-.nav_icons {
-    width: 1.8rem;
-    height: 1.8rem;
-    fill: transparent;
-    stroke: var(--text-prim);
-    transition: 300ms ease-in-out;
-}
-.active {
-    background-color: var(--background-prim);
-}
-.not_active:hover .nav_icons, .active .nav_icons {
-    stroke: var(--main);
-}
-.not_active:hover p, .active p {
+.active, .not_active:hover {
     color: var(--main);
+    background-color: var(--background-prim);
 }

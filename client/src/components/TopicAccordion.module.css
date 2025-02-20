@@ -2,7 +2,7 @@
     margin-top: 2rem;
     background-color: var(--background-sec);
     border: none;
-    border-radius: 10px;
+    border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
@@ -30,22 +30,21 @@
     margin: 0;
 }
 .toggle_btn {
+    display: flex;
+    align-items: center;
+    color: var(--text-prim);
     background: transparent;
     border: none;
     cursor: pointer;
-}
-.toggle_icon {
-    width: 2.5rem;
-    fill: var(--main);
     transition: transform 300ms ease-in-out;
 }
-.toggle_icon_rotated {
+.toggle_btn.rotated {
     transform: rotate(-180deg);
 }
 .collapse_body {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 300ms ease-in-out, opacity 300ms ease-in-out;
+    transition: 300ms all ease-in-out;
     opacity: 0;
 }
 .collapse_body_open {
@@ -53,12 +52,11 @@
     opacity: 1;
 }
 .body_text {
-    color: var(--text-prim);
     font-size: 1rem;
 }
 .body_text span {
     color: var(--main);
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 .info_container {
     display: flex;
@@ -70,7 +68,7 @@
     width: 50%;
     padding: 1rem;
     background-color: var(--background-prim);
-    border-radius: 10px;
+    border-radius: 5px;
 }
 .reported_container {
     display: flex;
@@ -79,17 +77,15 @@
     padding: 1rem 0 2rem 0;
 }
 .topic_wrapper {
+    color: var(--text-prim);
     padding: 0 2rem;
 }
 .topic_title {
     font-size: 1.7rem;
 }
 .reported_wrapper span {
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: var(--main);
-}
-.reported_users_wrapper {
-    max-width: 100%;
 }
 .professor_wrapper {
     text-align: end;
@@ -106,7 +102,7 @@
         font-size: 1.5rem;
     }
     .professor_wrapper span {
-        font-size: 1.3rem;
+        font-size: 1.25rem;
     }
     .header_text p {
         font-size: 1rem;
@@ -114,12 +110,12 @@
 }
 @media (max-width: 576px) {
     .header_text h1 {
-        font-size: 1.2rem;
+        font-size: 1.25rem;
     }
     .professor_wrapper p, .card_body p {
         font-size: 1rem;
     }
-    .professor_wrapper span, .reported_users_wrapper span, .body_text span {
+    .professor_wrapper span, .body_text span {
         font-size: 1rem;
     }
     .header_text p {
