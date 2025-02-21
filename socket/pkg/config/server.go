@@ -8,12 +8,11 @@ import (
 
 type Server struct {
 	Addr    string
-	Handler http.Handler
+	Handler *http.ServeMux
 }
 
 func NewServer(addr string) *Server {
 	router := http.NewServeMux()
-	InitializeRoutes(router)
 	return &Server{
 		Addr:    addr,
 		Handler: router,

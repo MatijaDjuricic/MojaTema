@@ -20,7 +20,7 @@ var (
 	DbService *DBService
 )
 
-func Connect(uri string) (*DBService, error) {
+func Connect(uri string) error {
 	var err error
 	once.Do(func() {
 		ctx, cancel := context.WithCancel(context.Background())
@@ -40,16 +40,16 @@ func Connect(uri string) (*DBService, error) {
 			Cancel: cancel,
 		}
 	})
-	return DbService, err
+	return err
 }
 
-func Close(dbService *DBService) {
-	defer dbService.Cancel()
-	defer func() {
-		if err := dbService.Client.Disconnect(dbService.Ctx); err != nil {
+func Close() {
+	if DbService != nil {
+		defer DbService.Cancel()
+		if err := DbService.Client.Disconnect(DbService.Ctx); err != nil {
 			panic(err)
 		}
-	}()
+	}
 }
 
 func PingDB(dbService *DBService) error {

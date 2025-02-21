@@ -14,47 +14,59 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-var (
-	upgrader  = websocket.Upgrader{CheckOrigin: func(r *http.Request) bool { return true }}
-	clients   = make(map[int]*websocket.Conn)
-	log       = logger.NewLogger()
+type ChatHandler struct {
+	upgrader  websocket.Upgrader
+	clients   map[int]*websocket.Conn
+	log       *logger.Logger
 	mu        sync.Mutex
 	DBService *db.DBService
-)
+}
 
-func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
-	conn, err := upgrader.Upgrade(w, r, nil)
+func NewChatHandler(dbService *db.DBService) *ChatHandler {
+	upgrader := websocket.Upgrader{CheckOrigin: func(r *http.Request) bool { return true }}
+	clients := make(map[int]*websocket.Conn)
+	log := logger.NewLogger()
+	return &ChatHandler{
+		upgrader:  upgrader,
+		clients:   clients,
+		log:       log,
+		DBService: dbService,
+	}
+}
+
+func (h *ChatHandler) HandleWebSocket(w http.ResponseWriter, r *http.Request) {
+	conn, err := h.upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Error("Upgrade error:", err)
+		h.log.Error("Upgrade error:", err)
 		return
 	}
 	senderId, errSid := strconv.Atoi(r.URL.Query().Get("sender_id"))
 	receiverId, errRid := strconv.Atoi(r.URL.Query().Get("receiver_id"))
 	if errSid != nil || errRid != nil {
-		log.Error("sender_id or receiver_id not provided", errSid, errRid)
+		h.log.Error("sender_id or receiver_id not provided", errSid, errRid)
 		return
 	}
-	mu.Lock()
-	clients[senderId] = conn
-	mu.Unlock()
+	h.mu.Lock()
+	h.clients[senderId] = conn
+	h.mu.Unlock()
 	go func() {
 		defer conn.Close()
-		ReadMessages(conn, senderId, receiverId)
+		h.ReadMessages(conn, senderId, receiverId)
 	}()
 }
 
-func ReadMessages(conn *websocket.Conn, senderId, receiverId int) {
+func (h *ChatHandler) ReadMessages(conn *websocket.Conn, senderId, receiverId int) {
 	for {
 		_, msg, err := conn.ReadMessage()
 		if err != nil {
 			if websocket.IsCloseError(err, websocket.CloseNormalClosure, websocket.CloseGoingAway) {
-				log.Info("Connection closed normally")
+				h.log.Info("Connection closed normally")
 			} else {
-				log.Error("Unexpected WebSocket error:", err)
+				h.log.Error("Unexpected WebSocket error:", err)
 			}
-			mu.Lock()
-			delete(clients, senderId)
-			mu.Unlock()
+			h.mu.Lock()
+			delete(h.clients, senderId)
+			h.mu.Unlock()
 			return
 		}
 		newMessage := &message.Message{
@@ -63,28 +75,28 @@ func ReadMessages(conn *websocket.Conn, senderId, receiverId int) {
 			Content:    string(msg),
 			Timestamp:  time.Now().Unix(),
 		}
-		_, err = message.InsertMessage(DBService, newMessage)
+		_, err = message.InsertMessage(h.DBService, newMessage)
 		if err != nil {
-			log.Error("Error saving message:", err)
+			h.log.Error("Error saving message:", err)
 		}
 		messageJSON, err := json.Marshal(newMessage)
 		if err != nil {
-			log.Error("Error marshalling message to JSON:", err)
+			h.log.Error("Error marshalling message to JSON:", err)
 			continue
 		}
-		SendToReceiver(receiverId, string(messageJSON))
+		h.SendToReceiver(receiverId, string(messageJSON))
 	}
 }
 
-func SendToReceiver(receiverId int, msg string) {
-	mu.Lock()
-	defer mu.Unlock()
-	if receiverConn, exists := clients[receiverId]; exists {
+func (h *ChatHandler) SendToReceiver(receiverId int, msg string) {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+	if receiverConn, exists := h.clients[receiverId]; exists {
 		err := receiverConn.WriteMessage(websocket.TextMessage, []byte(msg))
 		if err != nil {
-			log.Error("Error sending message to receiver:", err)
+			h.log.Error("Error sending message to receiver:", err)
 		}
 	} else {
-		log.Warn("Receiver %d is not online", receiverId)
+		h.log.Warn("Receiver %d is not online", receiverId)
 	}
 }
