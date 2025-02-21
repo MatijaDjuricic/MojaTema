@@ -78,7 +78,7 @@
     transition: color, background-color 300ms ease-in-out;
 }
 .search_btn:hover, .search_btn:focus {
-    color: var(--background-prim);
+    color: var(--white);
     background-color: var(--main);
 }
 @media (max-width: 992px) {

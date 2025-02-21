@@ -3,6 +3,7 @@
     margin: 2rem 0 2rem 0;
 }
 .no_search_results {
+    color: var(--text-prim);
     text-align: center;
     font-size: 1.5rem;
     max-width: 100%;

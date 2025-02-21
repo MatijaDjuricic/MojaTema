@@ -34,9 +34,9 @@ watch(search, (newSearchValue) => emit('update:search', newSearchValue));
             ref="searchInput"
             placeholder="Претражи..."
           />
-          <button v-if="search" :class="$style.close_btn" @click.prevent="onClear">
+          <span v-if="search" :class="$style.close_btn" @click.prevent="onClear">
             <IconX stroke="2"/>
-          </button>
+          </span>
         </div>
         <button :class="$style.search_btn" type="submit">
           <IconSearch stroke={2} width="32" height="32"/>

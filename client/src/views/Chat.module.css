@@ -38,31 +38,23 @@
 }
 .message_left .message_box {
     width: 50%;
+    color: var(--text-prim);
     background-color: var(--background-sec);
     padding: .7rem .7rem .7rem .7rem;
     border-radius: 0 1rem 1rem 1rem;
 }
 .message_right .message_box {
     width: 50%;
+    color: var(--white);
     background-color: var(--main);
     padding: .7rem .7rem .7rem .7rem;
     border-radius: 1rem 0 1rem 1rem;
 }
-.message_left span {
+.message_left span, .message_right span {
     font-size: 12px;
-    color: var(--text-prim);
-} 
-.message_right span {
-    font-size: 12px;
-    color: var(--background-prim);
 }
 .message_left p, .message_right p {
     font-size: 1.25rem;
-    color: var(--text-prim);
-    word-wrap: break-word;
-}
-.message_right p {
-    color: var(--background-prim);
     word-wrap: break-word;
 }
 .message_box .created_at {
@@ -100,11 +92,12 @@
     padding: 0 1rem 0 1rem;
     border: none;
     background-color: var(--main);
-    color: var(--background-sec);
+    color: var(--white);
     border-radius: 0 5px 5px 0;
     transition: 300ms ease-in-out;
 }
 .input_wrapper button:hover, .input_wrapper button:focus {
+    color: var(--background-prim);
     background-color: var(--text-prim);
 }
 @media (max-width: 992px) {

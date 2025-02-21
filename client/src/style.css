@@ -6,6 +6,9 @@
 }
 :root {
   --font-prim: "Nunito", sans-serif;
+  --white: #FFFFFF;
+  --red: #D31313;
+  --green: #31AE05;
   --sm: 576px;
   --md: 768px;
   --lg: 992px;
@@ -18,8 +21,6 @@
   --background-prim: #F6F8FB;
   --background-sec: #FFFFFF;
   --background-terc: #DCE1E7;
-  --red: #D31313;
-  --green: #31AE05;
 }
 [data-theme='dark'] {
   --main: #0770D1;
@@ -27,8 +28,6 @@
   --background-prim: #151F2C;
   --background-sec: #182433;
   --background-terc: #1F2E41;
-  --red: #D31313;
-  --green: #31AE05;
 }
 body {
   font-family: var(--font-prim);
