@@ -1,34 +1,26 @@
 package main
 
 import (
-	"net/http"
-	"os"
-
-	"github.com/MatijaDjuricic/internal/chat"
-	"github.com/MatijaDjuricic/internal/message"
-	"github.com/MatijaDjuricic/pkg/db"
-	"github.com/MatijaDjuricic/pkg/logger"
-	"github.com/joho/godotenv"
+	"github.com/MatijaDjuricic/MojaTema/socket/internal/chat"
+	"github.com/MatijaDjuricic/MojaTema/socket/internal/message"
+	"github.com/MatijaDjuricic/MojaTema/socket/pkg/config"
+	"github.com/MatijaDjuricic/MojaTema/socket/pkg/db"
+	"github.com/MatijaDjuricic/MojaTema/socket/pkg/logger"
 )
 
 func main() {
-	log := logger.NewLogger(logger.INFO)
-	if err := godotenv.Load(".env"); err != nil {
-		log.Error("Error loading .env file", err)
-	}
-	mongoUri := os.Getenv("MONGO_URI_PRIVATE")
-	port := os.Getenv("PORT")
-	DBService, err := db.Connect(mongoUri)
+	env := config.GetEnvConfig()
+	log := logger.NewLogger()
+	server := config.NewServer(env.Port)
+	DBService, err := db.Connect(env.MongoUriPrivate)
 	if err != nil {
 		log.Error("Error connecting to database:", err)
 	}
-	chat.DBService, message.DBService = DBService, DBService
+	chat.DBService = DBService
+	message.DBService = DBService
 	defer db.Close(DBService)
-	http.HandleFunc("/ws", chat.HandleWebSocket)
-	http.HandleFunc("/api/messages", message.HandleGetMessages)
-	http.HandleFunc("/api/messages/chat", message.HandleGetMessagesFromChat)
-	log.Info("WebSocket server listening on %s...", port)
-	if err := http.ListenAndServe(port, nil); err != nil {
+	if err := server.Run(); err != nil {
 		log.Error("Server run failed:", err)
 	}
+	log.Info("Server listening on %s...", env.Port)
 }

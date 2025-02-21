@@ -7,8 +7,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/MatijaDjuricic/pkg/db"
-	"github.com/MatijaDjuricic/pkg/logger"
+	"github.com/MatijaDjuricic/MojaTema/socket/internal/message"
+	"github.com/MatijaDjuricic/MojaTema/socket/pkg/db"
+	"github.com/MatijaDjuricic/MojaTema/socket/pkg/logger"
 
 	"github.com/gorilla/websocket"
 )
@@ -16,7 +17,7 @@ import (
 var (
 	upgrader  = websocket.Upgrader{CheckOrigin: func(r *http.Request) bool { return true }}
 	clients   = make(map[int]*websocket.Conn)
-	log       = logger.NewLogger(logger.INFO)
+	log       = logger.NewLogger()
 	mu        sync.Mutex
 	DBService *db.DBService
 )
@@ -56,17 +57,17 @@ func ReadMessages(conn *websocket.Conn, senderId, receiverId int) {
 			mu.Unlock()
 			return
 		}
-		message := &db.Message{
+		newMessage := &message.Message{
 			SenderId:   senderId,
 			ReceiverId: receiverId,
 			Content:    string(msg),
 			Timestamp:  time.Now().Unix(),
 		}
-		_, err = db.InsertMessage(DBService, message)
+		_, err = message.InsertMessage(DBService, newMessage)
 		if err != nil {
 			log.Error("Error saving message:", err)
 		}
-		messageJSON, err := json.Marshal(message)
+		messageJSON, err := json.Marshal(newMessage)
 		if err != nil {
 			log.Error("Error marshalling message to JSON:", err)
 			continue

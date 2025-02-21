@@ -20,9 +20,9 @@ const (
 	ERROR
 )
 
-func NewLogger(level LogLevel) *Logger {
+func NewLogger() *Logger {
 	return &Logger{
-		level: level,
+		level: DEBUG,
 	}
 }
 
