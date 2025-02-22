@@ -16,15 +16,19 @@ import (
 
 type ChatHandler struct {
 	upgrader  websocket.Upgrader
-	clients   map[int]*websocket.Conn
+	clients   map[string]*websocket.Conn
 	log       *logger.Logger
 	mu        sync.Mutex
 	DBService *db.DBService
 }
 
+func getClientKey(senderId int, receiverId int) string {
+	return strconv.Itoa(senderId) + "_" + strconv.Itoa(receiverId)
+}
+
 func NewChatHandler(dbService *db.DBService) *ChatHandler {
 	upgrader := websocket.Upgrader{CheckOrigin: func(r *http.Request) bool { return true }}
-	clients := make(map[int]*websocket.Conn)
+	clients := make(map[string]*websocket.Conn)
 	log := logger.NewLogger()
 	return &ChatHandler{
 		upgrader:  upgrader,
@@ -46,8 +50,10 @@ func (h *ChatHandler) HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 		h.log.Error("sender_id or receiver_id not provided", errSid, errRid)
 		return
 	}
+	clientKey := getClientKey(senderId, receiverId)
 	h.mu.Lock()
-	h.clients[senderId] = conn
+	delete(h.clients, clientKey)
+	h.clients[clientKey] = conn
 	h.mu.Unlock()
 	go func() {
 		defer conn.Close()
@@ -64,8 +70,9 @@ func (h *ChatHandler) ReadMessages(conn *websocket.Conn, senderId, receiverId in
 			} else {
 				h.log.Error("Unexpected WebSocket error:", err)
 			}
+			clientKey := getClientKey(senderId, receiverId)
 			h.mu.Lock()
-			delete(h.clients, senderId)
+			delete(h.clients, clientKey)
 			h.mu.Unlock()
 			return
 		}
@@ -84,14 +91,15 @@ func (h *ChatHandler) ReadMessages(conn *websocket.Conn, senderId, receiverId in
 			h.log.Error("Error marshalling message to JSON:", err)
 			continue
 		}
-		h.SendToReceiver(receiverId, string(messageJSON))
+		h.SendToReceiver(senderId, receiverId, string(messageJSON))
 	}
 }
 
-func (h *ChatHandler) SendToReceiver(receiverId int, msg string) {
+func (h *ChatHandler) SendToReceiver(senderId int, receiverId int, msg string) {
 	h.mu.Lock()
 	defer h.mu.Unlock()
-	if receiverConn, exists := h.clients[receiverId]; exists {
+	clientKey := getClientKey(receiverId, senderId)
+	if receiverConn, exists := h.clients[clientKey]; exists {
 		err := receiverConn.WriteMessage(websocket.TextMessage, []byte(msg))
 		if err != nil {
 			h.log.Error("Error sending message to receiver:", err)
