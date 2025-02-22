@@ -1,16 +1,15 @@
 <script lang="ts" setup>
 import { ref, defineExpose, onMounted, onUnmounted } from 'vue';
 import { onClickOutside } from '@vueuse/core';
-import { getChatAvailableUsersAsync } from '../services/user';
 import { IconMessage, IconX } from '@tabler/icons-vue';
-import type { User } from '../types';
+import { useUserStore } from '../stores/user';
 import IconButton from './IconButton.vue';
-const chats = ref<User[] | undefined>([]);
+const userStore = useUserStore();
 const panel = ref<null>(null);
 const isPanelOpen = ref<boolean>(false);
-const openPanel = async() => {
+const openPanel = async () => {
   isPanelOpen.value = true;
-  chats.value = await getChatAvailableUsersAsync();
+  await userStore.getChatAvailableUsers();
 }
 const closePanel = () => isPanelOpen.value = false;
 const handleKeydown = (event: KeyboardEvent) => {
@@ -34,11 +33,11 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown));
       </div>
       <div :class="$style.canvas_body">
         <div :class="$style.chats_wrapper">
-          <div v-if="chats != undefined && chats.length > 0">
-            <div v-for="chat in chats" :key="chat.id" :class="$style.card">
-              <router-link :to="`/chat/${chat.id}`" :class="$style.card_body">
+          <div v-if="userStore.chatAvailableUsers.length != 0">
+            <div v-for="user in userStore.chatAvailableUsers" :key="user.id" :class="$style.card">
+              <router-link :to="`/chat/${user.id}`" :class="$style.card_body">
                 <IconMessage stroke={2} />
-                <p>{{ chat.firstName }} {{ chat.lastName }}</p>
+                <p>{{ user.firstName }} {{ user.lastName }}</p>
               </router-link>
             </div>
           </div>

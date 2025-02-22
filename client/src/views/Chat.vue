@@ -2,8 +2,8 @@
 import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
-import { useSocketService } from '../composables/useScoketService';
 import { formatDate, formatTime } from '../utils';
+import { useChatService } from '../composables/useChatService';
 import { IconSend } from '@tabler/icons-vue';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
@@ -15,16 +15,13 @@ const {
   receiverUser,
   message,
   messages,
-  connectWebSocket,
   handleSendMessage,
-  fetchChat,
-  closeWebSocket
-} = useSocketService();
+  initializeChat,
+  close
+} = useChatService(currentUser.id, receiverId);
 watch(() => route.params.receiverId, async (newReceiverId) => {
   receiverId.value = Number(newReceiverId);
-  await fetchChat(currentUser.id, receiverId.value);
-  closeWebSocket();
-  connectWebSocket(currentUser.id, receiverId.value);
+  await initializeChat();
 });
 watch(messages, () => {
   nextTick(() => {
@@ -33,11 +30,8 @@ watch(messages, () => {
     }
   });
 }, { immediate: true, deep: true });
-onMounted(async () => {
-  await fetchChat(currentUser.id, receiverId.value);
-  connectWebSocket(currentUser.id, receiverId.value);
-});
-onBeforeUnmount(() => closeWebSocket());
+onMounted(async () => await initializeChat());
+onBeforeUnmount(() => close());
 </script>
 <style src="./Chat.module.css" module/>
 <template>
@@ -67,7 +61,7 @@ onBeforeUnmount(() => closeWebSocket());
                     <div ref="messagesEnd"></div>
                 </div>
             </div>
-            <form :class="$style.input_wrapper" @submit.prevent="handleSendMessage(currentUser.id, receiverId)">
+            <form :class="$style.input_wrapper" @submit.prevent="handleSendMessage">
               <textarea v-model="message" placeholder="Унеси поруку..."></textarea>
               <button type="submit">
                 <IconSend stroke={2} width="32" height="32"/>

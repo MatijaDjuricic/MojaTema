@@ -2,6 +2,9 @@ import type { User, Topic, Subject, Message } from ".";
 export interface AuthState {
     user: User | undefined,
     isAuthenticated: boolean
+}export interface UserState {
+    users: User[],
+    chatAvailableUsers: User[];
 }
 export interface TopicState {
     topics: Topic[]

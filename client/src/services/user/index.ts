@@ -16,9 +16,10 @@ export const getUserByIdAsync = async (id: number) => {
         console.error('Failed to fetch topics:', error);
     }
 }
-export const getChatAvailableUsersAsync = async () => {
+export const getChatAvailableUsersAsync = async (receiver_id?: number) => {
     try {
-        const response = await apiClient.get(`/users/chat`);
+        const query: string = receiver_id ? `?receiver_id=${receiver_id}` : '';
+        const response = await apiClient.get(`/users/chat${query}`);
         return await response.data.data as User[];
     } catch (error) {
         console.error('Failed to fetch topics:', error);
