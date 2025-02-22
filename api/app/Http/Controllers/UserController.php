@@ -28,9 +28,16 @@ class UserController extends Controller {
             return $this->errorResponse('An error occurred: ' . $e->getMessage(), 500);
         }
     }
-    public function chatAvailableUsers() {
+    public function chatAvailableUsers(Request $request) {
         try {
+            $receiverId = $request->query('receiver_id', null);
             $data = $this->userService->getChatAvailableUsers();
+            if ($receiverId) {
+                $data = $data->filter(fn($user) => $user->id == $receiverId);
+                if ($data->isEmpty()) {
+                    return $this->errorResponse('User with the specified receiver_id not found', 404);
+                }
+            }
             return $data
                 ? $this->successResponse($data, 200)
                 : $this->errorResponse('No avaliable users for chat', 404);
