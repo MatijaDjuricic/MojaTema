@@ -3,13 +3,13 @@ import { defineProps, defineEmits, computed } from 'vue';
 import Loader from './Loader.vue';
 import style from './CTA.module.css';
 const props = defineProps<{
-  title: string;
-  size: 'lg' | 'sm';
-  type?: 'submit';
-  color?: 'green' | 'red';
-  loading?: boolean;
-  className?: string;
-  onClick?: () => void;
+  title: string,
+  size: 'lg' | 'sm',
+  type?: 'submit',
+  color?: 'green' | 'red',
+  loading?: boolean,
+  className?: string,
+  onClick?: () => void,
 }>();
 defineEmits<{
   (e: 'click'): void;
@@ -23,8 +23,6 @@ const buttonClass = computed(() => {
         [style.button_green]: props.color === 'green',
         [style.button_red]: props.color === 'red',
         [style.loading_button]: props.loading,
-        [style.loading_button_lg]: props.loading && props.size === 'lg',
-        [style.loading_button_sm]: props.loading && props.size === 'sm'
       }
     ];
 });
