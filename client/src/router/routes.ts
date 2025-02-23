@@ -10,43 +10,16 @@ import ReportedTopics from '../views/ReportedTopics.vue';
 import Chat from '../views/Chat.vue';
 export const routes: Array<RouteRecordRaw> = [
     {
-        path: '/',
-        name: 'Home',
-        component: Home,
-        meta: {
-            requiredAuth: true,
-        }
-    },
-    {
         path: '/login',
         name: 'Login',
         component: Login,
     },
     {
-        path: '/topics',
-        name: 'Topics',
-        component: Topics,
+        path: '/',
+        name: 'Home',
+        component: Home,
         meta: {
             requiredAuth: true,
-            requiredRole: [RoleEnum.UCENIK]
-        }
-    },
-    {
-        path: '/topics/reported',
-        name: 'ReportedTopics',
-        component: ReportedTopics,
-        meta: {
-            requiredAuth: true,
-            requiredRole: [RoleEnum.PROFESOR]
-        }
-    },
-    {
-        path: '/topics/create',
-        name: 'CreateTopic',
-        component: CreateTopic,
-        meta: {
-            requiredAuth: true,
-            requiredRole: [RoleEnum.PROFESOR]
         }
     },
     {
@@ -56,6 +29,38 @@ export const routes: Array<RouteRecordRaw> = [
         meta: {
             requiredAuth: true,
         }
+    },
+    {
+        path: '/topics',
+        meta: {
+            requiredAuth: true,
+        },
+        children: [
+            {
+                path: '',
+                name: 'Topics',
+                component: Topics,
+                meta: {
+                    requiredRole: [RoleEnum.UCENIK],
+                },
+            },
+            {
+                path: 'reported',
+                name: 'ReportedTopics',
+                component: ReportedTopics,
+                meta: {
+                    requiredRole: [RoleEnum.PROFESOR],
+                }
+            },
+            {
+                path: 'create',
+                name: 'CreateTopic',
+                component: CreateTopic,
+                meta: {
+                    requiredRole: [RoleEnum.PROFESOR],
+                }
+            },
+        ]
     },
     {
         path: '/chat/:receiverId',

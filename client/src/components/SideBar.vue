@@ -2,6 +2,7 @@
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import { useModal } from '../composables/useModal';
+import { RoleEnum } from '../utils/enums';
 import NavItem from './NavItem.vue';
 import Modal from './Modal.vue';
 import CTA from './CTA.vue';
@@ -28,13 +29,13 @@ const handleLogout = async () => {
                 <NavItem title="Почетна" to="/">
                     <IconHome stroke={2} />
                 </NavItem>
-                <NavItem title="Теме" to="/topics">
+                <NavItem v-if="auth.userRole == RoleEnum.UCENIK" title="Теме" to="/topics">
                     <IconArticle stroke={2} />
                 </NavItem>
-                <NavItem title="Пријављене Теме" to="/topics/reported">
+                <NavItem v-if="auth.userRole == RoleEnum.PROFESOR" title="Пријављене Теме" to="/topics/reported">
                     <IconArticle stroke={2} />
                 </NavItem>
-                <NavItem title="Додај Тему" to="/topics/create">
+                <NavItem v-if="auth.userRole == RoleEnum.PROFESOR" title="Додај Тему" to="/topics/create">
                     <IconCirclePlus stroke={2} />
                 </NavItem>
                 <NavItem title="Мој Профил" to="/profile">
