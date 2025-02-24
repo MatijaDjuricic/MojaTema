@@ -30,26 +30,20 @@
     gap: 1rem;
 }
 .card {
-    background-color: var(--background-sec);
-    border-radius: 5px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border: 1px solid var(--background-terc);
-    transition: background-color 300ms ease-in-out;
-}
-.card_body {
     display: flex;
     align-items: center;
-    color: var(--text-prim);
     gap: 1rem;
     font-size: 1rem;
-    transition: color 300ms ease-in-out;
+    border-radius: 5px;
+    padding: 1rem;
+    color: var(--text-prim);
+    background-color: var(--background-sec);
+    border: 1px solid var(--background-terc);
+    transition: color, background-color 300ms ease-in-out;
 }
 .card:hover {
     cursor: pointer;
     background-color: var(--main);
-}
-.card:hover .card_body {
     color: var(--background-prim);
 }
 @media (max-width: 768px) {
@@ -61,13 +55,10 @@
     .canvas_bg {
         width: 100%;
     }
-    .card_body {
-        justify-content: space-between;
-    }
 }
 @keyframes fadeIn {
     from {
-        opacity: 0;opacity: 0;
+        opacity: 0;
         transform: translateX(100%);
     }
     to {

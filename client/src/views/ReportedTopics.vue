@@ -6,15 +6,19 @@ import { TopicStatusEnum } from '../utils/enums';
 import { useToastMessage } from '../composables/useToastMessage';
 import { IconTrashX } from '@tabler/icons-vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
-import CTA from '../components/CTA.vue';
 import PageLayout from '../layouts/PageLayout.vue';
 import IconButton from '../components/IconButton.vue';
+import Loader from '../components/Loader.vue';
+import CTA from '../components/CTA.vue';
 const { successMessage } = useToastMessage();
 const topicStore = useTopicStore();
-const loading = ref<boolean>(false);
+const loading = ref<{
+    content: boolean,
+    [key: number]: boolean
+}>({ content: false });
 const searchTopics = async () => {
-  loading.value = true;
-  await topicStore.getTopicsByProfessor().finally(() => loading.value = false);
+  loading.value.content = true;
+  await topicStore.getTopicsByProfessor().finally(() => loading.value.content = false);
 }
 onMounted(async () => await searchTopics());
 </script>
@@ -24,7 +28,8 @@ onMounted(async () => await searchTopics());
     <HeaderLayout>
         <h1>Пријављене Теме</h1>
     </HeaderLayout>
-    <div :class="$style.reported_topics_wrapper">
+    <Loader v-if="loading.content" type="content_loader"/>
+    <div v-else :class="$style.reported_topics_wrapper">
         <div v-for="(topic, index) in topicStore.topics" :key="index" :class="$style.topic_item">
             <div v-if="index > 0" :class="$style.line"></div>
             <div :class="$style.title_wrapper">
@@ -43,12 +48,12 @@ onMounted(async () => await searchTopics());
                         title="Врати на пријаву"
                         color="red"
                         size="sm"
-                        :loading="loading"
+                        :loading="loading[topic.id]"
                         @click="() => {
-                            loading = true;
+                            loading[topic.id] = true;
                             topicStore.updateTopicStatusByProfessor(topic.id, TopicStatusEnum.SLOBODNA)
                             .finally(() => {
-                                loading = false;
+                                loading[topic.id] = false;
                                 successMessage(`Успешно си отказао ученика за тему - ${topic.title}`);
                             });
                         }"
@@ -58,12 +63,12 @@ onMounted(async () => await searchTopics());
                         title="Постави на чекање"
                         color="green"
                         size="sm"
-                        :loading="loading"
+                        :loading="loading[topic.id]"
                         @click="() => {
-                            loading = true;
+                            loading[topic.id] = true;
                             topicStore.updateTopicStatusByProfessor(topic.id, TopicStatusEnum.NA_CEKANJU)
                             .finally(() => {
-                                loading = false;
+                                loading[topic.id] = false;
                                 successMessage(`Успешно си поставио на чекање тему - ${topic.title}`);
                             });
                         }"
@@ -73,12 +78,12 @@ onMounted(async () => await searchTopics());
                         title="Предај тему"
                         color="green"
                         size="sm"
-                        :loading="loading"
+                        :loading="loading[topic.id]"
                         @click="() => {
-                            loading = true;
+                            loading[topic.id] = true;
                             topicStore.updateTopicStatusByProfessor(topic.id, TopicStatusEnum.REZERVISANA)
                             .finally(() => {
-                                loading = false;
+                                loading[topic.id] = false;
                                 successMessage(`Успешно си резервисао ученика на тему - ${topic.title}`);
                             });
                         }"

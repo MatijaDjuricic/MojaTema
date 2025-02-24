@@ -4,12 +4,15 @@ import { onClickOutside } from '@vueuse/core';
 import { IconMessage, IconX } from '@tabler/icons-vue';
 import { useUserStore } from '../stores/user';
 import IconButton from './IconButton.vue';
+import Loader from './Loader.vue';
 const userStore = useUserStore();
 const panel = ref<null>(null);
 const isPanelOpen = ref<boolean>(false);
+const loading = ref<boolean>(false);
 const openPanel = async () => {
   isPanelOpen.value = true;
-  await userStore.getChatAvailableUsers();
+  loading.value = true;
+  await userStore.getChatAvailableUsers().finally(() => loading.value = false);
 }
 const closePanel = () => isPanelOpen.value = false;
 const handleKeydown = (event: KeyboardEvent) => {
@@ -31,18 +34,15 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown));
           <IconX stroke={2} width="32" height="32"/>
         </IconButton>
       </div>
-      <div :class="$style.canvas_body">
-        <div :class="$style.chats_wrapper">
-          <div v-if="userStore.chatAvailableUsers.length != 0">
-            <div v-for="user in userStore.chatAvailableUsers" :key="user.id" :class="$style.card">
-              <router-link :to="`/chat/${user.id}`" :class="$style.card_body">
-                <IconMessage stroke={2} />
-                <p>{{ user.firstName }} {{ user.lastName }}</p>
-              </router-link>
-            </div>
-          </div>
-          <p v-else>Нема конверзација(порука)</p>
+      <Loader v-if="loading" type="content_loader"/>
+      <div v-else :class="$style.canvas_body">
+        <div v-if="userStore.chatAvailableUsers.length != 0" :class="$style.chats_wrapper">
+          <router-link v-for="user in userStore.chatAvailableUsers" :key="user.id" :to="`/chat/${user.id}`" :class="$style.card">
+            <IconMessage stroke={2} />
+            <p>{{ user.firstName }} {{ user.lastName }}</p>
+          </router-link>
         </div>
+        <p v-else>Нема конверзација(порука)</p>
       </div>
     </div>
   </Teleport>

@@ -3,19 +3,30 @@ import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import { useModal } from '../composables/useModal';
 import { RoleEnum } from '../utils/enums';
+import { usePanel } from '../composables/usePanel';
+import { useTheme } from '../composables/useTheme';
+import { themes } from '../utils/constants';
+import ChatsPanel from './ChatsPanel.vue';
+import NotificationsPanel from './NotificationsPanel.vue';
 import NavItem from './NavItem.vue';
 import Modal from './Modal.vue';
 import CTA from './CTA.vue';
 import {
     IconArticle,
+    IconBell,
     IconCirclePlus,
     IconHome,
     IconLogout,
+    IconMessages,
+    IconMoon,
+    IconSun,
     IconUserCircle
 } from '@tabler/icons-vue';
-const { modalRef, openModal } = useModal();
-const auth = useAuthStore();
 const router = useRouter();
+const auth = useAuthStore();
+const { modalRef, openModal } = useModal();
+const { chatsRef, notificationsRef, openPanel } = usePanel();
+const { theme, toggleTheme } = useTheme();
 const handleLogout = async () => {
   await auth.logout();
   router.push('/login');
@@ -43,10 +54,27 @@ const handleLogout = async () => {
                 </NavItem>
             </div>
             <div :class="$style.nav_buttons">
+                <button @click="toggleTheme">
+                    <IconSun v-if="theme === themes.dark" stroke={2} width="32" height="32" />
+                    <IconMoon v-else stroke={2} width="32" height="32" />
+                    Промени тему
+                </button>
+                <button @click="openPanel('chats')">
+                    <ChatsPanel ref="chatsRef">
+                        <IconMessages stroke={2} width="32" height="32" />
+                    </ChatsPanel>
+                    Поруке
+                </button>
+                <button @click="openPanel('notifications')">
+                    <NotificationsPanel ref="notificationsRef">
+                        <IconBell stroke={2} width="32" height="32" />
+                    </NotificationsPanel>
+                    Обавештења
+                </button>
                 <Modal ref="modalRef" title="Одјава">
                     <template #open>
-                        <button :class="$style.logout_btn" @click="openModal">
-                            <IconLogout stroke={2} color="red"/>
+                        <button @click="openModal">
+                            <IconLogout stroke={2} width="32" height="32" color="red"/>
                             Одјави се
                         </button>
                     </template>
