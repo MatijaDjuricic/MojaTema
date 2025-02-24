@@ -133,7 +133,7 @@ class TopicService implements ITopicService
             throw new \Exception('Error updating topic.');
         }
     }
-    public function updateTopicStatusByStudent(UpdateTopicStatusRequest $request, int $id): JsonResource {
+    public function updateTopicStatus(UpdateTopicStatusRequest $request, int $id): JsonResource {
         try {
             $topic = Topic::find($id);
             $fields = $request->validated();

@@ -14,6 +14,6 @@ interface ITopicService {
     public function createTopic(CreateTopicRequest $request): JsonResource;
     public function importTopics(Request $request): bool;
     public function updateTopic(updateTopicRequest $request, int $id): JsonResource;
-    public function updateTopicStatusByStudent(updateTopicStatusRequest $request, int $id): JsonResource;
+    public function updateTopicStatus(updateTopicStatusRequest $request, int $id): JsonResource;
     public function deleteTopic(int $id): bool;
 }

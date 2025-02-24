@@ -67,7 +67,7 @@ class TopicController extends Controller
     }
     public function updateTopicStatus(UpdateTopicStatusRequest $request, int $id) {
         try {
-            $data = $this->topicService->updateTopicStatusByStudent($request, $id);
+            $data = $this->topicService->updateTopicStatus($request, $id);
             return $data
                 ? $this->successResponse($data, 200)
                 : $this->errorResponse('Topic not found', 404);

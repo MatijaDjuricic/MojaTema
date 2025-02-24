@@ -51,7 +51,7 @@ onMounted(async () => await searchTopics());
                         :loading="loading[topic.id]"
                         @click="() => {
                             loading[topic.id] = true;
-                            topicStore.updateTopicStatusByProfessor(topic.id, TopicStatusEnum.SLOBODNA)
+                            topicStore.updateTopicStatus(topic.id, TopicStatusEnum.SLOBODNA)
                             .finally(() => {
                                 loading[topic.id] = false;
                                 successMessage(`Успешно си отказао ученика за тему - ${topic.title}`);
@@ -66,7 +66,7 @@ onMounted(async () => await searchTopics());
                         :loading="loading[topic.id]"
                         @click="() => {
                             loading[topic.id] = true;
-                            topicStore.updateTopicStatusByProfessor(topic.id, TopicStatusEnum.NA_CEKANJU)
+                            topicStore.updateTopicStatus(topic.id, TopicStatusEnum.NA_CEKANJU)
                             .finally(() => {
                                 loading[topic.id] = false;
                                 successMessage(`Успешно си поставио на чекање тему - ${topic.title}`);
@@ -81,7 +81,7 @@ onMounted(async () => await searchTopics());
                         :loading="loading[topic.id]"
                         @click="() => {
                             loading[topic.id] = true;
-                            topicStore.updateTopicStatusByProfessor(topic.id, TopicStatusEnum.REZERVISANA)
+                            topicStore.updateTopicStatus(topic.id, TopicStatusEnum.REZERVISANA)
                             .finally(() => {
                                 loading[topic.id] = false;
                                 successMessage(`Успешно си резервисао ученика на тему - ${topic.title}`);

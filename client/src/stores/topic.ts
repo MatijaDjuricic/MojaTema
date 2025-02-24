@@ -4,8 +4,7 @@ import {
     deleteTopicAsync,
     getTopicsAsync,
     getTopicsByProfessorAsync,
-    updateTopicStatusByProfessorAsync,
-    updateTopicStatusByStudentAsync
+    updateTopicStatusAsync
 } from '../services/topic';
 import { useAuthStore as auth } from './auth';
 import type { ICreateTopicRequest, TopicState } from '../types/interface';
@@ -37,17 +36,8 @@ export const useTopicStore = defineStore('topic', {
             const createdTopic = await createTopicAsync(data);
             if (createdTopic) this.topics.push(createdTopic);
         },
-        async updateTopicStatusByStudent(id: number, status: number): Promise<void> {
-            const updatedTopic = await updateTopicStatusByStudentAsync(id, status);
-            if (updatedTopic && this.topics) {
-                const topicIndex = this.topics.findIndex((topic) => topic.id == id);
-                if (topicIndex != -1) {
-                    this.topics[topicIndex] = updatedTopic;
-                }
-            }
-        },
-        async updateTopicStatusByProfessor(id: number, status: number): Promise<void> {
-            const updatedTopic = await updateTopicStatusByProfessorAsync(id, status);
+        async updateTopicStatus(id: number, status: number): Promise<void> {
+            const updatedTopic = await updateTopicStatusAsync(id, status);
             if (updatedTopic && this.topics) {
                 const topicIndex = this.topics.findIndex((topic) => topic.id == id);
                 if (topicIndex != -1) {

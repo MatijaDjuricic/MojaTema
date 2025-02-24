@@ -38,17 +38,9 @@ export const importTopicsAsync = async (formData: FormData) => {
         throw new Error(`Error: ${err}`);
     }
 }
-export const updateTopicStatusByStudentAsync = async (id: number, status: number) => {
+export const updateTopicStatusAsync = async (id: number, status: number) => {
     try {
-        const response = await apiClient.put(`/topics/${id}/status`, { status });
-        return await response.data.data as Topic;
-    } catch (error) {
-        console.error('Failed to fetch topics:', error);
-    }
-}
-export const updateTopicStatusByProfessorAsync = async (id: number, status: number) => {
-    try {
-        const response = await apiClient.put(`/topics/${id}/status`, { status });
+        const response = await apiClient.patch(`/topics/${id}/status`, { status });
         return await response.data.data as Topic;
     } catch (error) {
         console.error('Failed to fetch topics:', error);

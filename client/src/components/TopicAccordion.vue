@@ -60,7 +60,7 @@ const loading = ref<boolean>(false);
               :loading="loading"
               @click="() => {
                 loading = true;
-                topicStore.updateTopicStatusByStudent(topic.id, TopicStatusEnum.NA_CEKANJU)
+                topicStore.updateTopicStatus(topic.id, TopicStatusEnum.NA_CEKANJU)
                 .finally(() => {
                   loading = false;
                   successMessage(`Успешно си пријављен на тему - ${topic.title}`);
@@ -74,7 +74,7 @@ const loading = ref<boolean>(false);
               :loading="loading"
               @click="() => {
                 loading = true;
-                topicStore.updateTopicStatusByStudent(topic.id, TopicStatusEnum.SLOBODNA)
+                topicStore.updateTopicStatus(topic.id, TopicStatusEnum.SLOBODNA)
                 .finally(() => {
                   loading = false;
                   successMessage(`Успешно си одјављен са теме - ${topic.title}`);
