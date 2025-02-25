@@ -23,6 +23,11 @@ export interface ILoginResponse {
     user: User,
     token: string
 }
+export interface IChangePasswordRequest {
+    current_password: string,
+    new_password: string,
+    new_password_confirmation: string
+}
 export interface ICreateTopicRequest {
     title: string,
     description: string,

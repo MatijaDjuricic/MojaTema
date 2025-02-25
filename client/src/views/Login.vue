@@ -28,9 +28,9 @@ const { theme, toggleTheme } = useTheme();
     </header>
     <form :class="$style.login_form" @submit.prevent="handleSubmit">
       <h1>Пријави се</h1>
-      <label for="email">ИМЕЈЛ АДРЕСА:</label>
+      <label for="email">Имејл адреса:</label>
       <input v-model="email" id="email" type="text" placeholder="Унеси имејл адресу..." />
-      <label for="password">ЛОЗИКА:</label>
+      <label for="password">Лозинка:</label>
       <div :class="$style.password_wrapper">
         <input v-model="password" :type="passwordVisible ? 'text' : 'password'" id="password" placeholder="Унеси лозинку..." />
         <button type="button" :class="$style.eye_button" @click="togglePasswordVisibility" aria-label="Toggle password visibility">

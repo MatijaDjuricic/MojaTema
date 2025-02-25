@@ -1,0 +1,37 @@
+.change_password_form {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: var(--background-sec);
+    color: var(--text-prim);
+    box-shadow: 0 5px 10px var(--background-terc);
+    border-radius: 5px;
+}
+.change_password_form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+.change_password_form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 1rem;
+    border: 1px solid var(--background-terc);
+    background-color: var(--background-prim);
+    border-radius: 5px;
+    font-size: 1rem;
+    color: var(--text-prim);
+    font-family: var(--font-prim);
+}
+.change_password_form input:focus {
+    border-color: var(--main);
+    outline: none;
+}
+.change_password_form .cta_wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.cta_wrapper {
+    flex-direction: row-reverse;
+}

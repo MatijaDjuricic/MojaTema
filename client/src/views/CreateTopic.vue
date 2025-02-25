@@ -37,16 +37,16 @@ onMounted(async () => await fetchSubjects());
       </button>
     </HeaderLayout>
     <form :class="$style.create_form" @submit.prevent="handleSubmit">
-      <label>ПРЕДМЕТ:</label>
+      <label>Предмет:</label>
       <select v-model="subjectId">
         <option :value="subjectId" disabled selected>{{ defaultSubject?.title || "Изабери предмет" }}</option>
         <option v-for="(subject, index) in subjects" :key="index" :value="subject.id">
           {{ subject.title }}
         </option>
       </select>
-      <label>НАЗИВ:</label>
+      <label>Назив:</label>
       <input v-model="title" type="text" placeholder="Унеси назив..." />
-      <label>ОПИС:</label>
+      <label>Опис:</label>
       <textarea v-model="description" placeholder="Унеси опис..."></textarea>
       <div :class="$style.cta_wrapper">
         <CTA
@@ -57,7 +57,7 @@ onMounted(async () => await fetchSubjects());
           :loading="loading"
         />
         <CTA
-          title="Одбаци тему"
+          title="Одбаци"
           color="red"
           size="sm"
           @click.prevent="handleClear"

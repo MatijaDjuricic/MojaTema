@@ -34,20 +34,20 @@ export const useCreateTopic = (): IUseCreateTopic => {
         description.value = "";
     };
     const handleSubmit = async () => {
-        if (title.value && description.value && subjectId.value !== -1) {
-            loading.value = true;
-            await topicStore.createTopic({
-                title: title.value.trim(),
-                description: description.value.trim(),
-                subjectId: subjectId.value
-            }).finally(() => {
-                loading.value = false;
-                handleClear();
-                successMessage("Успешно додата тема");
-            });
-        } else {
+        if (!title.value || !description.value || subjectId.value === -1) {
             errorMessage("Поља форме су празна");
+            return;
         }
+        loading.value = true;
+        await topicStore.createTopic({
+            title: title.value.trim(),
+            description: description.value.trim(),
+            subjectId: subjectId.value
+        }).finally(() => {
+            loading.value = false;
+            handleClear();
+            successMessage("Успешно додата тема");
+        });
     };
     const handleFileUpload = async () => {
         const file = fileInput.value?.files?.[0];

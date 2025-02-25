@@ -5,8 +5,12 @@ import {
     loginAsync,
     logoutAsync
 } from '../services/auth';
+import type {
+    AuthState,
+    ILoginRequest,
+    ILoginResponse
+} from '../types/interface';
 import type { User } from '../types';
-import type { AuthState } from '../types/interface';
 import type { RoleEnum } from '../utils/enums';
 export const useAuthStore = defineStore('auth', {
     state: (): AuthState => ({
@@ -31,7 +35,7 @@ export const useAuthStore = defineStore('auth', {
         }
     },
     actions: {
-        async getAuthUser() {
+        async getAuthUser(): Promise<void> {
             try {
                 this.user = await getAuthUserAsync();
                 this.isAuthenticated = true;
@@ -41,19 +45,20 @@ export const useAuthStore = defineStore('auth', {
                 this.user = undefined;
             }
         },
-        async login(credentials: { email: string; password: string }) {
+        async login(credentials: ILoginRequest): Promise<ILoginResponse | undefined> {
             try {
                 await fetchCsrfTokenAsync();
                 const response = await loginAsync(credentials);
                 this.user = response.user as User;
                 this.isAuthenticated = true;
+                return response;
             } catch (error) {
                 console.error('Login error:', error);
                 this.isAuthenticated = false;
                 this.user = undefined;
             }
         },
-        async logout() {
+        async logout(): Promise<void> {
             try {
                 await logoutAsync();
                 this.user = undefined;
