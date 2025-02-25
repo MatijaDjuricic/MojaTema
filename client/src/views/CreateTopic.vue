@@ -5,6 +5,7 @@ import { IconFileImport } from '@tabler/icons-vue';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
 import CTA from '../components/CTA.vue';
+import FormLayout from '../layouts/FormLayout.vue';
 const {
   title,
   description,
@@ -36,33 +37,37 @@ onMounted(async () => await fetchSubjects());
         />
       </button>
     </HeaderLayout>
-    <form :class="$style.create_form" @submit.prevent="handleSubmit">
-      <label>Предмет:</label>
-      <select v-model="subjectId">
-        <option :value="subjectId" disabled selected>{{ defaultSubject?.title || "Изабери предмет" }}</option>
-        <option v-for="(subject, index) in subjects" :key="index" :value="subject.id">
-          {{ subject.title }}
-        </option>
-      </select>
-      <label>Назив:</label>
-      <input v-model="title" type="text" placeholder="Унеси назив..." />
-      <label>Опис:</label>
-      <textarea v-model="description" placeholder="Унеси опис..."></textarea>
-      <div :class="$style.cta_wrapper">
-        <CTA
-          title="Додај тему"
-          color="green"
-          size="sm"
-          type="submit"
-          :loading="loading"
-        />
-        <CTA
+    <div :class="$style.form_wrapper">
+      <FormLayout :handle-submit="handleSubmit">
+        <template #inputs>
+          <label>Предмет:</label>
+          <select v-model="subjectId">
+            <option :value="subjectId" disabled selected>{{ defaultSubject?.title || "Изабери предмет" }}</option>
+            <option v-for="(subject, index) in subjects" :key="index" :value="subject.id">
+              {{ subject.title }}
+            </option>
+          </select>
+          <label>Назив:</label>
+          <input v-model="title" type="text" placeholder="Унеси назив..." />
+          <label>Опис:</label>
+          <textarea v-model="description" placeholder="Унеси опис..."></textarea>
+        </template>
+        <template #buttons>
+          <CTA
           title="Одбаци"
           color="red"
           size="sm"
           @click.prevent="handleClear"
-        />
-      </div>
-    </form>
+          />
+          <CTA
+            title="Додај тему"
+            color="green"
+            size="sm"
+            type="submit"
+            :loading="loading"
+          />
+        </template>
+      </FormLayout>
+    </div>
   </PageLayout>
 </template>

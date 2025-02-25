@@ -1,0 +1,40 @@
+.form {
+    color: var(--text-prim);
+    background-color: var(--background-sec);
+}
+.form h1 {
+    padding: 0.5rem 0;
+}
+.form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+.form .buttons_wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0;
+}
+.form input, .form select, .form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 1rem;
+    border: 1px solid var(--background-terc);
+    background-color: var(--background-prim);
+    border-radius: 5px;
+    font-size: 1rem;
+    color: var(--text-prim);
+    font-family: var(--font-prim);
+}
+.form input:focus, .form select:focus, .form textarea:focus {
+    border-color: var(--main);
+    outline: none;
+}
+.form select {
+    cursor: pointer;
+}
+.form textarea {
+    resize: vertical;
+    min-height: 100px;
+}

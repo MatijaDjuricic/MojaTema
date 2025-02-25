@@ -10,7 +10,7 @@
     border-radius: 0.3em;
 }
 .button_lg {
-    height: 3em;
+    height: 2.5em;
     padding: 0.5em 1em;
     font-size: 1.3em;
 }
@@ -25,23 +25,12 @@
     align-items: center;
 }
 .button_green {
-    color: var(--green);
-    background-color: var(--background-sec) !important;
-    border: 1px solid var(--green);
+    color: var(--background-prim);
+    background-color: var(--green);
 }
 .button_red {
-    color: var(--red);
-    background-color: var(--background-sec) !important;
-    border: 1px solid var(--red);
-    font-weight: bold;
-}
-.button_green:hover {
-    background-color: var(--green) !important;
-    color: var(--background-prim) !important;
-}
-.button_red:hover {
-    background-color: var(--red) !important;
-    color: var(--background-prim) !important;
+    color: var(--background-prim);
+    background-color: var(--red);
 }
 .cta_button:hover {
     transform: translateY(-2px);
