@@ -30,6 +30,7 @@ Route::middleware('auth:sanctum')->group(function() {
     });
     Route::prefix('topics')->controller(TopicController::class)->group(function () {
         Route::get('/', 'topicsAll');
+        Route::get('/reported', 'topicsReported');
         Route::get('/{id}', 'topicById');
         Route::post('/', 'createTopic');
         Route::post('/import', 'importTopics');

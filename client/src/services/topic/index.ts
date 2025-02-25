@@ -10,6 +10,14 @@ export const getTopicsAsync = async (search?: string) => {
         console.error('Failed to fetch topics:', error);
     }
 }
+export const getReportedTopicsAsync = async () => {
+    try {
+        const response = await apiClient.get(`/topics/reported`);
+        return await response.data.data as Topic[];
+    } catch (error) {
+        console.error('Failed to fetch topics:', error);
+    }
+}
 export const getTopicsByProfessorAsync = async (id: number) => {
     try {
         const response = await apiClient.get(`/topics/professor/${id}`);

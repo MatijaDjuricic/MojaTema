@@ -43,6 +43,22 @@ class TopicService implements ITopicService
             throw new \Exception('Error fetching topics.');
         }
     }
+    public function getReportedTopics(): JsonResource {
+        $topics = Topic::with(['subject', 'professor', 'student'])
+            ->where(function ($q) {
+                $q->where('user_id', auth()->user()->id)
+                ->whereHas('student', function ($q) {
+                    $q->whereNotNull('user_id');
+                })
+                ->orWhereHas('student', function ($q) {
+                    $q->where('user_id', auth()->user()->id);
+                });
+            })->get();
+        if (!$topics) {
+            throw new ModelNotFoundException('Topic not found.');
+        }
+        return TopicResource::collection($topics);
+    }
     public function getTopicById(int $id): JsonResource {
         try {
             $topic = Topic::find($id);

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 interface ITopicService {
     public function getAllTopics(string $search = ''): JsonResource;
+    public function getReportedTopics(): JsonResource;
     public function getTopicById(int $id): JsonResource;
     public function getTopicsByProfessor(int $id): JsonResource;
     public function createTopic(CreateTopicRequest $request): JsonResource;

@@ -22,6 +22,16 @@ class TopicController extends Controller
             return $this->errorResponse('An error occurred: ' . $e->getMessage(), 500);
         }
     }
+    public function topicsReported() {
+        try {
+            $data = $this->topicService->getReportedTopics();
+            return $data
+                ? $this->successResponse($data, 200)
+                : $this->errorResponse("Topics not found", 404);
+        } catch (\Exception $e) {
+            return $this->errorResponse('An error occurred: ' . $e->getMessage(), 500);
+        }
+    }
     public function topicById(int $id) {
         try {
             $data = $this->topicService->getTopicById($id);

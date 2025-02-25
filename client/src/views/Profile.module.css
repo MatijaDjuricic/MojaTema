@@ -1,9 +1,45 @@
-.form_wrapper {
+.container {
     max-width: 600px;
     margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+.info_wrapper, .topic_wrapper, .form_wrapper {
     padding: 1rem 2rem;
     background-color: var(--background-sec);
     color: var(--text-prim);
     box-shadow: 0 5px 10px var(--background-terc);
     border-radius: 5px;
+}
+.info_wrapper header, .topic_wrapper header, .form_wrapper header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1rem;
+}
+.info_wrapper p {
+    font-size: 1.25rem;
+    padding-top: 0.5rem;
+}
+.info_wrapper span {
+    font-size: 1rem;
+    color: var(--main);
+}
+.topic_wrapper .card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    padding: 1rem;
+    color: var(--text-prim);
+    background-color: var(--background-sec);
+    border: 1px solid var(--background-terc);
+    transition: color, background-color 300ms ease-in-out;
+}
+.topic_wrapper .card:hover {
+    cursor: pointer;
+    background-color: var(--main);
+    color: var(--background-prim);
 }

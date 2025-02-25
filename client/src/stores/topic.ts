@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import {
     createTopicAsync,
     deleteTopicAsync,
+    getReportedTopicsAsync,
     getTopicsAsync,
     getTopicsByProfessorAsync,
     updateTopicStatusAsync
@@ -26,6 +27,10 @@ export const useTopicStore = defineStore('topic', {
     actions: {
         async getTopics(search?: string): Promise<void> {
             const topics = await getTopicsAsync(search);
+            if (topics) this.topics = topics;
+        },
+        async getReportedTopics(): Promise<void> {
+            const topics = await getReportedTopicsAsync();
             if (topics) this.topics = topics;
         },
         async getTopicsByProfessor(): Promise<void> {
