@@ -31,7 +31,7 @@ class AuthController extends Controller {
         });
         $request->session()->flush();
         $request->session()->regenerateToken();
-        cookie()->queue(cookie()->forget('laravel_session'));
+        cookie()->queue(cookie()->forget(config('session.cookie')));
         return $this->successResponse(['message' => 'Logged out successfully'], 200);
     }
     public function changePassword(ChangePasswordRequest $request) {
