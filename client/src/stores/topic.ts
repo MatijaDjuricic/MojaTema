@@ -12,6 +12,7 @@ import type { ICreateTopicRequest, TopicState } from '../types/interface';
 export const useTopicStore = defineStore('topic', {
     state: (): TopicState => ({
         topics: [],
+        reported: []
     }),
     getters: {
         isReportedTopic(state): boolean {
@@ -31,7 +32,7 @@ export const useTopicStore = defineStore('topic', {
         },
         async getReportedTopics(): Promise<void> {
             const topics = await getReportedTopicsAsync();
-            if (topics) this.topics = topics;
+            if (topics) this.reported = topics;
         },
         async getTopicsByProfessor(): Promise<void> {
             const topics = await getTopicsByProfessorAsync(auth().currentUser.id);
@@ -43,12 +44,12 @@ export const useTopicStore = defineStore('topic', {
         },
         async updateTopicStatus(id: number, status: number): Promise<void> {
             const updatedTopic = await updateTopicStatusAsync(id, status);
-            if (updatedTopic && this.topics) {
-                const topicIndex = this.topics.findIndex((topic) => topic.id == id);
-                if (topicIndex != -1) {
-                    this.topics[topicIndex] = updatedTopic;
-                }
-            }
+            if (!updatedTopic || !this.topics) return;
+            const topicIndex = this.topics.findIndex((topic) => topic.id == id);
+            if (topicIndex == -1) return;
+            this.topics[topicIndex] = updatedTopic;
+            if (updatedTopic.student != null) this.reported.push(updatedTopic)
+            else this.reported = this.reported.filter((topic) => topic.id != updatedTopic.id)
         },
         async deleteTopic(id: number): Promise<void> {
             const response = await deleteTopicAsync(id);

@@ -22,11 +22,13 @@ const {
     handleClear,
     handleSubmit
 } = useProfileForm();
+const topicStore = useTopicStore();
 const authStore = useAuthStore();
 const user = authStore.currentUser;
-const topicStore = useTopicStore();
 onMounted(async() => {
-    await topicStore.getReportedTopics();
+    if (topicStore.reported.length == 0) {
+        await topicStore.getReportedTopics();
+    }
 })
 </script>
 <style src="./Profile.module.css" module/>
@@ -54,7 +56,7 @@ onMounted(async() => {
                     {{ RoleNamesCyrillic[user.role as RoleEnum] }}
                 </p>
                 <p>
-                    <span>Изменњен: </span>
+                    <span>Измењен: </span>
                     {{ formatDate(new Date(user.updatedAt)) }}
                 </p>
                 <p>
@@ -62,15 +64,20 @@ onMounted(async() => {
                     {{ formatDate(new Date(user.createdAt)) }}
                 </p>
             </div>
-            <div v-if="authStore.userRole == RoleEnum.UCENIK" :class="$style.topic_wrapper">
+            <div :class="$style.topic_wrapper">
                 <header>
-                    <h2>Пријављена теме</h2>
+                    <h2>Пријављене теме</h2>
                     <IconArticle />
                 </header>
-                <router-link v-for="(topic, index) in topicStore.topics" :key="index" :to="`topics?search=${topic.title.toLowerCase()}`" :class="$style.card">
+                <router-link v-if="topicStore.reported.length != 0" v-for="(topic, index) in topicStore.reported"
+                    :key="index"
+                    :to="authStore.userRole == RoleEnum.UCENIK ? `topics?search=${topic.title.toLowerCase()}`: 'topics/reported'"
+                    :class="$style.card"
+                >
                     <h3>{{ topic.title }}</h3>
                     <p>({{ topic.subject.title }} - {{ topic.professor.firstName }} {{ topic.professor.lastName }})</p>
                 </router-link>
+                <p v-else>Нема пријављене теме</p>
             </div>
             <div :class="$style.form_wrapper">
                 <FormLayout :handle-submit="handleSubmit">

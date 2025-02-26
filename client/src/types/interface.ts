@@ -7,7 +7,8 @@ export interface AuthState {
     chatAvailableUsers: User[];
 }
 export interface TopicState {
-    topics: Topic[]
+    topics: Topic[],
+    reported: Topic[]
 }
 export interface SubjectState {
     subjects: Subject[]

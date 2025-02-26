@@ -6,25 +6,31 @@
     gap: 2rem;
 }
 .info_wrapper, .topic_wrapper, .form_wrapper {
-    padding: 1rem 2rem;
-    background-color: var(--background-sec);
     color: var(--text-prim);
+    background-color: var(--background-sec);
     box-shadow: 0 5px 10px var(--background-terc);
+    padding: 1.5rem;
     border-radius: 5px;
 }
 .info_wrapper header, .topic_wrapper header, .form_wrapper header {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding-bottom: 1rem;
+}
+.form_wrapper header {
+    margin-bottom: 1rem;
 }
 .info_wrapper p {
-    font-size: 1.25rem;
+    font-weight: bold;
     padding-top: 0.5rem;
 }
 .info_wrapper span {
-    font-size: 1rem;
     color: var(--main);
+}
+.topic_wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 .topic_wrapper .card {
     display: flex;

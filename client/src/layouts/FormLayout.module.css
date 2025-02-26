@@ -3,7 +3,7 @@
     background-color: var(--background-sec);
 }
 .form h1 {
-    padding: 0.5rem 0;
+    padding: 1rem 0;
 }
 .form label {
     display: block;
@@ -14,12 +14,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 1rem 0;
+    margin-top: 1rem;
 }
 .form input, .form select, .form textarea {
     width: 100%;
     padding: 12px;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     border: 1px solid var(--background-terc);
     background-color: var(--background-prim);
     border-radius: 5px;
