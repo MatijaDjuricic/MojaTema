@@ -20,7 +20,8 @@ import {
     IconMessages,
     IconMoon,
     IconSun,
-    IconUserCircle
+    IconUserCircle,
+    IconUsers
 } from '@tabler/icons-vue';
 const router = useRouter();
 const auth = useAuthStore();
@@ -48,6 +49,15 @@ const handleLogout = async () => {
                 </NavItem>
                 <NavItem v-if="auth.userRole == RoleEnum.PROFESOR" title="Додај Тему" to="/topics/create">
                     <IconCirclePlus stroke={2} />
+                </NavItem>
+                <NavItem v-if="auth.userRole == RoleEnum.ADMINISTRATOR" title="Корисници" to="/admin/users">
+                    <IconUsers stroke={2} />
+                </NavItem>
+                <NavItem v-if="auth.userRole == RoleEnum.ADMINISTRATOR" title="Теме" to="/admin/topics">
+                    <IconArticle stroke={2} />
+                </NavItem>
+                <NavItem v-if="auth.userRole == RoleEnum.ADMINISTRATOR" title="Предмети" to="/admin/subjects">
+                    <IconArticle stroke={2} />
                 </NavItem>
                 <NavItem title="Мој Профил" to="/profile">
                     <IconUserCircle stroke={2} />

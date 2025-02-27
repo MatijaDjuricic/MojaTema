@@ -3,11 +3,14 @@ import { RoleEnum } from '../utils/enums';
 import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import Profile from '../views/Profile.vue';
-import Topics from '../views/Topics.vue';
-import CreateTopic from '../views/CreateTopic.vue';
-import NotFound from '../views/NotFound.vue';
-import ReportedTopics from '../views/ReportedTopics.vue';
 import Chat from '../views/Chat.vue';
+import CreateTopic from '../views/CreateTopic.vue';
+import Topics from '../views/Topics.vue';
+import AllTopics from '../views/AllTopics.vue';
+import ReportedTopics from '../views/ReportedTopics.vue';
+import Users from '../views/Users.vue';
+import Subjects from '../views/Subjects.vue';
+import NotFound from '../views/NotFound.vue';
 export const routes: Array<RouteRecordRaw> = [
     {
         path: '/login',
@@ -26,6 +29,14 @@ export const routes: Array<RouteRecordRaw> = [
         path: '/profile',
         name: 'Profile',
         component: Profile,
+        meta: {
+            requiredAuth: true,
+        }
+    },
+    {
+        path: '/chat/:receiverId',
+        name: 'Chat',
+        component: Chat,
         meta: {
             requiredAuth: true,
         }
@@ -63,12 +74,28 @@ export const routes: Array<RouteRecordRaw> = [
         ]
     },
     {
-        path: '/chat/:receiverId',
-        name: 'Chat',
-        component: Chat,
+        path: '/admin',
         meta: {
             requiredAuth: true,
-        }
+            requiredRole: [RoleEnum.ADMINISTRATOR, RoleEnum.SUPER_ADMINISTRATOR],
+        },
+        children: [
+            {
+                path: 'users',
+                name: 'Users',
+                component: Users,
+            },
+            {
+                path: 'topics',
+                name: 'AllTopics',
+                component: AllTopics,
+            },
+            {
+                path: 'subjects',
+                name: 'Subjects',
+                component: Subjects,
+            },
+        ]
     },
     {
         path: '/:pathMatch(.*)*',

@@ -15,6 +15,10 @@ export enum TopicStatusEnum {
     NA_CEKANJU = 2,
     REZERVISANA = 3,
 }
+export enum ClassYearEnum {
+    IV = 1,
+    III = 2
+}
 export enum ClassEnum {
     DRUSTVENO_JEZICKI = 1,
     PRIRODNO_MATEMATICKI = 2,

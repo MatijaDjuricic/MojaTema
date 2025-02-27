@@ -64,7 +64,9 @@ onMounted(async() => {
                     {{ formatDate(new Date(user.createdAt)) }}
                 </p>
             </div>
-            <div :class="$style.topic_wrapper">
+            <div v-if="authStore.userRole == RoleEnum.UCENIK || authStore.userRole == RoleEnum.PROFESOR"
+                :class="$style.topic_wrapper"
+            >
                 <header>
                     <h2>Пријављене теме</h2>
                     <IconArticle />

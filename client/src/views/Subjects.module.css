@@ -1,0 +1,26 @@
+.container {
+  margin: 1rem 0;
+  padding: 1.5rem;
+  border-radius: 5px;
+  color: var(--text-prim);
+  background-color: var(--background-sec);
+  box-shadow: 0 5px 10px var(--background-terc);
+  overflow-x: auto;
+}
+.container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.container th {
+  background-color: var(--background-terc);
+  font-weight: bold;
+}
+.container th, .container td {
+  padding: 0.75rem;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--background-terc);
+}
+.container tbody tr:nth-child(even) {
+  background-color: var(--background-prim);
+}
