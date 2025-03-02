@@ -45,4 +45,15 @@ class UserController extends Controller {
             return $this->errorResponse('An error occurred: ' . $e->getMessage(), 500);
         }
     }
+    public function deleteUser(int $id)
+    {
+        try {
+            $deleted = $this->userService->deleteUser($id);
+            return $deleted
+                ? $this->successResponse(['message' => 'User deleted successfully'], 200)
+                : $this->errorResponse('User not found', 404);
+        } catch (\Exception $e) {
+            return $this->errorResponse('Error deleting user: ' . $e->getMessage(), 500);
+        }
+    }
 }

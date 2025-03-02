@@ -55,4 +55,15 @@ class UserService implements IUserService {
             throw new \Exception('Error updating topic status.');
         }
     }
+    public function deleteUser(int $id): bool
+    {
+        try {
+            $user = User::find($id);
+            if (!$user) return false;
+            return $user->delete();
+        } catch (\Exception $e) {
+            \Log::error('Error deleting user: ' . $e->getMessage());
+            throw new \Exception('Error deleting user.');
+        }
+    }
 }

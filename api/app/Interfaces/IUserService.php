@@ -7,4 +7,5 @@ interface IUserService {
     public function getAllUsers(): JsonResource;
     public function getUserById(int $id): JsonResource;
     public function getChatAvailableUsers(): JsonResource;
+    public function deleteUser(int $id): bool;
 }

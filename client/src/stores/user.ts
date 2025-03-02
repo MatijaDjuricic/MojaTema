@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { getChatAvailableUsersAsync, getUsersAsync } from '../services/user';
+import { deleteUserAsync, getChatAvailableUsersAsync, getUsersAsync } from '../services/user';
 import type { UserState } from '../types/interface';
 import type { User } from '../types';
 export const useUserStore = defineStore('user', {
@@ -22,5 +22,9 @@ export const useUserStore = defineStore('user', {
             const users = await getChatAvailableUsersAsync(receiverId);
             if (users) this.chatAvailableUsers = users;
         },
+        async deleteUser(id: number): Promise<void> {
+            const response = await deleteUserAsync(id);
+            if (response.statusCode == 200) this.users = this.users.filter((user) => user.id != id);
+        }
     }
 });

@@ -25,3 +25,11 @@ export const getChatAvailableUsersAsync = async (receiver_id?: number) => {
         console.error('Failed to fetch topics:', error);
     }
 }
+export const deleteUserAsync = async (id: number) => {
+    try {
+        const response = await apiClient.delete(`/users/${id}`);
+        return await response.data;
+    } catch (err) {
+        throw new Error(`Error: ${err}`);
+    }
+}
