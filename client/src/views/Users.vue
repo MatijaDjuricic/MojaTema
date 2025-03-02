@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue';
+import { useAuthStore } from '../stores/auth';
 import { useUserStore } from '../stores/user';
 import { useToastMessage } from '../composables/useToastMessage';
 import { formatDate } from '../utils';
@@ -8,6 +9,7 @@ import { RoleNamesCyrillic } from '../utils/constants';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
 import CTA from '../components/CTA.vue';
+const auth = useAuthStore().currentUser;
 const userStore = useUserStore();
 const { successMessage } = useToastMessage();
 onMounted(async () => {
@@ -45,6 +47,7 @@ onMounted(async () => {
             <td>{{ formatDate(new Date(user.updatedAt)) }}</td>
             <td>
               <CTA
+                v-if="auth.id != user.id"
                 title="Избриши"
                 size="sm"
                 color="red"

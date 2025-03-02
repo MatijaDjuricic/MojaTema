@@ -25,7 +25,7 @@ class TopicPolicy {
         return Response::deny('You do not have permission to update topic status');
     }
     public function delete(User $user, Topic $topic): Response {
-        return $user->id == $topic->user_id ?
+        return $user->id == $topic->user_id || $user->role == UserRoleEnum::ADMIN->value ?
         Response::allow() : Response::deny('You do not own this topic');
     }
 }
