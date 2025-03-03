@@ -24,3 +24,11 @@ export const getSubjectsByProfessorAsync = async (id: number) => {
         console.error('Failed to fetch topics:', error);
     }
 }
+export const deleteSubjectAsync = async (id: number) => {
+    try {
+        const response = await apiClient.delete(`/subjects/${id}`);
+        return await response.data;
+    } catch (err) {
+        throw new Error(`Error: ${err}`);
+    }
+}

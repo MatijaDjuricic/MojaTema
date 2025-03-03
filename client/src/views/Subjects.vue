@@ -5,6 +5,9 @@ import { formatDate } from '../utils';
 import { ClassYearEnum } from '../utils/enums';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
+import CTA from '../components/CTA.vue';
+import { useToastMessage } from '../composables/useToastMessage';
+const { successMessage } = useToastMessage();
 const subjectStore = useSubjectStore();
 onMounted(async () => {
   await subjectStore.getSubjects();
@@ -25,6 +28,7 @@ onMounted(async () => {
             <th>Година</th>
             <th>Креирано</th>
             <th>Ажурирано</th>
+            <th>Избриши</th>
           </tr>
         </thead>
         <tbody>
@@ -34,6 +38,19 @@ onMounted(async () => {
             <td>{{ ClassYearEnum[subject.class_year_id] }}</td>
             <td>{{ formatDate(new Date(subject.createdAt)) }}</td>
             <td>{{ formatDate(new Date(subject.updatedAt)) }}</td>
+            <td>
+              <CTA
+                title="Избриши"
+                size="sm"
+                color="red"
+                @click="() => {
+                  subjectStore.deleteSubject(subject.id)
+                  .finally(() => {
+                    successMessage(`Успешно си обрисао предмет`);
+                  });
+                }"
+              />
+            </td>
           </tr>
         </tbody>
       </table>

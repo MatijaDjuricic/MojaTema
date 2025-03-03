@@ -48,4 +48,14 @@ class SubjectService implements ISubjectService
             throw new \Exception('Error fetching subject by ID.');
         }
     }
+    public function deleteSubject(int $id): bool {
+        try {
+            $subject = Subject::find($id);
+            if (!$subject) return false;
+            return $subject->delete();
+        } catch (\Exception $e) {
+            \Log::error('Error deleting subject: ' . $e->getMessage());
+            throw new \Exception('Error deleting subject.');
+        }
+    }
 }

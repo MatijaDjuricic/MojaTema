@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('/', 'subjectsAll');
         Route::get('/{id}', 'subjectById');
         Route::get('/professor/{id}', 'subjectsByProfessor');
+        Route::delete('/{id}', 'deleteSubject');
     });
     Route::prefix('topics')->controller(TopicController::class)->group(function () {
         Route::get('/', 'topicsAll');

@@ -33,4 +33,14 @@ class SubjectController extends Controller
             return $this->errorResponse('An error occurred: ' . $e->getMessage(), 500);
         }
     }
+    public function deleteSubject(int $id) {
+        try {
+            $deleted = $this->subjectService->deleteSubject($id);
+            return $deleted
+                ? $this->successResponse(['message' => 'Subject deleted successfully'], 200)
+                : $this->errorResponse('Subject not found', 404);
+        } catch (\Exception $e) {
+            return $this->errorResponse('Error deleting subject: ' . $e->getMessage(), 500);
+        }
+    }
 }

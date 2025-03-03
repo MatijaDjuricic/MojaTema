@@ -7,4 +7,5 @@ interface ISubjectService {
     public function getAllSubjects(): JsonResource;
     public function getSubjectById(int $id): JsonResource;
     public function getSubjectsByProfessor(int $id): JsonResource;
+    public function deleteSubject(int $id): bool;
 }
