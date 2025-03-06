@@ -54,17 +54,17 @@ onMounted(async () => await fetchSubjects());
         </template>
         <template #buttons>
           <CTA
-          title="Одбаци"
-          color="red"
-          size="sm"
-          @click.prevent="handleClear"
-          />
-          <CTA
             title="Додај тему"
             color="green"
             size="sm"
             type="submit"
             :loading="loading"
+          />
+          <CTA
+          title="Одбаци"
+          color="red"
+          size="sm"
+          @click.prevent="handleClear"
           />
         </template>
       </FormLayout>

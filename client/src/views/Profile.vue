@@ -125,18 +125,18 @@ onMounted(async() => {
                         </PasswordInput>
                     </template>
                     <template #buttons>
-                        <CTA
-                            title="Одбаци"
-                            color="red"
-                            size="sm"
-                            @click.prevent="handleClear"
-                        />
                         <CTA  
                             title="Промени лозинку"
                             color="green"
                             size="sm"
                             type="submit"
                             :loading="loading"
+                        />
+                        <CTA
+                            title="Одбаци"
+                            color="red"
+                            size="sm"
+                            @click.prevent="handleClear"
                         />
                     </template>
                 </FormLayout>

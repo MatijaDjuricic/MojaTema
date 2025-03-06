@@ -25,11 +25,9 @@
     align-items: center;
 }
 .button_green {
-    color: var(--background-prim);
     background-color: var(--green);
 }
 .button_red {
-    color: var(--background-prim);
     background-color: var(--red);
 }
 .cta_button:hover {
