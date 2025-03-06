@@ -3,9 +3,7 @@ import { ref, defineProps, defineExpose, onMounted, onUnmounted } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { IconX } from '@tabler/icons-vue';
 import IconButton from './IconButton.vue';
-defineProps<{
-  title: string;
-}>();
+defineProps<{ title: string }>();
 const modal = ref<null>(null);
 const isModalOpen = ref<boolean>(false);
 const openModal = () => isModalOpen.value = true;
@@ -13,7 +11,7 @@ const closeModal = () => isModalOpen.value = false;
 const handleKeydown = (event: KeyboardEvent) => {
   if (event.key === 'Escape') closeModal();
 };
-defineExpose({ openModal });
+defineExpose({ openModal, closeModal });
 onClickOutside(modal, closeModal);
 onMounted(() => window.addEventListener('keydown', handleKeydown));
 onUnmounted(() => window.removeEventListener('keydown', handleKeydown));

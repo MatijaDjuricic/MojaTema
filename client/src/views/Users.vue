@@ -12,7 +12,7 @@ import Modal from '../components/Modal.vue';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
 import FormLayout from '../layouts/FormLayout.vue';
-const { setModalRefs, openModalRefs } = useModal();
+const { setModalRefs, openModalRefs, closeModalRefs } = useModal();
 const { successMessage } = useToastMessage();
 const auth = useAuthStore().currentUser;
 const userStore = useUserStore();
@@ -31,6 +31,7 @@ const handleEdit = async (id: number) => {
       "role": user.role,
     }).finally(() => {
       successMessage(`Успешно си изменио корисника`);
+      closeModalRefs(id);
     });
   }
 }

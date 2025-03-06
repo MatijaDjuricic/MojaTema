@@ -1,6 +1,6 @@
 import apiClient from "../apiClient";
 import type { Topic } from "../../types";
-import type { ICreateTopicRequest } from "../../types/interface";
+import type { ICreateTopicRequest, IUpdateTopicRequest } from "../../types/interface";
 export const getTopicsAsync = async (search?: string) => {
     try {
         const query: string = search ? `?search=${search}` : '';
@@ -44,6 +44,14 @@ export const importTopicsAsync = async (formData: FormData) => {
         return await response.data.data;
     } catch (err) {
         throw new Error(`Error: ${err}`);
+    }
+}
+export const updateTopicAsync = async (id: number, data: IUpdateTopicRequest) => {
+    try {
+        const response = await apiClient.put(`/topics/${id}`, data);
+        return await response.data.data as Topic;
+    } catch (error) {
+        console.error('Failed to fetch topics:', error);
     }
 }
 export const updateTopicStatusAsync = async (id: number, status: number) => {

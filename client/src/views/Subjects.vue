@@ -10,7 +10,7 @@ import CTA from '../components/CTA.vue';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
 import FormLayout from '../layouts/FormLayout.vue';
-const { setModalRefs, openModalRefs } = useModal();
+const { setModalRefs, openModalRefs, closeModalRefs } = useModal();
 const { successMessage } = useToastMessage();
 const subjectStore = useSubjectStore();
 const handleEdit = async (id: number) => {
@@ -21,12 +21,11 @@ const handleEdit = async (id: number) => {
       'class_year_id': subject.class_year_id,
     }).finally(() => {
       successMessage(`Успешно си изменио предмет`);
+      closeModalRefs(id);
     });
   }
 }
-onMounted(async () => {
-  await subjectStore.getSubjects();
-});
+onMounted(async () => await subjectStore.getSubjects());
 </script>
 <style src="./Subjects.module.css" module/>
 <template>
