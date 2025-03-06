@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\UserRoleEnum;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Interfaces\IUserService;
 use App\Models\Topic;
@@ -55,8 +56,18 @@ class UserService implements IUserService {
             throw new \Exception('Error updating topic status.');
         }
     }
-    public function deleteUser(int $id): bool
-    {
+    public function updateUser(UpdateUserRequest $request, int $id): JsonResource {
+        try {
+            $user = User::find($id);
+            $fields = $request->validated();
+            $user->update($fields);
+            return UserResource::make($user);
+        } catch (\Exception $e) {
+            \Log::error('Error updating user: ' . $e->getMessage());
+            throw new \Exception('Error updating user.');
+        }
+    }
+    public function deleteUser(int $id): bool {
         try {
             $user = User::find($id);
             if (!$user) return false;

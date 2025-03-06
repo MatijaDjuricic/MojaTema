@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('/chat', 'chatAvailableUsers');
         Route::get('/', 'usersAll');
         Route::get('/{id}', 'userById');
+        Route::put('/{id}', 'updateUser');
         Route::delete('/{id}', 'deleteUser');
     });
     Route::prefix('subjects')->controller(SubjectController::class)->group(function () {

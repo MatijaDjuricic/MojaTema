@@ -2,7 +2,8 @@ import type { User, Topic, Subject, Message } from ".";
 export interface AuthState {
     user: User | undefined,
     isAuthenticated: boolean
-}export interface UserState {
+}
+export interface UserState {
     users: User[],
     chatAvailableUsers: User[];
 }
@@ -37,4 +38,10 @@ export interface ICreateTopicRequest {
 export interface IUpdateTopicStatusRequest {
     status: number,
     studentId: number
+}
+export interface IUpdateUserReqeust {
+    first_name: string,
+    last_name: string,
+    email: string,
+    role: number
 }

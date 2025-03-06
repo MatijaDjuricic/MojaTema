@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\UserRoleEnum;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Interfaces\IUserService;
 
@@ -45,8 +46,17 @@ class UserController extends Controller {
             return $this->errorResponse('An error occurred: ' . $e->getMessage(), 500);
         }
     }
-    public function deleteUser(int $id)
-    {
+    public function updateUser(UpdateUserRequest $request, int $id) {
+        try {
+            $data = $this->userService->updateUser($request, $id);
+            return $data
+                ? $this->successResponse($data, 200)
+                : $this->errorResponse('User not found', 404);
+        } catch (\Exception $e) {
+            return $this->errorResponse('An error occurred: ' . $e->getMessage(), 500);
+        }
+    }
+    public function deleteUser(int $id) {
         try {
             $deleted = $this->userService->deleteUser($id);
             return $deleted
