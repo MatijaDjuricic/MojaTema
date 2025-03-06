@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Subject\UpdateSubjectRequest;
 use App\Interfaces\ISubjectService;
 class SubjectController extends Controller
 {
@@ -29,6 +30,16 @@ class SubjectController extends Controller
         try {
             $data = $this->subjectService->getSubjectsByProfessor($id);
             return $this->successResponse($data, 200);
+        } catch (\Exception $e) {
+            return $this->errorResponse('An error occurred: ' . $e->getMessage(), 500);
+        }
+    }
+    public function updateSubject(UpdateSubjectRequest $request, int $id) {
+        try {
+            $data = $this->subjectService->updateSubject($request, $id);
+            return $data
+                ? $this->successResponse($data, 200)
+                : $this->errorResponse('Subject not found', 404);
         } catch (\Exception $e) {
             return $this->errorResponse('An error occurred: ' . $e->getMessage(), 500);
         }

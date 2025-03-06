@@ -1,6 +1,11 @@
 import { defineStore } from 'pinia';
-import { deleteSubjectAsync, getSubjectsAsync, getSubjectsByProfessorAsync } from '../services/subject';
-import type { SubjectState } from '../types/interface';
+import {
+    getSubjectsAsync,
+    getSubjectsByProfessorAsync,
+    updateSubjectAsync,
+    deleteSubjectAsync
+} from '../services/subject';
+import type { IUpdateSubjectRequest, SubjectState } from '../types/interface';
 import type { Subject } from '../types';
 export const useSubjectStore = defineStore('subject', {
     state: (): SubjectState => ({
@@ -19,6 +24,13 @@ export const useSubjectStore = defineStore('subject', {
         async getSubjectsByProfessor(id: number): Promise<void> {
             const subjects = await getSubjectsByProfessorAsync(id);
             if (subjects) this.subjects = subjects;
+        },
+        async updateSubject(id: number, data: IUpdateSubjectRequest): Promise<void> {
+            const updatedSubject = await updateSubjectAsync(id, data);
+            if (!updatedSubject || !this.subjects) return;
+            const subjectIndex = this.subjects.findIndex((subject) => subject.id == id);
+            if (subjectIndex == -1) return;
+            this.subjects[subjectIndex] = updatedSubject;
         },
         async deleteSubject(id: number): Promise<void> {
             const response = await deleteSubjectAsync(id);

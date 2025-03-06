@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Requests\Subject\UpdateSubjectRequest;
 use App\Models\Subject;
 use App\Models\ProfessorSubject;
 use App\Interfaces\ISubjectService;
@@ -46,6 +47,17 @@ class SubjectService implements ISubjectService
         } catch (\Exception $e) {
             \Log::error('Error fetching subject by ID: ' . $e->getMessage());
             throw new \Exception('Error fetching subject by ID.');
+        }
+    }
+    public function updateSubject(UpdateSubjectRequest $request, int $id): JsonResource {
+        try {
+            $subject = Subject::find($id);
+            $fields = $request->validated();
+            $subject->update($fields);
+            return SubjectResource::make($subject);
+        } catch (\Exception $e) {
+            \Log::error('Error updating subject: ' . $e->getMessage());
+            throw new \Exception('Error updating subject.');
         }
     }
     public function deleteSubject(int $id): bool {
