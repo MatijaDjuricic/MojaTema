@@ -22,21 +22,23 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown));
 <template>
   <slot name="open"></slot>
   <Teleport to="#modal">
-    <div v-if="isModalOpen" :class="$style.modal_wrapper" ref="modal">
-        <div :class="$style.modal_content">
-          <div :class="$style.modal_header">
-              <h2 :class="$style.modal_title">{{ title }}</h2>
-              <IconButton color="red" @click="closeModal">
-                <IconX stroke={2} width="32" height="32"/>
-              </IconButton>
+    <Transition name="modal">
+      <div v-if="isModalOpen" :class="$style.modal_wrapper" ref="modal">
+          <div :class="$style.modal_content">
+            <div :class="$style.modal_header">
+                <h2 :class="$style.modal_title">{{ title }}</h2>
+                <IconButton color="red" @click="closeModal">
+                  <IconX stroke={2} width="32" height="32"/>
+                </IconButton>
+            </div>
+            <div :class="$style.modal_body">
+              <slot></slot>
+            </div>
+            <div :class="$style.modal_footer">
+              <slot name="footer"></slot>
+            </div>
           </div>
-          <div :class="$style.modal_body">
-            <slot></slot>
-          </div>
-          <div :class="$style.modal_footer">
-            <slot name="footer"></slot>
-          </div>
-        </div>
-    </div>
+      </div>
+    </Transition>
   </Teleport>
 </template>

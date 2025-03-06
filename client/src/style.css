@@ -54,6 +54,13 @@ input {
 .toggle_sidebar #mainWrapper {
   margin-left: 0;
 }
+.modal-enter-active, .modal-leave-active {
+  transition: all 200ms ease;
+}
+.modal-enter-from, .modal-leave-to {
+  opacity: 0;
+  transform: scale(1.1);
+}
 [data-theme='dark'] .icon {
   filter: invert(1) brightness(2);
 }
