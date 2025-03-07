@@ -1,14 +1,15 @@
 import { defineStore } from 'pinia';
 import {
-    createTopicAsync,
-    deleteTopicAsync,
-    getReportedTopicsAsync,
     getTopicsAsync,
+    getReportedTopicsAsync,
     getTopicsByProfessorAsync,
-    updateTopicStatusAsync
+    createTopicAsync,
+    updateTopicAsync,
+    updateTopicStatusAsync,
+    deleteTopicAsync
 } from '../services/topic';
 import { useAuthStore as auth } from './auth';
-import type { ICreateTopicRequest, TopicState } from '../types/interface';
+import type { ICreateTopicRequest, IUpdateTopicRequest, TopicState } from '../types/interface';
 export const useTopicStore = defineStore('topic', {
     state: (): TopicState => ({
         topics: [],
@@ -41,6 +42,13 @@ export const useTopicStore = defineStore('topic', {
         async createTopic(data: ICreateTopicRequest): Promise<void> {
             const createdTopic = await createTopicAsync(data);
             if (createdTopic) this.topics.push(createdTopic);
+        },
+        async updateTopic(id: number, data: IUpdateTopicRequest): Promise<void> {
+            const updatedTopic = await updateTopicAsync(id, data);
+            if (!updatedTopic || !this.topics) return;
+            const topicIndex = this.topics.findIndex((topic) => topic.id == id);
+            if (topicIndex == -1) return;
+            this.topics[topicIndex] = updatedTopic;
         },
         async updateTopicStatus(id: number, status: number): Promise<void> {
             const updatedTopic = await updateTopicStatusAsync(id, status);

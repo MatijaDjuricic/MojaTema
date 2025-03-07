@@ -35,6 +35,10 @@ export interface ICreateTopicRequest {
     description: string,
     subjectId: number
 }
+export interface IUpdateTopicRequest {
+    title: string,
+    description: string
+}
 export interface IUpdateTopicStatusRequest {
     status: number,
     studentId: number
