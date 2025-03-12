@@ -142,7 +142,18 @@ class TopicService implements ITopicService
                 throw new ModelNotFoundException('Topic not found.');
             }
             Gate::authorize('update', $topic);
-            $topic->update($request->validated());
+            $fields = $request->validated();
+            $student = $fields['student_user_id']
+                ? Student::where('user_id', $fields['student_user_id'])->first() : null;
+            $topic->update([
+                'title' => $fields['title'],
+                'description' => $fields['description'],
+                'status' => !$student ? TopicStatusEnum::FREE->value : $fields['status'],
+                'subject_id' => $fields['subject_id'],
+                'user_id' => $fields['professor_id'],
+                'student_id' => $student && $fields['status'] != TopicStatusEnum::FREE->value
+                    ? $student->id : null,
+            ]);
             return TopicResource::make($topic);
         } catch (\Exception $e) {
             \Log::error('Error updating topic: ' . $e->getMessage());

@@ -37,7 +37,11 @@ export interface ICreateTopicRequest {
 }
 export interface IUpdateTopicRequest {
     title: string,
-    description: string
+    description: string,
+    status: number,
+    subject_id: number,
+    professor_id: number,
+    student_user_id: number | null,
 }
 export interface IUpdateTopicStatusRequest {
     status: number,

@@ -1,5 +1,11 @@
 import { defineStore } from 'pinia';
-import { deleteUserAsync, getChatAvailableUsersAsync, getUsersAsync, updateUserAsync } from '../services/user';
+import {
+    getChatAvailableUsersAsync,
+    getUsersAsync,
+    updateUserAsync,
+    deleteUserAsync
+} from '../services/user';
+import { RoleEnum } from '../utils/enums';
 import type { IUpdateUserReqeust, UserState } from '../types/interface';
 import type { User } from '../types';
 export const useUserStore = defineStore('user', {
@@ -7,6 +13,17 @@ export const useUserStore = defineStore('user', {
         users: [],
         chatAvailableUsers: []
     }),
+    getters: {
+        getMentors(state) {
+            return state.users.filter(u => u.role == RoleEnum.MENTOR);
+        },
+        getProfessors(state) {
+            return state.users.filter(u => u.role == RoleEnum.PROFESOR);
+        },
+        getStudents(state) {
+            return state.users.filter(u => u.role == RoleEnum.UCENIK);
+        }
+    },
     actions: {
         isUserChatAvailable(id: number): boolean {
             return this.chatAvailableUsers.some(user => user.id == id)

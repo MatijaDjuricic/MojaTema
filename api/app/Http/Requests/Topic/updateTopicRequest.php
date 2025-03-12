@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Topic;
 
+use App\Enums\TopicStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 class updateTopicRequest extends FormRequest
 {
@@ -14,6 +15,14 @@ class updateTopicRequest extends FormRequest
         return [
             'title' => 'string|min:3|max:255',
             'description' => 'string|min:5|max:255',
+            'status' => 'int|in:' . implode(',', [
+                TopicStatusEnum::FREE->value,
+                TopicStatusEnum::PENDING->value,
+                TopicStatusEnum::RESERVED->value
+            ]),
+            'subject_id' => 'int',
+            'professor_id' => 'int',
+            'student_user_id' => 'int|nullable'
         ];
     }
 }
