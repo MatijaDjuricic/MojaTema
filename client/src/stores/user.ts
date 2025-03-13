@@ -3,7 +3,8 @@ import {
     getChatAvailableUsersAsync,
     getUsersAsync,
     updateUserAsync,
-    deleteUserAsync
+    deleteUserAsync,
+    createUserAsync
 } from '../services/user';
 import { RoleEnum } from '../utils/enums';
 import type { IUpdateUserReqeust, UserState } from '../types/interface';
@@ -38,6 +39,10 @@ export const useUserStore = defineStore('user', {
         async getChatAvailableUsers(receiverId?: number): Promise<void> {
             const users = await getChatAvailableUsersAsync(receiverId);
             if (users) this.chatAvailableUsers = users;
+        },
+        async createUser(data: IUpdateUserReqeust): Promise<void> {
+            const createdUser = await createUserAsync(data);
+            if (createdUser) this.users.push(createdUser);
         },
         async updateUser(id: number, data: IUpdateUserReqeust): Promise<void> {
             const updatedUser = await updateUserAsync(id, data);

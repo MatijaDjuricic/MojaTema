@@ -26,6 +26,26 @@ export const getChatAvailableUsersAsync = async (receiver_id?: number) => {
         console.error('Failed to fetch users:', error);
     }
 }
+export const createUserAsync = async (data: IUpdateUserReqeust) => {
+    try {
+        const response = await apiClient.post('/users', data);
+        return await response.data.data as User;
+    } catch (err) {
+        throw new Error(`Error: ${err}`);
+    }
+}
+export const importUserAsync = async (formData: FormData) => {
+    try {
+        const response = await apiClient.post('/users/import', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return await response.data.data;
+    } catch (err) {
+        throw new Error(`Error: ${err}`);
+    }
+}
 export const updateUserAsync = async (id: number, data: IUpdateUserReqeust) => {
     try {
         const response = await apiClient.put(`/users/${id}`, data);

@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('/chat', 'chatAvailableUsers');
         Route::get('/', 'usersAll');
         Route::get('/{id}', 'userById');
+        Route::post('/', 'createUser');
+        Route::post('/import', 'importUsers');
         Route::put('/{id}', 'updateUser');
         Route::delete('/{id}', 'deleteUser');
     });

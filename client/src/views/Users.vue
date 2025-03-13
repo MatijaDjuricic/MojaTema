@@ -3,38 +3,38 @@ import { onMounted } from 'vue';
 import { useAuthStore } from '../stores/auth';
 import { useUserStore } from '../stores/user';
 import { useModal } from '../composables/useModal';
-import { useToastMessage } from '../composables/useToastMessage';
 import { formatDate } from '../utils';
 import { RoleEnum } from '../utils/enums';
 import { RoleNamesCyrillic } from '../utils/constants';
+import { IconFileImport } from '@tabler/icons-vue';
 import CTA from '../components/CTA.vue';
 import Modal from '../components/Modal.vue';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
 import FormLayout from '../layouts/FormLayout.vue';
-const { setModalRefs, openModalRefs, closeModalRefs } = useModal();
-const { successMessage } = useToastMessage();
+import { useMenageUser } from '../composables/useMenageUser';
 const auth = useAuthStore().currentUser;
 const userStore = useUserStore();
-const handleDelete = async (id: number) => {
-  await userStore.deleteUser(id).finally(() => {
-    successMessage(`Успешно си обрисао корисника`);
-  });
-}
-const handleEdit = async (id: number) => {
-  const user = userStore.users.find(u => u.id === id);
-  if (user) {
-    await userStore.updateUser(id, {
-      "first_name": user.firstName,
-      "last_name": user.lastName,
-      "email": user.email,
-      "role": user.role,
-    }).finally(() => {
-      successMessage(`Успешно си изменио корисника`);
-      closeModalRefs(id);
-    });
-  }
-}
+const {
+  modalRef,
+  openModal,
+  setModalRefs,
+  openModalRefs,
+  closeModalRefs
+} = useModal();
+const {
+  firstName,
+  lastName,
+  email,
+  role,
+  fileInput,
+  loading,
+  handleClear,
+  handleDelete,
+  handleEdit,
+  handleFileUpload,
+  handleSubmit
+} = useMenageUser();
 onMounted(async () => await userStore.getUsers());
 </script>
 <style src="./Users.module.css" module/>
@@ -42,6 +42,39 @@ onMounted(async () => await userStore.getUsers());
   <PageLayout>
     <HeaderLayout>
       <h1>Корисници</h1>
+      <div :class="$style.header_buttons">
+        <Modal ref="modalRef" title="Додај корисника">
+          <template #open>
+            <CTA title="Додај корисника" size="sm" color="green" @click="() => openModal()"/>
+          </template>
+          <FormLayout :handle-submit="handleSubmit">
+          <template #inputs>
+            <label>Име:</label>
+            <input v-model="firstName" type="text" placeholder="Унеси име..." />
+            <label>Презиме:</label>
+            <input v-model="lastName" placeholder="Унеси презиме..."/>
+            <label>Имејл:</label>
+            <input v-model="email" placeholder="Унеси имејл..."/>
+            <label>Улога:</label>
+            <select v-model="role">
+              <option :value="RoleEnum.UCENIK" disabled>{{ RoleNamesCyrillic[RoleEnum.UCENIK] }}</option>
+              <option v-for="(role, index) in RoleNamesCyrillic" :key="index" :value="index">
+                {{ role }}
+              </option>
+            </select>
+          </template>
+          <template #buttons>
+            <CTA title="Додај корисника" color="green" size="sm" type="submit" :loading="loading"/>
+            <CTA title="Одбаци" color="red" size="sm" @click.prevent="handleClear"/>
+          </template>
+          </FormLayout>
+        </Modal>
+        <button :class="$style.upload_file_btn">
+          <IconFileImport stroke={2} />
+          Увези .csv или .xlsx
+          <input ref="fileInput" type="file" accept=".csv, .xlsx" @change="handleFileUpload"/>
+        </button>
+      </div>
     </HeaderLayout>
     <div :class="$style.container">
       <table>
@@ -76,7 +109,7 @@ onMounted(async () => await userStore.getUsers());
                     @click="openModalRefs(user.id)"
                   />
                 </template>
-                <FormLayout :handle-submit="() => handleEdit(user.id)">
+                <FormLayout :handle-submit="() => handleEdit(user.id).finally(() => closeModalRefs(user.id))">
                   <template #inputs>
                     <label>Улога:</label>
                     <select v-model="user.role">
