@@ -33,7 +33,8 @@ export interface IChangePasswordRequest {
 export interface ICreateTopicRequest {
     title: string,
     description: string,
-    subjectId: number
+    subject_id: number,
+    professor_id: number | null,
 }
 export interface IUpdateTopicRequest {
     title: string,

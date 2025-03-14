@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue';
-import { useCreateTopic } from '../composables/useCreateTopic';
+import { useMenageTopic } from '../composables/useMenageTopic';
 import { IconFileImport } from '@tabler/icons-vue';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
@@ -18,7 +18,7 @@ const {
   handleSubmit,
   handleFileUpload,
   fetchSubjects
-} = useCreateTopic();
+} = useMenageTopic();
 onMounted(async () => await fetchSubjects());
 </script>
 <style src="./CreateTopic.module.css" module/>

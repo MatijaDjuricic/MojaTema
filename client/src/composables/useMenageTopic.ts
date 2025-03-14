@@ -5,26 +5,31 @@ import { useToastMessage } from './useToastMessage';
 import { useTopicStore } from '../stores/topic';
 import { useAuthStore } from '../stores/auth';
 import type { Subject } from '../types';
-interface IUseCreateTopic {
+interface IUseMenageTopic {
     title: Ref<string>,
     description: Ref<string>,
     loading: Ref<boolean>,
     subjectId: Ref<number>,
+    studentId: Ref<number | null>,
+    professorId: Ref<number | null>,
     fileInput: Ref<HTMLInputElement | null>,
     defaultSubject: Ref<Subject | null>,
     subjects: Ref<Subject[]>,
     handleClear: () => void,
     handleSubmit: () => Promise<void>,
+    handleEdit: (id: number) => Promise<void>,
     handleFileUpload: () => Promise<void>,
     fetchSubjects: () => Promise<void>
 }
-export const useCreateTopic = (): IUseCreateTopic => {
+export const useMenageTopic = (): IUseMenageTopic => {
     const { successMessage, errorMessage } = useToastMessage();
     const topicStore = useTopicStore();
     const authStore = useAuthStore();
     const title = ref<string>("");
     const description = ref<string>("");
     const subjectId = ref<number>(-1);
+    const studentId = ref<number | null>(null);
+    const professorId = ref<number | null>(null);
     const loading = ref<boolean>(false);
     const fileInput = ref<HTMLInputElement | null>(null);
     const defaultSubject = ref<Subject | null>(null);
@@ -42,7 +47,8 @@ export const useCreateTopic = (): IUseCreateTopic => {
         await topicStore.createTopic({
             title: title.value.trim(),
             description: description.value.trim(),
-            subjectId: subjectId.value
+            subject_id: subjectId.value,
+            professor_id: professorId.value,
         }).finally(() => {
             loading.value = false;
             handleClear();
@@ -75,16 +81,34 @@ export const useCreateTopic = (): IUseCreateTopic => {
             subjectId.value = defaultSubject.value.id;
         }
     };
+    const handleEdit = async (id: number) => {
+        const topic = topicStore.topics.find(t => t.id === id);
+        if (topic) {
+            await topicStore.updateTopic(id, {
+                "title": topic.title,
+                "description": topic.description,
+                "status": Number(topic.status),
+                "subject_id": topic.subject.id,
+                "professor_id": topic.professor.userId,
+                "student_user_id": studentId.value
+            }).finally(() => {
+                successMessage(`Успешно си изменио тему`);
+            });
+        }
+    };
     return {
         title,
         description,
         loading,
         subjectId,
+        studentId,
+        professorId,
         fileInput,
         defaultSubject,
         subjects,
         handleClear,
         handleSubmit,
+        handleEdit,
         handleFileUpload,
         fetchSubjects
     };

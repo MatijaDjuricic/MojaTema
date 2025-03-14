@@ -96,9 +96,9 @@ class TopicService implements ITopicService
             $topic = Topic::create([
                 'title' => $fields['title'],
                 'description' => $fields['description'],
-                'subject_id' => $fields['subjectId'],
+                'subject_id' => $fields['subject_id'],
                 'status' => TopicStatusEnum::FREE,
-                'user_id' => auth()->user()->id,
+                'user_id' => $fields['professor_id'] ? $fields['professor_id'] : auth()->user()->id,
             ]);
             return TopicResource::make($topic);
         } catch (\Exception $e) {
@@ -108,7 +108,7 @@ class TopicService implements ITopicService
     }
     public function importTopics(Request $request): bool {
         $request->validate([
-            'file' => 'required|mimes:xlsx,csv|max:10240',
+            'file' => 'required|mimes:xlsx,txt,csv|max:10240',
         ]);
         Gate::authorize('create', Topic::class);
         $file = $request->file('file');

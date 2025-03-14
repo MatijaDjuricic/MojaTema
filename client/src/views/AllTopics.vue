@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import { useTopicStore } from '../stores/topic';
 import { useUserStore } from '../stores/user';
 import { useSubjectStore } from '../stores/subject';
 import { useToastMessage } from '../composables/useToastMessage';
 import { useModal } from '../composables/useModal';
-import { useCreateTopic } from '../composables/useCreateTopic';
+import { useMenageTopic } from '../composables/useMenageTopic';
 import { formatDate } from '../utils';
 import { TopicStatusEnum } from '../utils/enums';
 import { TopicStatusNamesCyrillic } from '../utils/constants';
@@ -31,28 +31,14 @@ const {
   description,
   loading,
   subjectId,
+  studentId,
+  professorId,
   fileInput,
   handleClear,
   handleSubmit,
+  handleEdit,
   handleFileUpload,
-} = useCreateTopic();
-const studentId = ref<number | null>(null);
-const handleEdit = async (id: number) => {
-  const topic = topicStore.topics.find(t => t.id === id);
-  if (topic) {
-    await topicStore.updateTopic(id, {
-      "title": topic.title,
-      "description": topic.description,
-      "status": Number(topic.status),
-      "subject_id": topic.subject.id,
-      "professor_id": topic.professor.userId,
-      "student_user_id": studentId.value
-    }).finally(() => {
-      successMessage(`Успешно си изменио тему`);
-      closeModalRefs(id);
-    });
-  }
-}
+} = useMenageTopic();
 onMounted(async () => {
   await topicStore.getTopics();
   await userStore.getUsers();
@@ -67,21 +53,26 @@ onMounted(async () => {
       <div :class="$style.header_buttons">
         <Modal ref="modalRef" title="Додај тему">
           <template #open>
-          <CTA title="Додај тему" size="sm" color="green" @click="() => openModal()"/>
+            <CTA title="Додај тему" size="sm" color="green" @click="() => openModal()"/>
           </template>
           <FormLayout :handle-submit="handleSubmit">
           <template #inputs>
-            <label>Предмет:</label>
-            <select v-model="subjectId">
-              <option :value="subjectId = subjectStore.defaultSubject.id" disabled>{{ subjectStore.defaultSubject.title }}</option>
-              <option v-for="subject in subjectStore.subjects" :key="subject.id" :value="subject.id">
-                {{ subject.title }}
-              </option>
-            </select>
             <label>Назив:</label>
             <input v-model="title" type="text" placeholder="Унеси назив..." />
             <label>Опис:</label>
             <textarea v-model="description" placeholder="Унеси опис..."></textarea>
+            <label>Предмет:</label>
+            <select v-model="subjectId">
+              <option v-for="subject in subjectStore.subjects" :key="subject.id" :value="subject.id">
+                {{ subject.title }}
+              </option>
+            </select>
+            <label>Професор:</label>
+            <select v-model="professorId">
+              <option v-for="professor in userStore.getProfessors" :key="professor.id" :value="professor.id">
+                {{ professor.firstName }} {{ professor.lastName }}
+              </option>
+            </select>
           </template>
           <template #buttons>
             <CTA title="Додај тему" color="green" size="sm" type="submit" :loading="loading"/>
@@ -129,7 +120,7 @@ onMounted(async () => {
                 <template #open>
                   <CTA title="Измени" size="sm" @click="openModalRefs(topic.id)"/>
                 </template>
-                <FormLayout :handle-submit="() => handleEdit(topic.id)">
+                <FormLayout :handle-submit="() => handleEdit(topic.id).finally(() => closeModalRefs(topic.id))">
                   <template #inputs>
                     <label>Наслов:</label>
                     <input v-model="topic.title" type="text" placeholder="Унеси наслов..."/>
@@ -155,10 +146,6 @@ onMounted(async () => {
                     </select>
                     <label>Ученик:</label>
                     <select v-model="studentId">
-                      <option v-if="topic.student" :value="topic.student.userId" disabled>
-                        {{ topic.student.firstName }} {{ topic.student.lastName }}
-                      </option>
-                      <option v-else :value="null" disabled>Изабери ученика</option>
                       <option v-for="student in userStore.getStudents" :key="student.id" :value="student.id">
                         {{ student.firstName }} {{ student.lastName }}
                       </option>

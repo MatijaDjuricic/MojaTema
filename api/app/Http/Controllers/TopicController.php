@@ -59,7 +59,6 @@ class TopicController extends Controller
     public function importTopics(Request $request) {
         try {
             $imported = $this->topicService->importTopics($request);
-            var_dump($imported);
             if ($imported) return $this->successResponse(['message' => 'Topics imported successfully'], 201);
         } catch (\Exception $e) {
             return $this->errorResponse('An error occurred: ' . $e->getMessage(), 500);

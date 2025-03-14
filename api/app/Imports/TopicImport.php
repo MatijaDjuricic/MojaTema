@@ -19,7 +19,9 @@ class TopicImport implements ToModel, WithHeadingRow
                 'user_id' => auth()->user()->id,
                 'student_id' => null,
             ]);
+        } else {
+            \Log::warning('Missing required data in row: ' . json_encode($row));
+            return null;
         }
-        return null;
     }
 }
