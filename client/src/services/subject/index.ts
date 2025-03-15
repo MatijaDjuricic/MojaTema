@@ -1,12 +1,12 @@
 import apiClient from "../apiClient";
 import type { Subject } from "../../types";
-import type { IUpdateSubjectRequest } from "../../types/interface";
+import type { ICreateSubjectRequest, IUpdateSubjectRequest } from "../../types/interface";
 export const getSubjectsAsync = async () => {
     try {
         const response = await apiClient.get('/subjects');
         return await response.data.data as Subject[];
     } catch (error) {
-        console.error('Failed to fetch topics:', error);
+        console.error('Failed to fetch subjects:', error);
     }
 }
 export const getSubjectByIdAsync = async (id: number) => {
@@ -14,7 +14,7 @@ export const getSubjectByIdAsync = async (id: number) => {
         const response = await apiClient.get(`/subjects/${id}`);
         return await response.data.data as Subject;
     } catch (error) {
-        console.error('Failed to fetch topics:', error);
+        console.error('Failed to fetch subjects:', error);
     }
 }
 export const getSubjectsByProfessorAsync = async (id: number) => {
@@ -22,7 +22,27 @@ export const getSubjectsByProfessorAsync = async (id: number) => {
         const response = await apiClient.get(`/subjects/professor/${id}`);
         return await response.data.data as Subject[];
     } catch (error) {
-        console.error('Failed to fetch topics:', error);
+        console.error('Failed to fetch subjects:', error);
+    }
+}
+export const createSubjectAsync = async (data: ICreateSubjectRequest) => {
+    try {
+        const response = await apiClient.post('/subjects', data);
+        return await response.data.data as Subject;
+    } catch (err) {
+        throw new Error(`Error: ${err}`);
+    }
+}
+export const importSubjectsAsync = async (formData: FormData) => {
+    try {
+        const response = await apiClient.post('/subjects/import', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return await response.data.data;
+    } catch (err) {
+        throw new Error(`Error: ${err}`);
     }
 }
 export const updateSubjectAsync = async (id: number, data: IUpdateSubjectRequest) => {

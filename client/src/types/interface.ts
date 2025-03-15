@@ -54,6 +54,10 @@ export interface IUpdateUserReqeust {
     email: string,
     role: number
 }
+export interface ICreateSubjectRequest {
+    title: string,
+    class_year_id: number
+}
 export interface IUpdateSubjectRequest {
     title: string,
     class_year_id: number

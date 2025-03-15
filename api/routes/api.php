@@ -31,6 +31,8 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('/', 'subjectsAll');
         Route::get('/{id}', 'subjectById');
         Route::get('/professor/{id}', 'subjectsByProfessor');
+        Route::post('/', 'createSubject');
+        Route::post('/import', 'importSubjects');
         Route::put('/{id}', 'updateSubject');
         Route::delete('/{id}', 'deleteSubject');
     });

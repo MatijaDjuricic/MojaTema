@@ -2,29 +2,35 @@
 import { onMounted } from 'vue';
 import { useSubjectStore } from '../stores/subject';
 import { useToastMessage } from '../composables/useToastMessage';
+import { useMenageSubject } from '../composables/useMenageSubject';
 import { useModal } from '../composables/useModal';
 import { formatDate } from '../utils';
 import { ClassYearEnum } from '../utils/enums';
+import { IconFileImport } from '@tabler/icons-vue';
 import Modal from '../components/Modal.vue';
 import CTA from '../components/CTA.vue';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
 import FormLayout from '../layouts/FormLayout.vue';
-const { setModalRefs, openModalRefs, closeModalRefs } = useModal();
 const { successMessage } = useToastMessage();
 const subjectStore = useSubjectStore();
-const handleEdit = async (id: number) => {
-  const subject = subjectStore.subjects.find(s => s.id === id);
-  if (subject) {
-    await subjectStore.updateSubject(id, {
-      'title': subject.title,
-      'class_year_id': subject.class_year_id,
-    }).finally(() => {
-      successMessage(`Успешно си изменио предмет`);
-      closeModalRefs(id);
-    });
-  }
-}
+const {
+  modalRef,
+  openModal,
+  setModalRefs,
+  openModalRefs,
+  closeModalRefs
+} = useModal();
+const {
+  title,
+  classYearId,
+  loading,
+  fileInput,
+  handleFileUpload,
+  handleClear,
+  handleSubmit,
+  handleEdit,
+} = useMenageSubject();
 onMounted(async () => await subjectStore.getSubjects());
 </script>
 <style src="./Subjects.module.css" module/>
@@ -32,6 +38,36 @@ onMounted(async () => await subjectStore.getSubjects());
   <PageLayout>
     <HeaderLayout>
       <h1>Предмети</h1>
+      <div :class="$style.header_buttons">
+        <Modal ref="modalRef" title="Додај предмет">
+          <template #open>
+            <CTA title="Додај предмет" size="sm" color="green" @click="() => openModal()"/>
+          </template>
+          <FormLayout :handle-submit="handleSubmit">
+          <template #inputs>
+            <label>Година:</label>
+              <select v-model="classYearId">
+                <option v-for="(class_year, index) in Object.keys(ClassYearEnum).filter(key => isNaN(Number(key)))"
+                  :key="index" :value="index+1"
+                >
+                  {{ class_year }}
+                </option>
+              </select>
+              <label>Наслов:</label>
+              <input v-model="title" type="text" placeholder="Унеси наслов..."/>
+            </template>
+          <template #buttons>
+            <CTA title="Додај предмет" color="green" size="sm" type="submit" :loading="loading"/>
+            <CTA title="Одбаци" color="red" size="sm" @click.prevent="handleClear"/>
+          </template>
+          </FormLayout>
+        </Modal>
+        <button :class="$style.upload_file_btn">
+          <IconFileImport stroke={2} />
+          Увези .csv или .xlsx
+          <input ref="fileInput" type="file" accept=".csv, .xlsx" @change="handleFileUpload"/>
+        </button>
+      </div>
     </HeaderLayout>
     <div :class="$style.container">
       <table>
@@ -62,7 +98,7 @@ onMounted(async () => await subjectStore.getSubjects());
                     @click="openModalRefs(subject.id)"
                   />
                 </template>
-                <FormLayout :handle-submit="() => handleEdit(subject.id)">
+                <FormLayout :handle-submit="() => handleEdit(subject.id).finally(() => closeModalRefs(subject.id))">
                   <template #inputs>
                     <label>Улога:</label>
                     <select v-model="subject.class_year_id">
