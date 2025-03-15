@@ -21,7 +21,8 @@ const subjectStore = useSubjectStore();
 const { successMessage } = useToastMessage();
 const {
   modalRef,
-  openModal, 
+  openModal,
+  closeModal,
   setModalRefs,
   openModalRefs,
   closeModalRefs
@@ -55,7 +56,7 @@ onMounted(async () => {
           <template #open>
             <CTA title="Додај тему" size="sm" color="green" @click="() => openModal()"/>
           </template>
-          <FormLayout :handle-submit="handleSubmit">
+          <FormLayout :handle-submit="() => handleSubmit().finally(() => closeModal())">
           <template #inputs>
             <label>Назив:</label>
             <input v-model="title" type="text" placeholder="Унеси назив..." />

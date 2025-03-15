@@ -2,22 +2,23 @@
 import { onMounted } from 'vue';
 import { useAuthStore } from '../stores/auth';
 import { useUserStore } from '../stores/user';
+import { useMenageUser } from '../composables/useMenageUser';
 import { useModal } from '../composables/useModal';
 import { formatDate } from '../utils';
 import { RoleEnum } from '../utils/enums';
 import { RoleNamesCyrillic } from '../utils/constants';
 import { IconFileImport } from '@tabler/icons-vue';
-import CTA from '../components/CTA.vue';
-import Modal from '../components/Modal.vue';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
 import FormLayout from '../layouts/FormLayout.vue';
-import { useMenageUser } from '../composables/useMenageUser';
+import Modal from '../components/Modal.vue';
+import CTA from '../components/CTA.vue';
 const auth = useAuthStore().currentUser;
 const userStore = useUserStore();
 const {
   modalRef,
   openModal,
+  closeModal,
   setModalRefs,
   openModalRefs,
   closeModalRefs
@@ -47,7 +48,7 @@ onMounted(async () => await userStore.getUsers());
           <template #open>
             <CTA title="Додај корисника" size="sm" color="green" @click="() => openModal()"/>
           </template>
-          <FormLayout :handle-submit="handleSubmit">
+          <FormLayout :handle-submit="() => handleSubmit().finally(() => closeModal())">
           <template #inputs>
             <label>Име:</label>
             <input v-model="firstName" type="text" placeholder="Унеси име..." />
@@ -57,7 +58,6 @@ onMounted(async () => await userStore.getUsers());
             <input v-model="email" placeholder="Унеси имејл..."/>
             <label>Улога:</label>
             <select v-model="role">
-              <option :value="RoleEnum.UCENIK" disabled>{{ RoleNamesCyrillic[RoleEnum.UCENIK] }}</option>
               <option v-for="(role, index) in RoleNamesCyrillic" :key="index" :value="index">
                 {{ role }}
               </option>

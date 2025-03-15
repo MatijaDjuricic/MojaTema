@@ -17,6 +17,7 @@ const subjectStore = useSubjectStore();
 const {
   modalRef,
   openModal,
+  closeModal,
   setModalRefs,
   openModalRefs,
   closeModalRefs
@@ -43,7 +44,7 @@ onMounted(async () => await subjectStore.getSubjects());
           <template #open>
             <CTA title="Додај предмет" size="sm" color="green" @click="() => openModal()"/>
           </template>
-          <FormLayout :handle-submit="handleSubmit">
+          <FormLayout :handle-submit="() => handleSubmit().finally(() => closeModal())">
           <template #inputs>
             <label>Година:</label>
               <select v-model="classYearId">
