@@ -1,19 +1,17 @@
 <script lang="ts" setup>
 import { ref, defineProps } from 'vue';
-import { useTopicStore } from '../stores/topic';
+import { useTopicQuery } from '../services/topic/useTopicQuery';
 import { useAuthStore } from '../stores/auth';
 import { TopicStatusNamesCyrillic } from '../utils/constants';
 import { TopicStatusEnum } from '../utils/enums';
-import { useToastMessage } from '../composables/useToastMessage';
+import { isReportedTopic } from '../utils';
 import { IconChevronDown, IconCircleDashedX } from '@tabler/icons-vue';
 import type { Topic } from '../types';
 import CTA from './CTA.vue';
 defineProps<{ topic: Topic }>();
-const { successMessage } = useToastMessage();
-const topicStore = useTopicStore();
+const { isLoadingTopicStatus, updateTopicStatus } = useTopicQuery();
 const user = useAuthStore().currentUser;
 const open = ref<boolean>(false);
-const loading = ref<boolean>(false);
 </script>
 <style module src="./TopicAccordion.module.css" />
 <template>
@@ -54,32 +52,18 @@ const loading = ref<boolean>(false);
           </div>
           <div :class="$style.cta_wrapper">
             <CTA
-              v-if="topic.student === null && !topicStore.isReportedTopic"
+              v-if="topic.student === null && !isReportedTopic(topic, user.id)"
               title="Пријави тему"
               size="sm"
-              :loading="loading"
-              @click="() => {
-                loading = true;
-                topicStore.updateTopicStatus(topic.id, TopicStatusEnum.NA_CEKANJU)
-                .finally(() => {
-                  loading = false;
-                  successMessage(`Успешно си пријављен на тему - ${topic.title}`);
-                });
-              }"
+              :loading="isLoadingTopicStatus"
+              @click="updateTopicStatus({ id: topic.id, status: TopicStatusEnum.NA_CEKANJU })"
             />
             <CTA
               v-else-if="user.id === topic.student?.userId"
               title="Одјави тему"
               size="sm"
-              :loading="loading"
-              @click="() => {
-                loading = true;
-                topicStore.updateTopicStatus(topic.id, TopicStatusEnum.SLOBODNA)
-                .finally(() => {
-                  loading = false;
-                  successMessage(`Успешно си одјављен са теме - ${topic.title}`);
-                });
-              }"
+              :loading="isLoadingTopicStatus"
+              @click="updateTopicStatus({id: topic.id, status: TopicStatusEnum.SLOBODNA})"
             />
             <IconCircleDashedX v-else stroke={2} width="48" height="48" style="color: var(--red)"/>
           </div>

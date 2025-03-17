@@ -1,50 +1,40 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue';
-import { useTopicStore } from '../stores/topic';
-import { useUserStore } from '../stores/user';
-import { useSubjectStore } from '../stores/subject';
-import { useToastMessage } from '../composables/useToastMessage';
+import { useTopicQuery } from '../services/topic/useTopicQuery';
 import { useModal } from '../composables/useModal';
-import { useMenageTopic } from '../composables/useMenageTopic';
 import { formatDate } from '../utils';
-import { TopicStatusEnum } from '../utils/enums';
+import { RoleEnum, TopicStatusEnum } from '../utils/enums';
 import { TopicStatusNamesCyrillic } from '../utils/constants';
 import { IconFileImport } from '@tabler/icons-vue';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
 import FormLayout from '../layouts/FormLayout.vue';
 import Modal from '../components/Modal.vue';
+import Loader from '../components/Loader.vue';
 import CTA from '../components/CTA.vue';
-const topicStore = useTopicStore();
-const userStore = useUserStore();
-const subjectStore = useSubjectStore();
-const { successMessage } = useToastMessage();
 const {
   modalRef,
   openModal,
-  closeModal,
   setModalRefs,
   openModalRefs,
-  closeModalRefs
+  closeModalRefs,
+  closeModal
 } = useModal();
 const {
-  title,
-  description,
-  loading,
-  subjectId,
-  studentId,
-  professorId,
+  topics,
+  subjects,
+  users,
+  updateTopicRef,
+  createTopicRef,
   fileInput,
+  isSubmitLoading,
+  isLoadingTopics,
+  openEditModal,
   handleClear,
-  handleSubmit,
-  handleEdit,
-  handleFileUpload,
-} = useMenageTopic();
-onMounted(async () => {
-  await topicStore.getTopics();
-  await userStore.getUsers();
-  await subjectStore.getSubjects();
-});
+  createTopic,
+  importTopics,
+  updateTopic,
+  deleteTopic
+} = useTopicQuery();
 </script>
 <style src="./AllTopics.module.css" module/>
 <template>
@@ -56,39 +46,40 @@ onMounted(async () => {
           <template #open>
             <CTA title="Додај тему" size="sm" color="green" @click="() => openModal()"/>
           </template>
-          <FormLayout :handle-submit="() => handleSubmit().finally(() => closeModal())">
-          <template #inputs>
-            <label>Назив:</label>
-            <input v-model="title" type="text" placeholder="Унеси назив..." />
-            <label>Опис:</label>
-            <textarea v-model="description" placeholder="Унеси опис..."></textarea>
-            <label>Предмет:</label>
-            <select v-model="subjectId">
-              <option v-for="subject in subjectStore.subjects" :key="subject.id" :value="subject.id">
-                {{ subject.title }}
-              </option>
-            </select>
-            <label>Професор:</label>
-            <select v-model="professorId">
-              <option v-for="professor in userStore.getProfessors" :key="professor.id" :value="professor.id">
-                {{ professor.firstName }} {{ professor.lastName }}
-              </option>
-            </select>
-          </template>
-          <template #buttons>
-            <CTA title="Додај тему" color="green" size="sm" type="submit" :loading="loading"/>
-            <CTA title="Одбаци" color="red" size="sm" @click.prevent="handleClear"/>
-          </template>
+          <FormLayout :handle-submit="() => { createTopic(), closeModal() }">
+            <template #inputs>
+              <label>Назив:</label>
+              <input v-model="createTopicRef.title" type="text" placeholder="Унеси назив..." />
+              <label>Опис:</label>
+              <textarea v-model="createTopicRef.description" placeholder="Унеси опис..."></textarea>
+              <label>Предмет:</label>
+              <select v-model="createTopicRef.subject_id">
+                <option v-for="subject in subjects" :key="subject.id" :value="subject.id">
+                  {{ subject.title }}
+                </option>
+              </select>
+              <label>Професор:</label>
+              <select v-model="createTopicRef.professor_id">
+                <option v-for="professor in users?.filter(u => u.role == RoleEnum.PROFESOR)" :key="professor.id" :value="professor.id">
+                  {{ professor.firstName }} {{ professor.lastName }}
+                </option>
+              </select>
+            </template>
+            <template #buttons>
+              <CTA title="Додај тему" color="green" size="sm" type="submit" :loading="isSubmitLoading"/>
+              <CTA title="Одбаци" color="red" size="sm" @click.prevent="handleClear"/>
+            </template>
           </FormLayout>
         </Modal>
         <button :class="$style.upload_file_btn">
           <IconFileImport stroke={2} />
           Увези .csv или .xlsx
-          <input ref="fileInput" type="file" accept=".csv, .xlsx" @change="handleFileUpload"/>
+          <input ref="fileInput" type="file" accept=".csv, .xlsx" @change="importTopics()"/>
         </button>
       </div>
     </HeaderLayout>
-    <div :class="$style.container">
+    <Loader v-if="isLoadingTopics" type="content_loader" size="lg"/>
+    <div v-else :class="$style.container">
       <table>
         <thead>
           <tr>
@@ -106,7 +97,7 @@ onMounted(async () => {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="topic in topicStore.topics" :key="topic.id">
+          <tr v-for="topic in topics" :key="topic.id">
             <td>{{ topic.id }}</td>
             <td>{{ topic.title }}</td>
             <td>{{ topic.description }}</td>
@@ -117,37 +108,37 @@ onMounted(async () => {
             <td>{{ formatDate(new Date(topic.createdAt)) }}</td>
             <td>{{ formatDate(new Date(topic.updatedAt)) }}</td>
             <td>
-              <Modal :ref="el => setModalRefs(topic.id, el)" title="Измени тему">
+              <Modal :ref="(el: any) => setModalRefs(topic.id, el)" title="Измени тему">
                 <template #open>
-                  <CTA title="Измени" size="sm" @click="openModalRefs(topic.id)"/>
+                  <CTA title="Измени" size="sm" @click="() => { openEditModal(topic.id), openModalRefs(topic.id) }"/>
                 </template>
-                <FormLayout :handle-submit="() => handleEdit(topic.id).finally(() => closeModalRefs(topic.id))">
+                <FormLayout :handle-submit="() => { updateTopic(topic.id), closeModalRefs(topic.id) }">
                   <template #inputs>
                     <label>Наслов:</label>
-                    <input v-model="topic.title" type="text" placeholder="Унеси наслов..."/>
+                    <input v-model="updateTopicRef.title" type="text" placeholder="Унеси наслов..."/>
                     <label>Опис:</label>
-                    <textarea v-model="topic.description" type="text" placeholder="Унеси опис..."></textarea>
+                    <textarea v-model="updateTopicRef.description" type="text" placeholder="Унеси опис..."></textarea>
                     <label>Статус:</label>
-                    <select v-model="topic.status">
+                    <select v-model="updateTopicRef.status">
                       <option v-for="(status, index) in TopicStatusNamesCyrillic" :key="index" :value="index">
                         {{ status }}
                       </option>
                     </select>
                     <label>Предмет:</label>
-                    <select v-model="topic.subject.id">
-                      <option v-for="subject in subjectStore.subjects" :key="subject.id" :value="subject.id">
+                    <select v-model="updateTopicRef.subject_id">
+                      <option v-for="subject in subjects" :key="subject.id" :value="subject.id">
                         {{ subject.title }}
                       </option>
                     </select>
                     <label>Професор:</label>
-                    <select v-model="topic.professor.userId">
-                      <option v-for="professor in userStore.getProfessors" :key="professor.id" :value="professor.id">
+                    <select v-model="updateTopicRef.professor_id">
+                      <option v-for="professor in users?.filter(u => u.role == RoleEnum.PROFESOR)" :key="professor.id" :value="professor.id">
                         {{ professor.firstName }} {{ professor.lastName }}
                       </option>
                     </select>
                     <label>Ученик:</label>
-                    <select v-model="studentId">
-                      <option v-for="student in userStore.getStudents" :key="student.id" :value="student.id">
+                    <select v-model="updateTopicRef.student_user_id">
+                      <option v-for="student in users?.filter(u => u.role == RoleEnum.UCENIK)" :key="student.id" :value="student.id">
                         {{ student.firstName }} {{ student.lastName }}
                       </option>
                       <option :value="null">Уклони ученика</option>
@@ -164,12 +155,7 @@ onMounted(async () => {
                 title="Избриши"
                 size="sm"
                 color="red"
-                @click="() => {
-                  topicStore.deleteTopic(topic.id)
-                  .finally(() => {
-                    successMessage(`Успешно си обрисао тему - ${topic.title}`);
-                  });
-                }"
+                @click="deleteTopic(topic.id)"
               />
             </td>
           </tr>

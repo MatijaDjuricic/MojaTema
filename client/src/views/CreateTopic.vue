@@ -1,25 +1,20 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue';
-import { useMenageTopic } from '../composables/useMenageTopic';
 import { IconFileImport } from '@tabler/icons-vue';
+import { useTopicQuery } from '../services/topic/useTopicQuery';
+import { useSubjectQuery } from '../services/subject/useSubjectQuery';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
-import CTA from '../components/CTA.vue';
 import FormLayout from '../layouts/FormLayout.vue';
+import CTA from '../components/CTA.vue';
+const { professorSubjects } = useSubjectQuery();
 const {
-  title,
-  description,
-  loading,
-  subjectId,
   fileInput,
-  defaultSubject,
-  subjects,
+  createTopicRef,
+  isSubmitLoading,
+  createTopic,
   handleClear,
-  handleSubmit,
-  handleFileUpload,
-  fetchSubjects
-} = useMenageTopic();
-onMounted(async () => await fetchSubjects());
+  importTopics
+} = useTopicQuery();
 </script>
 <style src="./CreateTopic.module.css" module/>
 <template>
@@ -33,39 +28,27 @@ onMounted(async () => await fetchSubjects());
           ref="fileInput"
           type="file"
           accept=".csv, .xlsx"
-          @change="handleFileUpload"
+          @change="importTopics"
         />
       </button>
     </HeaderLayout>
     <div :class="$style.form_wrapper">
-      <FormLayout :handle-submit="handleSubmit">
+      <FormLayout :handle-submit="createTopic">
         <template #inputs>
           <label>Предмет:</label>
-          <select v-model="subjectId">
-            <option :value="subjectId" disabled selected>{{ defaultSubject?.title || "Изабери предмет" }}</option>
-            <option v-for="(subject, index) in subjects" :key="index" :value="subject.id">
+          <select v-model="createTopicRef.subject_id">
+            <option v-for="(subject, index) in professorSubjects" :key="index" :value="subject.id">
               {{ subject.title }}
             </option>
           </select>
           <label>Назив:</label>
-          <input v-model="title" type="text" placeholder="Унеси назив..." />
+          <input v-model="createTopicRef.title" type="text" placeholder="Унеси назив..." />
           <label>Опис:</label>
-          <textarea v-model="description" placeholder="Унеси опис..."></textarea>
+          <textarea v-model="createTopicRef.description" placeholder="Унеси опис..."></textarea>
         </template>
         <template #buttons>
-          <CTA
-            title="Додај тему"
-            color="green"
-            size="sm"
-            type="submit"
-            :loading="loading"
-          />
-          <CTA
-          title="Одбаци"
-          color="red"
-          size="sm"
-          @click.prevent="handleClear"
-          />
+          <CTA title="Додај тему" color="green" size="sm" type="submit" :loading="isSubmitLoading"/>
+          <CTA title="Одбаци" color="red" size="sm" @click.prevent="handleClear"/>
         </template>
       </FormLayout>
     </div>

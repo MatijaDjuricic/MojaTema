@@ -2,18 +2,13 @@
 import { ref, defineExpose, onMounted, onUnmounted } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { IconMessage, IconX } from '@tabler/icons-vue';
-import { useUserStore } from '../stores/user';
+import { useUserQuery } from '../services/user/useUserQuery';
 import IconButton from './IconButton.vue';
 import Loader from './Loader.vue';
-const userStore = useUserStore();
 const panel = ref<null>(null);
 const isPanelOpen = ref<boolean>(false);
-const loading = ref<boolean>(false);
-const openPanel = async () => {
-  isPanelOpen.value = true;
-  loading.value = true;
-  await userStore.getChatAvailableUsers().finally(() => loading.value = false);
-}
+const { chatAvailableUsers, isLoadingChatAvailableUsers } = useUserQuery();
+const openPanel = async () => isPanelOpen.value = true
 const closePanel = () => isPanelOpen.value = false;
 const handleKeydown = (event: KeyboardEvent) => {
   if (event.key === 'Escape') closePanel();
@@ -34,10 +29,10 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown));
           <IconX stroke={2} width="32" height="32"/>
         </IconButton>
       </div>
-      <Loader v-if="loading" type="content_loader"/>
+      <Loader v-if="isLoadingChatAvailableUsers" type="content_loader"/>
       <div v-else :class="$style.canvas_body">
-        <div v-if="userStore.chatAvailableUsers.length != 0" :class="$style.chats_wrapper">
-          <router-link v-for="user in userStore.chatAvailableUsers" :key="user.id" :to="`/chat/${user.id}`" :class="$style.card">
+        <div v-if="chatAvailableUsers" :class="$style.chats_wrapper">
+          <router-link v-for="user in chatAvailableUsers" :key="user.id" :to="`/chat/${user.id}`" :class="$style.card">
             <IconMessage stroke={2} />
             <p>{{ user.firstName }} {{ user.lastName }}</p>
           </router-link>

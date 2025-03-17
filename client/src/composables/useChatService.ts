@@ -1,7 +1,7 @@
 import { ref, watch, type Ref } from "vue";
 import { useMessageStore } from "../stores/message";
 import { useRouter } from "vue-router";
-import { useUserStore } from "../stores/user";
+import { useUserQuery } from "../services/user/useUserQuery";
 import { useScoketService } from "./useSocketService";
 import type { Message, User } from "../types";
 interface IUseChatService {
@@ -15,7 +15,7 @@ interface IUseChatService {
 }
 export const useChatService = (senderId: number, receiverId: Ref<number>): IUseChatService => {
     const router = useRouter();
-    const userStore = useUserStore();
+    const { chatAvailableUsers } = useUserQuery();
     const {
         socket,
         connectWebSocket,
@@ -55,11 +55,11 @@ export const useChatService = (senderId: number, receiverId: Ref<number>): IUseC
         }
     }
     const initializeChat = async () => {
-        await userStore.getChatAvailableUsers();
-        if (userStore.isUserChatAvailable(receiverId.value)) {
+        const receiver = chatAvailableUsers.value?.find(u => u.id == receiverId.value);
+        if (receiver) {
             await messageStore.getMessagesByUser(senderId, receiverId.value);
             messages.value = messageStore.messages;
-            receiverUser.value = userStore.getUserChatAvailable(receiverId.value);
+            receiverUser.value = receiver
             if (receiverUser.value) {
                 closeWebSocket();
                 connect();

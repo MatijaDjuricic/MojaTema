@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { defineProps } from 'vue';
 defineProps<{
-    handleSubmit: () => Promise<void>;
+    handleSubmit: () => Promise<void> | void;
 }>();
 </script>
 <style src="./FormLayout.module.css" module/>

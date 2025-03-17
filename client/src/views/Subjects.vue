@@ -1,19 +1,15 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue';
-import { useSubjectStore } from '../stores/subject';
-import { useToastMessage } from '../composables/useToastMessage';
-import { useMenageSubject } from '../composables/useMenageSubject';
+import { useSubjectQuery } from '../services/subject/useSubjectQuery';
 import { useModal } from '../composables/useModal';
 import { formatDate } from '../utils';
 import { ClassYearEnum } from '../utils/enums';
 import { IconFileImport } from '@tabler/icons-vue';
-import Modal from '../components/Modal.vue';
-import CTA from '../components/CTA.vue';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
 import FormLayout from '../layouts/FormLayout.vue';
-const { successMessage } = useToastMessage();
-const subjectStore = useSubjectStore();
+import Modal from '../components/Modal.vue';
+import Loader from '../components/Loader.vue';
+import CTA from '../components/CTA.vue';
 const {
   modalRef,
   openModal,
@@ -23,16 +19,19 @@ const {
   closeModalRefs
 } = useModal();
 const {
-  title,
-  classYearId,
-  loading,
+  subjects,
+  createSubjectRef,
+  updateSubjectRef,
+  isLoadingSubjects,
+  isSubmitLoading,
   fileInput,
-  handleFileUpload,
+  openEditModal,
   handleClear,
-  handleSubmit,
-  handleEdit,
-} = useMenageSubject();
-onMounted(async () => await subjectStore.getSubjects());
+  createSubject,
+  importSubjects,
+  updateSubject,
+  deleteSubject
+} = useSubjectQuery();
 </script>
 <style src="./Subjects.module.css" module/>
 <template>
@@ -44,10 +43,10 @@ onMounted(async () => await subjectStore.getSubjects());
           <template #open>
             <CTA title="Додај предмет" size="sm" color="green" @click="() => openModal()"/>
           </template>
-          <FormLayout :handle-submit="() => handleSubmit().finally(() => closeModal())">
+          <FormLayout :handle-submit="() => { createSubject(), closeModal() }">
           <template #inputs>
             <label>Година:</label>
-              <select v-model="classYearId">
+              <select v-model="createSubjectRef.class_year_id">
                 <option v-for="(class_year, index) in Object.keys(ClassYearEnum).filter(key => isNaN(Number(key)))"
                   :key="index" :value="index+1"
                 >
@@ -55,10 +54,10 @@ onMounted(async () => await subjectStore.getSubjects());
                 </option>
               </select>
               <label>Наслов:</label>
-              <input v-model="title" type="text" placeholder="Унеси наслов..."/>
+              <input v-model="createSubjectRef.title" type="text" placeholder="Унеси наслов..."/>
             </template>
           <template #buttons>
-            <CTA title="Додај предмет" color="green" size="sm" type="submit" :loading="loading"/>
+            <CTA title="Додај предмет" color="green" size="sm" type="submit" :loading="isSubmitLoading"/>
             <CTA title="Одбаци" color="red" size="sm" @click.prevent="handleClear"/>
           </template>
           </FormLayout>
@@ -66,11 +65,12 @@ onMounted(async () => await subjectStore.getSubjects());
         <button :class="$style.upload_file_btn">
           <IconFileImport stroke={2} />
           Увези .csv или .xlsx
-          <input ref="fileInput" type="file" accept=".csv, .xlsx" @change="handleFileUpload"/>
+          <input ref="fileInput" type="file" accept=".csv, .xlsx" @change="importSubjects"/>
         </button>
       </div>
     </HeaderLayout>
-    <div :class="$style.container">
+    <Loader v-if="isLoadingSubjects" type="content_loader" size="lg"/>
+    <div v-else :class="$style.container">
       <table>
         <thead>
           <tr>
@@ -84,7 +84,7 @@ onMounted(async () => await subjectStore.getSubjects());
           </tr>
         </thead>
         <tbody>
-          <tr v-for="subject in subjectStore.subjects" :key="subject.id">
+          <tr v-for="subject in subjects" :key="subject.id">
             <td>{{ subject.id }}</td>
             <td>{{ subject.title }}</td>
             <td>{{ ClassYearEnum[subject.class_year_id] }}</td>
@@ -96,14 +96,13 @@ onMounted(async () => await subjectStore.getSubjects());
                   <CTA
                     title="Измени"
                     size="sm"
-                    @click="openModalRefs(subject.id)"
+                    @click="() => { openEditModal(subject.id), openModalRefs(subject.id) }"
                   />
                 </template>
-                <FormLayout :handle-submit="() => handleEdit(subject.id).finally(() => closeModalRefs(subject.id))">
+                <FormLayout :handle-submit="() => { updateSubject(subject.id), closeModalRefs(subject.id) }">
                   <template #inputs>
                     <label>Улога:</label>
-                    <select v-model="subject.class_year_id">
-                      <option :value="subject.class_year_id" disabled selected>{{ ClassYearEnum[subject.class_year_id] }}</option>
+                    <select v-model="updateSubjectRef.class_year_id">
                       <option v-for="(class_year, index) in Object.keys(ClassYearEnum).filter(key => isNaN(Number(key)))"
                         :key="index" :value="index+1"
                       >
@@ -111,7 +110,7 @@ onMounted(async () => await subjectStore.getSubjects());
                       </option>
                     </select>
                     <label>Наслов:</label>
-                    <input v-model="subject.title" type="text" placeholder="Унеси наслов..."/>
+                    <input v-model="updateSubjectRef.title" type="text" placeholder="Унеси наслов..."/>
                   </template>
                   <template #buttons>
                     <CTA title="Измени" color="green" size="sm" type="submit"/>
@@ -120,17 +119,7 @@ onMounted(async () => await subjectStore.getSubjects());
               </Modal>
             </td>
             <td>
-              <CTA
-                title="Избриши"
-                size="sm"
-                color="red"
-                @click="() => {
-                  subjectStore.deleteSubject(subject.id)
-                  .finally(() => {
-                    successMessage(`Успешно си обрисао предмет`);
-                  });
-                }"
-              />
+              <CTA title="Избриши" size="sm" color="red" @click="deleteSubject(subject.id)"/>
             </td>
           </tr>
         </tbody>

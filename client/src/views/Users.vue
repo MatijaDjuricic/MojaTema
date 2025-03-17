@@ -1,8 +1,6 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue';
 import { useAuthStore } from '../stores/auth';
-import { useUserStore } from '../stores/user';
-import { useMenageUser } from '../composables/useMenageUser';
+import { useUserQuery } from '../services/user/useUserQuery';
 import { useModal } from '../composables/useModal';
 import { formatDate } from '../utils';
 import { RoleEnum } from '../utils/enums';
@@ -12,9 +10,9 @@ import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
 import FormLayout from '../layouts/FormLayout.vue';
 import Modal from '../components/Modal.vue';
+import Loader from '../components/Loader.vue';
 import CTA from '../components/CTA.vue';
 const auth = useAuthStore().currentUser;
-const userStore = useUserStore();
 const {
   modalRef,
   openModal,
@@ -24,19 +22,19 @@ const {
   closeModalRefs
 } = useModal();
 const {
-  firstName,
-  lastName,
-  email,
-  role,
+  users,
+  createUserRef,
+  updateUserRef,
+  isLoadingUsers,
+  isSubmitLoading,
   fileInput,
-  loading,
+  openEditModal,
   handleClear,
-  handleDelete,
-  handleEdit,
-  handleFileUpload,
-  handleSubmit
-} = useMenageUser();
-onMounted(async () => await userStore.getUsers());
+  createUser,
+  importUsers,
+  updateUser,
+  deleteUser,
+} = useUserQuery();
 </script>
 <style src="./Users.module.css" module/>
 <template>
@@ -48,23 +46,23 @@ onMounted(async () => await userStore.getUsers());
           <template #open>
             <CTA title="Додај корисника" size="sm" color="green" @click="() => openModal()"/>
           </template>
-          <FormLayout :handle-submit="() => handleSubmit().finally(() => closeModal())">
+          <FormLayout :handle-submit="() => { createUser(), closeModal() }">
           <template #inputs>
             <label>Име:</label>
-            <input v-model="firstName" type="text" placeholder="Унеси име..." />
+            <input v-model="createUserRef.first_name" type="text" placeholder="Унеси име..." />
             <label>Презиме:</label>
-            <input v-model="lastName" placeholder="Унеси презиме..."/>
+            <input v-model="createUserRef.last_name" placeholder="Унеси презиме..."/>
             <label>Имејл:</label>
-            <input v-model="email" placeholder="Унеси имејл..."/>
+            <input v-model="createUserRef.email" placeholder="Унеси имејл..."/>
             <label>Улога:</label>
-            <select v-model="role">
+            <select v-model="createUserRef.role">
               <option v-for="(role, index) in RoleNamesCyrillic" :key="index" :value="index">
                 {{ role }}
               </option>
             </select>
           </template>
           <template #buttons>
-            <CTA title="Додај корисника" color="green" size="sm" type="submit" :loading="loading"/>
+            <CTA title="Додај корисника" color="green" size="sm" type="submit" :loading="isSubmitLoading"/>
             <CTA title="Одбаци" color="red" size="sm" @click.prevent="handleClear"/>
           </template>
           </FormLayout>
@@ -72,11 +70,12 @@ onMounted(async () => await userStore.getUsers());
         <button :class="$style.upload_file_btn">
           <IconFileImport stroke={2} />
           Увези .csv или .xlsx
-          <input ref="fileInput" type="file" accept=".csv, .xlsx" @change="handleFileUpload"/>
+          <input ref="fileInput" type="file" accept=".csv, .xlsx" @change="importUsers"/>
         </button>
       </div>
     </HeaderLayout>
-    <div :class="$style.container">
+    <Loader v-if="isLoadingUsers" type="content_loader" size="lg"/>
+    <div v-else :class="$style.container">
       <table>
         <thead>
           <tr>
@@ -92,7 +91,7 @@ onMounted(async () => await userStore.getUsers());
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in userStore.users" :key="user.id">
+          <tr v-for="user in users" :key="user.id">
             <td>{{ user.id }}</td>
             <td>{{ user.firstName }}</td>
             <td>{{ user.lastName }}</td>
@@ -103,27 +102,23 @@ onMounted(async () => await userStore.getUsers());
             <td>
               <Modal v-if="auth.id != user.id" :ref="el => setModalRefs(user.id, el)" title="Измени корисника">
                 <template #open>
-                  <CTA
-                    title="Измени"
-                    size="sm"
-                    @click="openModalRefs(user.id)"
-                  />
+                  <CTA title="Измени" size="sm" @click="() => { openEditModal(user.id), openModalRefs(user.id) }"/>
                 </template>
-                <FormLayout :handle-submit="() => handleEdit(user.id).finally(() => closeModalRefs(user.id))">
+                <FormLayout :handle-submit="() => { updateUser(user.id), closeModalRefs(user.id) }">
                   <template #inputs>
                     <label>Улога:</label>
-                    <select v-model="user.role">
+                    <select v-model="updateUserRef.role">
                       <option :value="user.role" disabled selected>{{ RoleNamesCyrillic[user.role as RoleEnum] }}</option>
                       <option v-for="(role, index) in RoleNamesCyrillic" :key="index" :value="index">
                         {{ role }}
                       </option>
                     </select>
                     <label>Име:</label>
-                    <input v-model="user.firstName" type="text" placeholder="Унеси име..."/>
+                    <input v-model="updateUserRef.first_name" type="text" placeholder="Унеси име..."/>
                     <label>Презиме:</label>
-                    <input v-model="user.lastName" type="text" placeholder="Унеси презиме..."/>
+                    <input v-model="updateUserRef.last_name" type="text" placeholder="Унеси презиме..."/>
                     <label>Имејл:</label>
-                    <input v-model="user.email" type="text" placeholder="Унеси имејл..."/>
+                    <input v-model="updateUserRef.email" type="text" placeholder="Унеси имејл..."/>
                   </template>
                   <template #buttons>
                     <CTA title="Измени" color="green" size="sm" type="submit"/>
@@ -137,7 +132,7 @@ onMounted(async () => await userStore.getUsers());
                 title="Избриши"
                 size="sm"
                 color="red"
-                @click="() => handleDelete(user.id)"
+                @click="deleteUser(user.id)"
               />
             </td>
           </tr>

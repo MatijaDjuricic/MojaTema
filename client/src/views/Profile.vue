@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { IconArticle, IconEdit, IconInfoCircle } from '@tabler/icons-vue';
 import { useProfileForm } from '../composables/useProfileForm';
+import { useTopicQuery } from '../services/topic/useTopicQuery';
 import { useAuthStore } from '../stores/auth';
 import { RoleNamesCyrillic } from '../utils/constants';
-import { useTopicStore } from '../stores/topic';
 import { formatDate } from '../utils';
-import { IconArticle, IconEdit, IconInfoCircle } from '@tabler/icons-vue';
 import { RoleEnum } from '../utils/enums';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
 import PageLayout from '../layouts/PageLayout.vue';
@@ -22,14 +21,9 @@ const {
     handleClear,
     handleSubmit
 } = useProfileForm();
-const topicStore = useTopicStore();
+const { reportedTopics } = useTopicQuery();
 const authStore = useAuthStore();
-const user = authStore.currentUser;
-onMounted(async() => {
-    if (topicStore.reported.length == 0) {
-        await topicStore.getReportedTopics();
-    }
-})
+const currentUser = authStore.currentUser;
 </script>
 <style src="./Profile.module.css" module/>
 <template>
@@ -45,23 +39,23 @@ onMounted(async() => {
                 </header>
                 <p>
                     <span>Име: </span>
-                    {{ user.firstName }}
+                    {{ currentUser.firstName }}
                 </p>
                 <p>
                     <span>Презиме: </span>
-                    {{ user.lastName }}
+                    {{ currentUser.lastName }}
                 </p>
                 <p>
                     <span>Улога: </span>
-                    {{ RoleNamesCyrillic[user.role as RoleEnum] }}
+                    {{ RoleNamesCyrillic[currentUser.role as RoleEnum] }}
                 </p>
                 <p>
                     <span>Измењен: </span>
-                    {{ formatDate(new Date(user.updatedAt)) }}
+                    {{ formatDate(new Date(currentUser.updatedAt)) }}
                 </p>
                 <p>
                     <span>Креиран: </span>
-                    {{ formatDate(new Date(user.createdAt)) }}
+                    {{ formatDate(new Date(currentUser.createdAt)) }}
                 </p>
             </div>
             <div v-if="authStore.userRole == RoleEnum.UCENIK || authStore.userRole == RoleEnum.PROFESOR"
@@ -71,7 +65,7 @@ onMounted(async() => {
                     <h2>Пријављене теме</h2>
                     <IconArticle />
                 </header>
-                <router-link v-if="topicStore.reported.length != 0" v-for="(topic, index) in topicStore.reported"
+                <router-link v-if="reportedTopics" v-for="(topic, index) in reportedTopics"
                     :key="index"
                     :to="authStore.userRole == RoleEnum.UCENIK ? `topics?search=${topic.title.toLowerCase()}`: 'topics/reported'"
                     :class="$style.card"
