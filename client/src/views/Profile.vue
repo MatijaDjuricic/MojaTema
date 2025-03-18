@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { IconArticle, IconEdit, IconInfoCircle } from '@tabler/icons-vue';
-import { useProfileForm } from '../composables/useProfileForm';
-import { useTopicQuery } from '../services/topic/useTopicQuery';
+import { useProfileForm } from '../composables/forms/useProfileForm';
+import { useReportedTopics } from '../composables/queries/useTopics';
 import { useAuthStore } from '../stores/auth';
 import { RoleNamesCyrillic } from '../utils/constants';
 import { formatDate } from '../utils';
@@ -9,8 +9,8 @@ import { RoleEnum } from '../utils/enums';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
 import PageLayout from '../layouts/PageLayout.vue';
 import FormLayout from '../layouts/FormLayout.vue';
-import PasswordInput from '../components/PasswordInput.vue';
-import CTA from '../components/CTA.vue';
+import PasswordInput from '../components/common/PasswordInput.vue';
+import CTA from '../components/common/CTA.vue';
 const {
     currentPassword,
     newPassword,
@@ -21,7 +21,7 @@ const {
     handleClear,
     handleSubmit
 } = useProfileForm();
-const { reportedTopics } = useTopicQuery();
+const { data: reportedTopics } = useReportedTopics();
 const authStore = useAuthStore();
 const currentUser = authStore.currentUser;
 </script>

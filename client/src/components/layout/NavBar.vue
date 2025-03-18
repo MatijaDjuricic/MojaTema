@@ -1,19 +1,19 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '../stores/auth';
-import { useModal } from '../composables/useModal';
-import { usePanel } from '../composables/usePanel';
-import { useTheme } from '../composables/useTheme';
-import { RoleNamesCyrillic, themes } from '../utils/constants';
+import { useAuthStore } from '../../stores/auth';
+import { RoleNamesCyrillic, themes } from '../../utils/constants';
 import { onClickOutside } from '@vueuse/core';
-import ChatsPanel from './ChatsPanel.vue';
-import NotificationsPanel from './NotificationsPanel.vue';
-import Modal from './Modal.vue';
+import { useModal } from '../../composables/utils/useModal';
+import { usePanel } from '../../composables/utils/usePanel';
+import { useTheme } from '../../composables/utils/useTheme';
+import ChatsPanel from '../layout/ChatsPanel.vue';
+import NotificationsPanel from '../layout/NotificationsPanel.vue';
+import IconButton from '../common/IconButton.vue';
 import DropDown from './DropDown.vue';
-import IconButton from './IconButton.vue';
-import Logo from './Logo.vue';
-import CTA from './CTA.vue';
+import Modal from '../layout/Modal.vue';
+import Logo from '../common/Logo.vue';
+import CTA from '../common/CTA.vue';
 import {
   IconBell,
   IconChevronDown,

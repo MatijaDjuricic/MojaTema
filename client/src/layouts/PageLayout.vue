@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import NavBar from '../components/NavBar.vue';
-import SideBar from '../components/SideBar.vue';
+import NavBar from '../components/layout/NavBar.vue';
+import SideBar from '../components/layout/SideBar.vue';
 </script>
 <style src="./PageLayout.module.css" module/>
 <template>

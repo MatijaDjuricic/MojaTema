@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { getMessagesAsync, getMessagesByUserAsync } from '../services/message';
+import { getMessagesAsync, getMessagesByUserAsync } from '../api/requests/message';
 import type { MessageState } from '../types/interface';
 import type { Message } from '../types';
 export const useMessageStore = defineStore('subject', {

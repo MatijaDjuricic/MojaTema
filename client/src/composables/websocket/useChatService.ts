@@ -1,9 +1,9 @@
 import { ref, watch, type Ref } from "vue";
-import { useMessageStore } from "../stores/message";
+import { useMessageStore } from "../../stores/message";
 import { useRouter } from "vue-router";
-import { useUserQuery } from "../services/user/useUserQuery";
+import { useChatAvailableUsers } from "../queries/useUsers";
 import { useScoketService } from "./useSocketService";
-import type { Message, User } from "../types";
+import type { Message, User } from "../../types";
 interface IUseChatService {
     receiverUser: Ref<User | undefined>;
     message: Ref<string>;
@@ -15,7 +15,7 @@ interface IUseChatService {
 }
 export const useChatService = (senderId: number, receiverId: Ref<number>): IUseChatService => {
     const router = useRouter();
-    const { chatAvailableUsers } = useUserQuery();
+    const { data: chatAvailableUsers, refetch } = useChatAvailableUsers();
     const {
         socket,
         connectWebSocket,
@@ -55,11 +55,11 @@ export const useChatService = (senderId: number, receiverId: Ref<number>): IUseC
         }
     }
     const initializeChat = async () => {
-        const receiver = chatAvailableUsers.value?.find(u => u.id == receiverId.value);
-        if (receiver) {
+        await refetch();
+        if (chatAvailableUsers.value?.some(u => u.id == receiverId.value)) {
             await messageStore.getMessagesByUser(senderId, receiverId.value);
             messages.value = messageStore.messages;
-            receiverUser.value = receiver
+            receiverUser.value = chatAvailableUsers.value.find(u => u.id == receiverId.value);
             if (receiverUser.value) {
                 closeWebSocket();
                 connect();

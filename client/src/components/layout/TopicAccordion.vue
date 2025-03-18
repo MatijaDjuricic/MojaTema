@@ -1,15 +1,14 @@
 <script lang="ts" setup>
 import { ref, defineProps } from 'vue';
-import { useTopicQuery } from '../services/topic/useTopicQuery';
-import { useAuthStore } from '../stores/auth';
-import { TopicStatusNamesCyrillic } from '../utils/constants';
-import { TopicStatusEnum } from '../utils/enums';
-import { isReportedTopic } from '../utils';
+import { useUpdateTopicStatus } from '../../composables/queries/useTopics';
+import { useAuthStore } from '../../stores/auth';
+import { TopicStatusNamesCyrillic } from '../../utils/constants';
+import { TopicStatusEnum } from '../../utils/enums';
 import { IconChevronDown, IconCircleDashedX } from '@tabler/icons-vue';
-import type { Topic } from '../types';
-import CTA from './CTA.vue';
+import CTA from '../common/CTA.vue';
+import type { Topic } from '../../types';
 defineProps<{ topic: Topic }>();
-const { isLoadingTopicStatus, updateTopicStatus } = useTopicQuery();
+const { mutate: updateTopicStatus, isPending: isLoadingTopicStatus } = useUpdateTopicStatus();
 const user = useAuthStore().currentUser;
 const open = ref<boolean>(false);
 </script>
@@ -52,7 +51,7 @@ const open = ref<boolean>(false);
           </div>
           <div :class="$style.cta_wrapper">
             <CTA
-              v-if="topic.student === null && !isReportedTopic(topic, user.id)"
+              v-if="topic.student === null"
               title="Пријави тему"
               size="sm"
               :loading="isLoadingTopicStatus"

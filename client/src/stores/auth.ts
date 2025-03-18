@@ -4,7 +4,7 @@ import {
     getAuthUserAsync,
     loginAsync,
     logoutAsync
-} from '../services/auth';
+} from '../api/requests/auth';
 import type {
     AuthState,
     ILoginRequest,
@@ -40,7 +40,6 @@ export const useAuthStore = defineStore('auth', {
                 this.user = await getAuthUserAsync();
                 this.isAuthenticated = true;
             } catch (error) {
-                console.error('Failed to fetch current user:', error);
                 this.isAuthenticated = false;
                 this.user = undefined;
             }

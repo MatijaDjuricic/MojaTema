@@ -1,15 +1,22 @@
 <script lang="ts" setup>
-import { useSubjectQuery } from '../services/subject/useSubjectQuery';
-import { useModal } from '../composables/useModal';
+import { useSubjectForm } from '../composables/forms/useSubjectForm';
+import { useModal } from '../composables/utils/useModal';
 import { formatDate } from '../utils';
 import { ClassYearEnum } from '../utils/enums';
 import { IconFileImport } from '@tabler/icons-vue';
+import {
+  useSubjects,
+  useCreateSubject,
+  useImportSubjects,
+  useUpdateSubject,
+  useDeleteSubject
+} from '../composables/queries/useSubjects';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
 import FormLayout from '../layouts/FormLayout.vue';
-import Modal from '../components/Modal.vue';
-import Loader from '../components/Loader.vue';
-import CTA from '../components/CTA.vue';
+import Modal from '../components/layout/Modal.vue';
+import Loader from '../components/common/Loader.vue';
+import CTA from '../components/common/CTA.vue';
 const {
   modalRef,
   openModal,
@@ -18,20 +25,12 @@ const {
   openModalRefs,
   closeModalRefs
 } = useModal();
-const {
-  subjects,
-  createSubjectRef,
-  updateSubjectRef,
-  isLoadingSubjects,
-  isSubmitLoading,
-  fileInput,
-  openEditModal,
-  handleClear,
-  createSubject,
-  importSubjects,
-  updateSubject,
-  deleteSubject
-} = useSubjectQuery();
+const { data: subjects, isLoading: isLoadingSubjects } = useSubjects();
+const { mutate: createSubject, isPending: isSubmitLoading } = useCreateSubject();
+const { importSubjects, fileInput } = useImportSubjects();
+const { mutate: updateSubject } = useUpdateSubject();
+const { mutate: deleteSubject } = useDeleteSubject();
+const { createSubjectRef, updateSubjectRef, handleClear, openEditModal } = useSubjectForm();
 </script>
 <style src="./Subjects.module.css" module/>
 <template>
@@ -43,7 +42,7 @@ const {
           <template #open>
             <CTA title="Додај предмет" size="sm" color="green" @click="() => openModal()"/>
           </template>
-          <FormLayout :handle-submit="() => { createSubject(), closeModal() }">
+          <FormLayout :handle-submit="() => { createSubject(createSubjectRef), closeModal() }">
           <template #inputs>
             <label>Година:</label>
               <select v-model="createSubjectRef.class_year_id">
@@ -65,7 +64,7 @@ const {
         <button :class="$style.upload_file_btn">
           <IconFileImport stroke={2} />
           Увези .csv или .xlsx
-          <input ref="fileInput" type="file" accept=".csv, .xlsx" @change="importSubjects"/>
+          <input ref="fileInput" type="file" accept=".csv, .xlsx" @change="importSubjects()"/>
         </button>
       </div>
     </HeaderLayout>
@@ -93,13 +92,9 @@ const {
             <td>
                <Modal :ref="el => setModalRefs(subject.id, el)" title="Измени предмет">
                 <template #open>
-                  <CTA
-                    title="Измени"
-                    size="sm"
-                    @click="() => { openEditModal(subject.id), openModalRefs(subject.id) }"
-                  />
+                  <CTA title="Измени" size="sm" @click="() => { openEditModal(subject.id, subjects), openModalRefs(subject.id) }"/>
                 </template>
-                <FormLayout :handle-submit="() => { updateSubject(subject.id), closeModalRefs(subject.id) }">
+                <FormLayout :handle-submit="() => { updateSubject({ id: subject.id, data: updateSubjectRef }), closeModalRefs(subject.id) }">
                   <template #inputs>
                     <label>Улога:</label>
                     <select v-model="updateSubjectRef.class_year_id">

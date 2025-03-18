@@ -1,38 +1,40 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useTopicQuery } from '../services/topic/useTopicQuery';
+import { useQuery } from '@tanstack/vue-query';
+import { getTopicsAsync } from '../api/requests/topic';
 import PageLayout from '../layouts/PageLayout.vue';
-import TopicsHeader from '../components/TopicsHeader.vue';
-import TopicAccordion from '../components/TopicAccordion.vue';
-import Loader from '../components/Loader.vue';
+import TopicsHeader from '../components/layout/TopicsHeader.vue';
+import TopicAccordion from '../components/layout/TopicAccordion.vue';
+import Loader from '../components/common/Loader.vue';
 const router = useRouter();
 const route = useRoute();
-const { topics, isLoadingTopics, searchValue } = useTopicQuery();
-const search = ref<string>(route.query.search as string || '');
-const setSearch = (value: string) => search.value = value;
+const searchValue = ref<string>(route.query.search as string || '');
+const { data: topics, isLoading, refetch } = useQuery({
+  queryKey: ['topics', searchValue.value],
+  queryFn: () => getTopicsAsync(searchValue.value)
+});
+const setSearch = (value: string) => searchValue.value = value;
 const clearSearch = () => {
   searchValue.value = '';
   router.push({ query: {} });
 };
-const searchTopics = () => searchValue.value = search.value;
-watch(search, (newSearchValue) => router.push({ query: { search: newSearchValue } }));
-onMounted(() => searchTopics());
+watch(searchValue, (newSearchValue) => router.push({ query: { search: newSearchValue } }));
 </script>
 <style src="./Topics.module.css" module/>
 <template>
   <PageLayout>
     <TopicsHeader
       :search="searchValue"
-      :searchTopics="searchTopics"
+      :searchTopics="() => refetch()"
       @update:search="setSearch"
       @clear="clearSearch"
     />
-    <Loader v-if="isLoadingTopics" type="content_loader"/>
+    <Loader v-if="isLoading" type="content_loader"/>
     <div v-else :class="$style.topics_wrapper">
       <TopicAccordion v-for="(topic, index) in topics" :key="index" :topic="topic"/>
     </div>
-    <p v-if="!isLoadingTopics && topics?.length === 0" :class="$style.no_search_results">
+    <p v-if="!isLoading && topics?.length == 0" :class="$style.no_search_results">
       Нема резултата претраге <span>"{{ searchValue }}"</span>
     </p>
   </PageLayout>

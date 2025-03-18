@@ -1,20 +1,20 @@
 <script lang="ts" setup>
-import { useTopicQuery } from '../services/topic/useTopicQuery';
+import {
+    useProfessorTopics,
+    useUpdateTopicStatus,
+    useDeleteTopic,
+} from '../composables/queries/useTopics';
 import { TopicStatusNamesCyrillic } from '../utils/constants';
 import { TopicStatusEnum } from '../utils/enums';
 import { IconTrashX } from '@tabler/icons-vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
 import PageLayout from '../layouts/PageLayout.vue';
-import IconButton from '../components/IconButton.vue';
-import Loader from '../components/Loader.vue';
-import CTA from '../components/CTA.vue';
-const {
-    professorTopics,
-    isLoadingProfessorTopics,
-    isLoadingTopicStatus,
-    updateTopicStatus,
-    deleteTopic,
-} = useTopicQuery();
+import IconButton from '../components/common/IconButton.vue';
+import Loader from '../components/common/Loader.vue';
+import CTA from '../components/common/CTA.vue';
+const { data: professorTopics, isLoading: isLoadingProfessorTopics } = useProfessorTopics();
+const { mutate: updateTopicStatus, isPending: isLoadingTopicStatus } = useUpdateTopicStatus();
+const { mutate: deleteTopic } = useDeleteTopic();
 </script>
 <style src="./ReportedTopics.module.css" module/>
 <template>

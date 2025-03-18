@@ -4,15 +4,15 @@ export const getMessagesAsync = async () => {
     try {
         const response = await socketClient.get('/messages');
         return await response.data as Message[];
-    } catch (error) {
-        console.error('Failed to fetch messages:', error);
+    } catch (err) {
+        throw new Error(`Error: ${err}`);
     }
 }
 export const getMessagesByUserAsync = async (senderId: number, receiverId: number) => {
     try {
         const response = await socketClient.get(`/messages/chat?sender_id=${senderId}&receiver_id=${receiverId}`);
         return await response.data as Message[];
-    } catch (error) {
-        console.error('Failed to fetch messages:', error);
+    } catch (err) {
+        throw new Error(`Error: ${err}`);
     }
 }

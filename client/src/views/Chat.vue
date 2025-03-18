@@ -3,7 +3,7 @@ import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import { formatDate, formatTime } from '../utils';
-import { useChatService } from '../composables/useChatService';
+import { useChatService } from '../composables/websocket/useChatService';
 import { IconSend } from '@tabler/icons-vue';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';

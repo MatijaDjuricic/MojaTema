@@ -3,7 +3,7 @@ import { ref, watch, defineProps, defineEmits } from 'vue';
 import { IconSearch, IconX } from '@tabler/icons-vue';
 const props = defineProps<{
   search: string;
-  searchTopics: () => void;
+  searchTopics: () => Promise<any>;
 }>();
 const emit = defineEmits<{
   (e: 'update:search', value: string): void;

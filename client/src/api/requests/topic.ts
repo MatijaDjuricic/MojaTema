@@ -6,24 +6,24 @@ export const getTopicsAsync = async (search?: string) => {
         const query: string = search ? `?search=${search}` : '';
         const response = await apiClient.get(`/topics${query}`);
         return await response.data.data as Topic[];
-    } catch (error) {
-        console.error('Failed to fetch topics:', error);
+    } catch (err) {
+        throw new Error(`Error: ${err}`);
     }
 }
 export const getReportedTopicsAsync = async () => {
     try {
         const response = await apiClient.get(`/topics/reported`);
         return await response.data.data as Topic[];
-    } catch (error) {
-        console.error('Failed to fetch topics:', error);
+    } catch (err) {
+        throw new Error(`Error: ${err}`);
     }
 }
 export const getTopicsByProfessorAsync = async (id: number) => {
     try {
         const response = await apiClient.get(`/topics/professor/${id}`);
         return await response.data.data as Topic[];
-    } catch (error) {
-        console.error('Failed to fetch topics:', error);
+    } catch (err) {
+        throw new Error(`Error: ${err}`);
     }
 }
 export const createTopicAsync = async (data: ICreateTopicRequest) => {
@@ -50,16 +50,16 @@ export const updateTopicAsync = async (id: number, data: IUpdateTopicRequest) =>
     try {
         const response = await apiClient.put(`/topics/${id}`, data);
         return await response.data.data as Topic;
-    } catch (error) {
-        console.error('Failed to fetch topics:', error);
+    } catch (err) {
+        throw new Error(`Error: ${err}`);
     }
 }
 export const updateTopicStatusAsync = async (id: number, status: number) => {
     try {
         const response = await apiClient.patch(`/topics/${id}/status`, { status });
         return await response.data.data as Topic;
-    } catch (error) {
-        console.error('Failed to fetch topics:', error);
+    } catch (err) {
+        throw new Error(`Error: ${err}`);
     }
 }
 export const deleteTopicAsync = async (id: number) => {

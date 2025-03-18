@@ -1,7 +1,7 @@
 import { ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '../stores/auth';
-import { useToastMessage } from './useToastMessage';
+import { useAuthStore } from '../../stores/auth';
+import { useToastMessage } from '../utils/useToastMessage';
 interface IUseLoginForm {
   email: Ref<string>,
   password: Ref<string>,

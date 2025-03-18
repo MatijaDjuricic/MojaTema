@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-import { useTopicQuery } from '../services/topic/useTopicQuery';
-import { useModal } from '../composables/useModal';
+import { useUsers } from '../composables/queries/useUsers';
+import { useSubjects } from '../composables/queries/useSubjects';
+import { useTopicForm } from '../composables/forms/useTopicForm';
+import { useModal } from '../composables/utils/useModal';
 import { formatDate } from '../utils';
 import { RoleEnum, TopicStatusEnum } from '../utils/enums';
 import { TopicStatusNamesCyrillic } from '../utils/constants';
@@ -8,9 +10,16 @@ import { IconFileImport } from '@tabler/icons-vue';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
 import FormLayout from '../layouts/FormLayout.vue';
-import Modal from '../components/Modal.vue';
-import Loader from '../components/Loader.vue';
-import CTA from '../components/CTA.vue';
+import Modal from '../components/layout/Modal.vue';
+import Loader from '../components/common/Loader.vue';
+import CTA from '../components/common/CTA.vue';
+import {
+  useCreateTopic,
+  useDeleteTopic,
+  useImportTopics,
+  useTopics,
+  useUpdateTopic,
+} from '../composables/queries/useTopics';
 const {
   modalRef,
   openModal,
@@ -19,22 +28,14 @@ const {
   closeModalRefs,
   closeModal
 } = useModal();
-const {
-  topics,
-  subjects,
-  users,
-  updateTopicRef,
-  createTopicRef,
-  fileInput,
-  isSubmitLoading,
-  isLoadingTopics,
-  openEditModal,
-  handleClear,
-  createTopic,
-  importTopics,
-  updateTopic,
-  deleteTopic
-} = useTopicQuery();
+const { data: topics, isLoading: isLoadingTopics } = useTopics();
+const { data: users } = useUsers();
+const { data: subjects } = useSubjects();
+const { mutate: createTopic, isPending: isSubmitLoading } = useCreateTopic();
+const { importTopics, fileInput } = useImportTopics();
+const { mutate: updateTopic } = useUpdateTopic();
+const { mutate: deleteTopic } = useDeleteTopic();
+const { createTopicRef, updateTopicRef, handleClear, openEditModal } = useTopicForm();
 </script>
 <style src="./AllTopics.module.css" module/>
 <template>
@@ -46,7 +47,7 @@ const {
           <template #open>
             <CTA title="Додај тему" size="sm" color="green" @click="() => openModal()"/>
           </template>
-          <FormLayout :handle-submit="() => { createTopic(), closeModal() }">
+          <FormLayout :handle-submit="() => { createTopic(createTopicRef), closeModal() }">
             <template #inputs>
               <label>Назив:</label>
               <input v-model="createTopicRef.title" type="text" placeholder="Унеси назив..." />
@@ -110,9 +111,9 @@ const {
             <td>
               <Modal :ref="(el: any) => setModalRefs(topic.id, el)" title="Измени тему">
                 <template #open>
-                  <CTA title="Измени" size="sm" @click="() => { openEditModal(topic.id), openModalRefs(topic.id) }"/>
+                  <CTA title="Измени" size="sm" @click="() => { openEditModal(topic.id, topics), openModalRefs(topic.id) }"/>
                 </template>
-                <FormLayout :handle-submit="() => { updateTopic(topic.id), closeModalRefs(topic.id) }">
+                <FormLayout :handle-submit="() => { updateTopic({ id: topic.id, data: updateTopicRef }), closeModalRefs(topic.id) }">
                   <template #inputs>
                     <label>Наслов:</label>
                     <input v-model="updateTopicRef.title" type="text" placeholder="Унеси наслов..."/>
@@ -151,12 +152,7 @@ const {
               </Modal>
             </td>
             <td>
-              <CTA
-                title="Избриши"
-                size="sm"
-                color="red"
-                @click="deleteTopic(topic.id)"
-              />
+              <CTA title="Избриши" size="sm" color="red" @click="deleteTopic(topic.id)"/>
             </td>
           </tr>
         </tbody>

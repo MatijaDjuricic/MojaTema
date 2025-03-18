@@ -1,18 +1,7 @@
-import type { User, Topic, Subject, Message } from ".";
+import type { User, Message } from ".";
 export interface AuthState {
     user: User | undefined,
     isAuthenticated: boolean
-}
-export interface UserState {
-    users: User[],
-    chatAvailableUsers: User[];
-}
-export interface TopicState {
-    topics: Topic[],
-    reported: Topic[]
-}
-export interface SubjectState {
-    subjects: Subject[]
 }
 export interface MessageState {
     messages: Message[]

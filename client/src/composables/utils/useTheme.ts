@@ -1,6 +1,6 @@
 import { ref, onMounted, type Ref } from 'vue';
 import { useLocalStorage } from './useLocalStorage';
-import { themes } from '../utils/constants';
+import { themes } from '../../utils/constants';
 interface IUseTheme {
     theme: Ref<string>,
     toggleTheme: () => void

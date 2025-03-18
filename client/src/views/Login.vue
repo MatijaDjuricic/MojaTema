@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { useLoginForm } from '../composables/useLoginForm';
+import { useLoginForm } from '../composables/forms/useLoginForm';
 import { themes } from '../utils/constants';
-import { useTheme } from '../composables/useTheme';
+import { useTheme } from '../composables/utils/useTheme';
 import { IconMoon, IconSun } from '@tabler/icons-vue';
-import IconButton from '../components/IconButton.vue';
-import Logo from '../components/Logo.vue';
-import CTA from '../components/CTA.vue';
+import IconButton from '../components/common/IconButton.vue';
+import Logo from '../components/common/Logo.vue';
+import CTA from '../components/common/CTA.vue';
 import FormLayout from '../layouts/FormLayout.vue';
-import PasswordInput from '../components/PasswordInput.vue';
+import PasswordInput from '../components/common/PasswordInput.vue';
 const {
   email,
   password,

@@ -1,6 +1,6 @@
 import { ref, type Ref } from "vue"
-import { changePasswordAsync } from "../services/auth";
-import { useToastMessage } from "./useToastMessage";
+import { changePasswordAsync } from "../../api/requests/auth";
+import { useToastMessage } from "../utils/useToastMessage";
 interface IUseProfileForm {
     currentPassword: Ref<string>,
     newPassword: Ref<string>,

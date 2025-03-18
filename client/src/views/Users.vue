@@ -1,18 +1,24 @@
 <script lang="ts" setup>
 import { useAuthStore } from '../stores/auth';
-import { useUserQuery } from '../services/user/useUserQuery';
-import { useModal } from '../composables/useModal';
+import { useModal } from '../composables/utils/useModal';
 import { formatDate } from '../utils';
 import { RoleEnum } from '../utils/enums';
 import { RoleNamesCyrillic } from '../utils/constants';
+import { useUserForm } from '../composables/forms/useUserForm';
+import {
+  useCreateUser,
+  useDeleteUser,
+  useImportUsers,
+  useUpdateUser,
+  useUsers
+} from '../composables/queries/useUsers';
 import { IconFileImport } from '@tabler/icons-vue';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
 import FormLayout from '../layouts/FormLayout.vue';
-import Modal from '../components/Modal.vue';
-import Loader from '../components/Loader.vue';
-import CTA from '../components/CTA.vue';
-const auth = useAuthStore().currentUser;
+import Modal from '../components/layout/Modal.vue';
+import Loader from '../components/common/Loader.vue';
+import CTA from '../components/common/CTA.vue';
 const {
   modalRef,
   openModal,
@@ -21,20 +27,13 @@ const {
   openModalRefs,
   closeModalRefs
 } = useModal();
-const {
-  users,
-  createUserRef,
-  updateUserRef,
-  isLoadingUsers,
-  isSubmitLoading,
-  fileInput,
-  openEditModal,
-  handleClear,
-  createUser,
-  importUsers,
-  updateUser,
-  deleteUser,
-} = useUserQuery();
+const auth = useAuthStore().currentUser;
+const { data: users, isLoading: isLoadingUsers } = useUsers();
+const { mutate: createUser, isPending: isSubmitLoading } = useCreateUser();
+const { mutate: updateUser } = useUpdateUser();
+const { mutate: deleteUser } = useDeleteUser();
+const { importUsers, fileInput } = useImportUsers();
+const { createUserRef, updateUserRef, openEditModal, handleClear } = useUserForm();
 </script>
 <style src="./Users.module.css" module/>
 <template>
@@ -46,7 +45,7 @@ const {
           <template #open>
             <CTA title="Додај корисника" size="sm" color="green" @click="() => openModal()"/>
           </template>
-          <FormLayout :handle-submit="() => { createUser(), closeModal() }">
+          <FormLayout :handle-submit="() => { createUser(createUserRef), closeModal() }">
           <template #inputs>
             <label>Име:</label>
             <input v-model="createUserRef.first_name" type="text" placeholder="Унеси име..." />
@@ -70,7 +69,7 @@ const {
         <button :class="$style.upload_file_btn">
           <IconFileImport stroke={2} />
           Увези .csv или .xlsx
-          <input ref="fileInput" type="file" accept=".csv, .xlsx" @change="importUsers"/>
+          <input ref="fileInput" type="file" accept=".csv, .xlsx" @change="importUsers()"/>
         </button>
       </div>
     </HeaderLayout>
@@ -102,9 +101,9 @@ const {
             <td>
               <Modal v-if="auth.id != user.id" :ref="el => setModalRefs(user.id, el)" title="Измени корисника">
                 <template #open>
-                  <CTA title="Измени" size="sm" @click="() => { openEditModal(user.id), openModalRefs(user.id) }"/>
+                  <CTA title="Измени" size="sm" @click="() => { openEditModal(user.id, users), openModalRefs(user.id) }"/>
                 </template>
-                <FormLayout :handle-submit="() => { updateUser(user.id), closeModalRefs(user.id) }">
+                <FormLayout :handle-submit="() => { updateUser({ id: user.id, data: updateUserRef }), closeModalRefs(user.id) }">
                   <template #inputs>
                     <label>Улога:</label>
                     <select v-model="updateUserRef.role">
@@ -127,13 +126,7 @@ const {
               </Modal>
             </td>
             <td>
-              <CTA
-                v-if="auth.id != user.id"
-                title="Избриши"
-                size="sm"
-                color="red"
-                @click="deleteUser(user.id)"
-              />
+              <CTA v-if="auth.id != user.id" title="Избриши" size="sm" color="red" @click="deleteUser(user.id)"/>
             </td>
           </tr>
         </tbody>

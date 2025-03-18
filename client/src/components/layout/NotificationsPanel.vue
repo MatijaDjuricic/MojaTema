@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, defineExpose, onMounted, onUnmounted } from 'vue';
 import { onClickOutside } from '@vueuse/core';
-import IconButton from './IconButton.vue';
+import IconButton from '../common/IconButton.vue';
 import { IconX } from '@tabler/icons-vue';
 const panel = ref<null>(null);
 const isPanelOpen = ref<boolean>(false);

@@ -2,7 +2,7 @@
 import { ref, defineProps, defineExpose, onMounted, onUnmounted } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { IconX } from '@tabler/icons-vue';
-import IconButton from './IconButton.vue';
+import IconButton from '../common/IconButton.vue';
 defineProps<{ title: string }>();
 const modal = ref<null>(null);
 const isModalOpen = ref<boolean>(false);

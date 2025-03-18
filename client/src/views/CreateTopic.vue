@@ -1,20 +1,16 @@
 <script lang="ts" setup>
+import { useTopicForm } from '../composables/forms/useTopicForm';
+import { useProfessorSubjects } from '../composables/queries/useSubjects';
+import { useCreateTopic, useImportTopics } from '../composables/queries/useTopics';
 import { IconFileImport } from '@tabler/icons-vue';
-import { useTopicQuery } from '../services/topic/useTopicQuery';
-import { useSubjectQuery } from '../services/subject/useSubjectQuery';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
 import FormLayout from '../layouts/FormLayout.vue';
-import CTA from '../components/CTA.vue';
-const { professorSubjects } = useSubjectQuery();
-const {
-  fileInput,
-  createTopicRef,
-  isSubmitLoading,
-  createTopic,
-  handleClear,
-  importTopics
-} = useTopicQuery();
+import CTA from '../components/common/CTA.vue';
+const { data: professorSubjects } = useProfessorSubjects();
+const { mutate: createTopic, isPending: isSubmitLoading } = useCreateTopic();
+const { importTopics, fileInput } = useImportTopics();
+const { createTopicRef, handleClear } = useTopicForm();
 </script>
 <style src="./CreateTopic.module.css" module/>
 <template>
@@ -24,16 +20,11 @@ const {
       <button :class="$style.upload_file_btn">
         <IconFileImport stroke={2} />
         Увези .csv или .xlsx
-        <input
-          ref="fileInput"
-          type="file"
-          accept=".csv, .xlsx"
-          @change="importTopics"
-        />
+        <input ref="fileInput" type="file" accept=".csv, .xlsx" @change="importTopics()"/>
       </button>
     </HeaderLayout>
     <div :class="$style.form_wrapper">
-      <FormLayout :handle-submit="createTopic">
+      <FormLayout :handle-submit="() => createTopic(createTopicRef)">
         <template #inputs>
           <label>Предмет:</label>
           <select v-model="createTopicRef.subject_id">

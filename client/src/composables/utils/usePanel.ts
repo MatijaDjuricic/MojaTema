@@ -1,6 +1,6 @@
 import { ref } from 'vue';
-import type ChatsPanel from '../components/ChatsPanel.vue';
-import type NotificationsPanel from '../components/NotificationsPanel.vue';
+import type ChatsPanel from '../../components/layout/ChatsPanel.vue';
+import type NotificationsPanel from '../../components/layout/NotificationsPanel.vue';
 export const usePanel = () => {
     const chatsRef = ref<InstanceType<typeof ChatsPanel> | null>(null);
     const notificationsRef = ref<InstanceType<typeof NotificationsPanel> | null>(null);

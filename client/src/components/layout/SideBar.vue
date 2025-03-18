@@ -1,16 +1,16 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '../stores/auth';
-import { useModal } from '../composables/useModal';
-import { RoleEnum } from '../utils/enums';
-import { usePanel } from '../composables/usePanel';
-import { useTheme } from '../composables/useTheme';
-import { themes } from '../utils/constants';
-import ChatsPanel from './ChatsPanel.vue';
-import NotificationsPanel from './NotificationsPanel.vue';
-import NavItem from './NavItem.vue';
-import Modal from './Modal.vue';
-import CTA from './CTA.vue';
+import { useAuthStore } from '../../stores/auth';
+import { useModal } from '../../composables/utils/useModal';
+import { RoleEnum } from '../../utils/enums';
+import { usePanel } from '../../composables/utils/usePanel';
+import { useTheme } from '../../composables/utils/useTheme';
+import { themes } from '../../utils/constants';
+import ChatsPanel from '../layout/ChatsPanel.vue';
+import NotificationsPanel from '../layout/NotificationsPanel.vue';
+import NavItem from '../common/NavItem.vue';
+import Modal from '../layout/Modal.vue';
+import CTA from '../common/CTA.vue';
 import {
     IconArticle,
     IconBell,

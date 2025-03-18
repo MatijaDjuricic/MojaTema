@@ -5,24 +5,24 @@ export const getSubjectsAsync = async () => {
     try {
         const response = await apiClient.get('/subjects');
         return await response.data.data as Subject[];
-    } catch (error) {
-        console.error('Failed to fetch subjects:', error);
+    } catch (err) {
+        throw new Error(`Error: ${err}`);
     }
 }
 export const getSubjectByIdAsync = async (id: number) => {
     try {
         const response = await apiClient.get(`/subjects/${id}`);
         return await response.data.data as Subject;
-    } catch (error) {
-        console.error('Failed to fetch subjects:', error);
+    } catch (err) {
+        throw new Error(`Error: ${err}`);
     }
 }
 export const getSubjectsByProfessorAsync = async (id: number) => {
     try {
         const response = await apiClient.get(`/subjects/professor/${id}`);
         return await response.data.data as Subject[];
-    } catch (error) {
-        console.error('Failed to fetch subjects:', error);
+    } catch (err) {
+        throw new Error(`Error: ${err}`);
     }
 }
 export const createSubjectAsync = async (data: ICreateSubjectRequest) => {
@@ -49,8 +49,8 @@ export const updateSubjectAsync = async (id: number, data: IUpdateSubjectRequest
     try {
         const response = await apiClient.put(`/subjects/${id}`, data);
         return await response.data.data as Subject;
-    } catch (error) {
-        console.error('Failed to fetch subject:', error);
+    } catch (err) {
+        throw new Error(`Error: ${err}`);
     }
 }
 export const deleteSubjectAsync = async (id: number) => {
