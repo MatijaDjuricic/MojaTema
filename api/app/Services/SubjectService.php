@@ -14,32 +14,28 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Cache;
+
 class SubjectService implements ISubjectService
 {
     public function getAllSubjects(): JsonResource {
-        try {
+        return Cache::remember('subjects_all', 60, function () {
             return SubjectResource::collection(Subject::all());
-        } catch (\Exception $e) {
-            \Log::error('Error fetching all subjects: ' . $e->getMessage());
-            throw new \Exception('Error fetching subjects.');
-        }
+        });
     }
+
     public function getSubjectById(int $id): JsonResource {
-        try {
+        return Cache::remember("subject_{$id}", 60, function () use ($id) {
             $subject = Subject::find($id);
             if (!$subject) {
                 throw new ModelNotFoundException('Subject not found.');
             }
             return SubjectResource::make($subject);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        } catch (\Exception $e) {
-            \Log::error('Error fetching subject by ID: ' . $e->getMessage());
-            throw new \Exception('Error fetching subject by ID.');
-        }
+        });
     }
+
     public function getSubjectsByProfessor(int $id): JsonResource {
-        try {
+        return Cache::remember("subjects_by_professor_{$id}", 60, function () use ($id) {
             $subjects = ProfessorSubject::where('user_id', $id)
                 ->with('subject')
                 ->get();
@@ -47,23 +43,16 @@ class SubjectService implements ISubjectService
                 throw new ModelNotFoundException('Topic not found.');
             }
             return SubjectResource::collection($subjects->pluck('subject'));
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        } catch (\Exception $e) {
-            \Log::error('Error fetching subject by ID: ' . $e->getMessage());
-            throw new \Exception('Error fetching subject by ID.');
-        }
+        });
     }
+
     public function createSubject(CreateSubjectRequest $request): JsonResource {
-        try {
-            $fields = $request->validated();
-            $topic = Subject::create($fields);
-            return SubjectResource::make($topic);
-        } catch (\Exception $e) {
-            \Log::error('Error creating subject: ' . $e->getMessage());
-            throw new \Exception('Error creating subject.');
-        }
+        $fields = $request->validated();
+        $subject = Subject::create($fields);
+        Cache::forget('subjects_all');
+        return SubjectResource::make($subject);
     }
+
     public function importSubjects(Request $request): bool {
         $request->validate([
             'file' => 'required|mimes:xlsx,txt,csv|max:10240',
@@ -78,13 +67,15 @@ class SubjectService implements ISubjectService
             switch ($file->getClientOriginalExtension()) {
                 case 'xlsx':
                     Excel::import(new SubjectImport, $fullPath);
-                    return true;
+                    break;
                 case 'csv':
                     Excel::import(new SubjectImport, $file);
-                    return true;
+                    break;
                 default:
                     return false;
             }
+            Cache::forget('subjects_all');
+            return true;
         } catch (\Exception $e) {
             \Log::error('Error importing subject: ' . $e->getMessage());
             throw new \Exception('Error importing subject.');
@@ -92,25 +83,24 @@ class SubjectService implements ISubjectService
             Storage::delete($path);
         }
     }
+
     public function updateSubject(UpdateSubjectRequest $request, int $id): JsonResource {
-        try {
-            $subject = Subject::find($id);
-            $fields = $request->validated();
-            $subject->update($fields);
-            return SubjectResource::make($subject);
-        } catch (\Exception $e) {
-            \Log::error('Error updating subject: ' . $e->getMessage());
-            throw new \Exception('Error updating subject.');
+        $subject = Subject::find($id);
+        if (!$subject) {
+            throw new ModelNotFoundException('Subject not found.');
         }
+        $fields = $request->validated();
+        $subject->update($fields);
+        Cache::forget("subject_{$id}");
+        Cache::forget('subjects_all');
+        return SubjectResource::make($subject);
     }
+
     public function deleteSubject(int $id): bool {
-        try {
-            $subject = Subject::find($id);
-            if (!$subject) return false;
-            return $subject->delete();
-        } catch (\Exception $e) {
-            \Log::error('Error deleting subject: ' . $e->getMessage());
-            throw new \Exception('Error deleting subject.');
-        }
+        $subject = Subject::find($id);
+        if (!$subject) return false;
+        Cache::forget("subject_{$id}");
+        Cache::forget('subjects_all');
+        return $subject->delete();
     }
 }

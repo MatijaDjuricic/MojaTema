@@ -19,10 +19,12 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Arr;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Cache;
+
 class TopicService implements ITopicService
 {
     public function getAllTopics(string $search = ''): JsonResource {
-        try {
+        return Cache::remember('topics_all' . $search, 60, function () use ($search) {
             $query = Topic::with(['subject', 'professor', 'student']);
             if ($search != '') {
                 $query->where(function($q) use ($search) {
@@ -36,45 +38,39 @@ class TopicService implements ITopicService
                     });
                 });
             }
-            $topics = $query->get();
-            return TopicResource::collection($topics);
-        } catch (\Exception $e) {
-            \Log::error('Error fetching all topics: ' . $e->getMessage());
-            throw new \Exception('Error fetching topics.');
-        }
+            return TopicResource::collection($query->get());
+        });
     }
+
     public function getReportedTopics(): JsonResource {
-        $topics = Topic::with(['subject', 'professor', 'student'])
-            ->where(function ($q) {
-                $q->where('user_id', auth()->user()->id)
-                ->whereHas('student', function ($q) {
-                    $q->whereNotNull('user_id');
+        $topics = Cache::remember('reported_topics', 60, function () {
+            return Topic::with(['subject', 'professor', 'student'])
+                ->where(function ($q) {
+                    $q->where('user_id', auth()->user()->id)
+                    ->whereHas('student', function ($q) {
+                        $q->whereNotNull('user_id');
+                    })
+                    ->orWhereHas('student', function ($q) {
+                        $q->where('user_id', auth()->user()->id);
+                    });
                 })
-                ->orWhereHas('student', function ($q) {
-                    $q->where('user_id', auth()->user()->id);
-                });
-            })->get();
-        if (!$topics) {
-            throw new ModelNotFoundException('Topic not found.');
-        }
+                ->get();
+        });
         return TopicResource::collection($topics);
     }
+
     public function getTopicById(int $id): JsonResource {
-        try {
+        return Cache::remember("topic_{$id}", 60, function () use ($id) {
             $topic = Topic::find($id);
             if (!$topic) {
                 throw new ModelNotFoundException('Topic not found.');
             }
             return TopicResource::make($topic);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        } catch (\Exception $e) {
-            \Log::error('Error fetching topic by ID: ' . $e->getMessage());
-            throw new \Exception('Error fetching topic by ID.');
-        }
+        });
     }
+
     public function getTopicsByProfessor(int $id): JsonResource {
-        try {
+        return Cache::remember("topics_by_professor_{$id}", 60, function () use ($id) {
             $topics = Topic::where('user_id', $id)
                 ->with(['subject', 'professor', 'student'])
                 ->get();
@@ -82,30 +78,25 @@ class TopicService implements ITopicService
                 throw new ModelNotFoundException('Topic not found.');
             }
             return TopicResource::collection($topics);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        } catch (\Exception $e) {
-            \Log::error('Error fetching topic by ID: ' . $e->getMessage());
-            throw new \Exception('Error fetching topic by ID.');
-        }
+        });
     }
+
     public function createTopic(CreateTopicRequest $request): JsonResource {
-        try {
-            $fields = $request->validated();
-            Gate::authorize('create', Topic::class);
-            $topic = Topic::create([
-                'title' => $fields['title'],
-                'description' => $fields['description'],
-                'subject_id' => $fields['subject_id'],
-                'status' => TopicStatusEnum::FREE,
-                'user_id' => $fields['professor_id'] ? $fields['professor_id'] : auth()->user()->id,
-            ]);
-            return TopicResource::make($topic);
-        } catch (\Exception $e) {
-            \Log::error('Error creating topic: ' . $e->getMessage());
-            throw new \Exception('Error creating topic.');
-        }
+        $fields = $request->validated();
+        Gate::authorize('create', Topic::class);
+        $topic = Topic::create([
+            'title' => $fields['title'],
+            'description' => $fields['description'],
+            'subject_id' => $fields['subject_id'],
+            'status' => TopicStatusEnum::FREE,
+            'user_id' => $fields['professor_id'] ? $fields['professor_id'] : auth()->user()->id,
+        ]);
+        Cache::forget('topics_all');
+        Cache::forget("reported_topics");
+        Cache::forget("topics_by_professor_" . auth()->user()->id);
+        return TopicResource::make($topic);
     }
+
     public function importTopics(Request $request): bool {
         $request->validate([
             'file' => 'required|mimes:xlsx,txt,csv|max:10240',
@@ -121,13 +112,17 @@ class TopicService implements ITopicService
             switch ($file->getClientOriginalExtension()) {
                 case 'xlsx':
                     Excel::import(new TopicImport, $fullPath);
-                    return true;
+                    break;
                 case 'csv':
                     Excel::import(new TopicImport, $file);
-                    return true;
+                    break;
                 default:
                     return false;
             }
+            Cache::forget('topics_all');
+            Cache::forget("reported_topics");
+            Cache::forget("topics_by_professor_" . auth()->user()->id);
+            return true;
         } catch (\Exception $e) {
             \Log::error('Error importing topic: ' . $e->getMessage());
             throw new \Exception('Error importing topic.');
@@ -135,72 +130,72 @@ class TopicService implements ITopicService
             Storage::delete($path);
         }
     }
+
     public function updateTopic(UpdateTopicRequest $request, int $id): JsonResource {
-        try {
-            $topic = Topic::find($id);
-            if (!$topic) {
-                throw new ModelNotFoundException('Topic not found.');
-            }
-            Gate::authorize('update', $topic);
-            $fields = $request->validated();
-            $student = $fields['student_user_id']
-                ? Student::where('user_id', $fields['student_user_id'])->first() : null;
-            $topic->update([
-                'title' => $fields['title'],
-                'description' => $fields['description'],
-                'status' => !$student ? TopicStatusEnum::FREE->value : $fields['status'],
-                'subject_id' => $fields['subject_id'],
-                'user_id' => $fields['professor_id'],
-                'student_id' => $student && $fields['status'] != TopicStatusEnum::FREE->value
-                    ? $student->id : null,
-            ]);
-            return TopicResource::make($topic);
-        } catch (\Exception $e) {
-            \Log::error('Error updating topic: ' . $e->getMessage());
-            throw new \Exception('Error updating topic.');
+        $topic = Topic::find($id);
+        if (!$topic) {
+            throw new ModelNotFoundException('Topic not found.');
         }
+        Gate::authorize('update', $topic);
+        $fields = $request->validated();
+        $student = $fields['student_user_id']
+            ? Student::where('user_id', $fields['student_user_id'])->first() : null;
+        $topic->update([
+            'title' => $fields['title'],
+            'description' => $fields['description'],
+            'status' => !$student ? TopicStatusEnum::FREE->value : $fields['status'],
+            'subject_id' => $fields['subject_id'],
+            'user_id' => $fields['professor_id'],
+            'student_id' => $student && $fields['status'] != TopicStatusEnum::FREE->value
+                ? $student->id : null,
+        ]);
+        Cache::forget('topics_all');
+        Cache::forget("topic_{$id}");
+        Cache::forget("reported_topics");
+        Cache::forget("topics_by_professor_". auth()->user()->id);
+        return TopicResource::make($topic);
     }
+
     public function updateTopicStatus(UpdateTopicStatusRequest $request, int $id): JsonResource {
-        try {
-            $topic = Topic::find($id);
-            $fields = $request->validated();
-            if (auth()->user()->role == UserRoleEnum::STUDENT->value) {
-                $student = Student::where('user_id', auth()->user()->id)->first();
-                if (!$topic || !$student) {
-                    throw new ModelNotFoundException('Topic or student are not found.');
-                }
-                Gate::authorize('updateStatusByStudent', $topic);
-                $topic->update([
-                    'status' => $fields['status'],
-                    'student_id' => $fields['status'] != TopicStatusEnum::FREE->value ? $student->id : null,
-                ]);
+        $topic = Topic::find($id);
+        $fields = $request->validated();
+        if (auth()->user()->role == UserRoleEnum::STUDENT->value) {
+            $student = Student::where('user_id', auth()->user()->id)->first();
+            if (!$topic || !$student) {
+                throw new ModelNotFoundException('Topic or student are not found.');
             }
-            else if (auth()->user()->role == UserRoleEnum::PROFESSOR->value) {
-                if (!$topic) {
-                    throw new ModelNotFoundException('Topic or professor are not found.');
-                }
-                Gate::authorize('updateStatusByProfessor', $topic);
-                $data = [
-                    'status' => $fields['status'],
-                ];
-                if ($fields['status'] == TopicStatusEnum::FREE->value) $data['student_id'] = null;
-                $topic->update(Arr::only($data, ['status', 'student_id']));
-            }
-            return TopicResource::make($topic);
-        } catch (\Exception $e) {
-            \Log::error('Error updating topic status: ' . $e->getMessage());
-            throw new \Exception('Error updating topic status.');
+            Gate::authorize('updateStatusByStudent', $topic);
+            $topic->update([
+                'status' => $fields['status'],
+                'student_id' => $fields['status'] != TopicStatusEnum::FREE->value ? $student->id : null,
+            ]);
         }
+        else if (auth()->user()->role == UserRoleEnum::PROFESSOR->value) {
+            if (!$topic) {
+                throw new ModelNotFoundException('Topic or professor are not found.');
+            }
+            Gate::authorize('updateStatusByProfessor', $topic);
+            $data = [
+                'status' => $fields['status'],
+            ];
+            if ($fields['status'] == TopicStatusEnum::FREE->value) $data['student_id'] = null;
+            $topic->update(Arr::only($data, ['status', 'student_id']));
+        }
+        Cache::forget('topics_all');
+        Cache::forget("topic_{$id}");
+        Cache::forget("reported_topics");
+        Cache::forget("topics_by_professor_" . auth()->user()->id);
+        return TopicResource::make($topic);
     }
+
     public function deleteTopic(int $id): bool {
-        try {
-            $topic = Topic::find($id);
-            if (!$topic) return false;
-            Gate::authorize('delete', $topic);
-            return $topic->delete();
-        } catch (\Exception $e) {
-            \Log::error('Error deleting topic: ' . $e->getMessage());
-            throw new \Exception('Error deleting topic.');
-        }
+        $topic = Topic::find($id);
+        if (!$topic) return false;
+        Gate::authorize('delete', $topic);
+        Cache::forget('topics_all');
+        Cache::forget("topic_{$id}");
+        Cache::forget("reported_topics");
+        Cache::forget("topics_by_professor_". auth()->user()->id);
+        return $topic->delete();
     }
 }

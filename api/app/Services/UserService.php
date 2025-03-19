@@ -13,32 +13,30 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
-class UserService implements IUserService {
+
+class UserService implements IUserService
+{    
     public function getAllUsers(): JsonResource {
-        try {
+        return Cache::remember('users_all', 60, function () {
             return UserResource::collection(User::all());
-        } catch (\Exception $e) {
-            \Log::error('Error fetching all users: ' . $e->getMessage());
-            throw new \Exception('Error fetching users.');
-        }
+        });
     }
+
     public function getUserById(int $id): JsonResource {
-        try {
+        $cacheKey = "user_{$id}";
+        return Cache::remember($cacheKey, 60, function () use ($id) {
             $user = User::find($id);
             if (!$user) {
                 throw new ModelNotFoundException('user not found.');
             }
             return UserResource::make($user);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        } catch (\Exception $e) {
-            \Log::error('Error fetching user by ID: ' . $e->getMessage());
-            throw new \Exception('Error fetching user by ID.');
-        }
+        });
     }
+
     public function getChatAvailableUsers(): JsonResource {
         try {
             $topic = Topic::with(['professor', 'student']);
@@ -62,6 +60,7 @@ class UserService implements IUserService {
             throw new \Exception('Error updating topic status.');
         }
     }
+
     public function createUser(CreateUserRequest $request): JsonResource {
         try {
             $fields = $request->validated();
@@ -72,12 +71,14 @@ class UserService implements IUserService {
                 'role' => $fields['role'],
                 'password' => Hash::make('123')
             ]);
+            Cache::forget('users_all');
             return UserResource::make($user);
         } catch (\Exception $e) {
             \Log::error('Error creating user: ' . $e->getMessage());
             throw new \Exception('Error creating user.');
         }
     }
+
     public function importUsers(Request $request): bool {
         $request->validate([
             'file' => 'required|mimes:xlsx,txt,csv|max:10240',
@@ -92,13 +93,15 @@ class UserService implements IUserService {
             switch ($file->getClientOriginalExtension()) {
                 case 'xlsx':
                     Excel::import(new UserImport, $fullPath);
-                    return true;
+                    break;
                 case 'csv':
                     Excel::import(new UserImport, $file);
-                    return true;
+                    break;
                 default:
                     return false;
             }
+            Cache::forget('users_all');
+            return true;
         } catch (\Exception $e) {
             \Log::error('Error importing user: ' . $e->getMessage());
             throw new \Exception('Error importing user.');
@@ -106,22 +109,29 @@ class UserService implements IUserService {
             Storage::delete($path);
         }
     }
+
     public function updateUser(UpdateUserRequest $request, int $id): JsonResource {
         try {
             $user = User::find($id);
             $fields = $request->validated();
             $user->update($fields);
+            Cache::forget("user_{$id}");
+            Cache::forget('users_all');
             return UserResource::make($user);
         } catch (\Exception $e) {
             \Log::error('Error updating user: ' . $e->getMessage());
             throw new \Exception('Error updating user.');
         }
     }
+
     public function deleteUser(int $id): bool {
         try {
             $user = User::find($id);
             if (!$user) return false;
-            return $user->delete();
+            $result = $user->delete();
+            Cache::forget("user_{$id}");
+            Cache::forget('users_all');
+            return $result;
         } catch (\Exception $e) {
             \Log::error('Error deleting user: ' . $e->getMessage());
             throw new \Exception('Error deleting user.');

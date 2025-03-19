@@ -19,7 +19,7 @@ class UserController extends Controller {
                 ? $this->successResponse($data, 200)
                 : $this->errorResponse("Subject not found", 404);
         } catch (\Exception $e) {
-            return $this->errorResponse('An error occurred: ' . $e->getMessage(), 500);
+            return $this->errorResponse($e->getMessage(), 500);
         }
     }
     public function userById(int $id) {
@@ -27,7 +27,7 @@ class UserController extends Controller {
             $data = $this->userService->getUserById($id);
             return $this->successResponse($data, 200);
         } catch (\Exception $e) {
-            return $this->errorResponse('An error occurred: ' . $e->getMessage(), 500);
+            return $this->errorResponse($e->getMessage(), 500);
         }
     }
     public function chatAvailableUsers(Request $request) {
@@ -44,7 +44,7 @@ class UserController extends Controller {
                 ? $this->successResponse($data, 200)
                 : $this->errorResponse('No avaliable users for chat', 404);
         } catch (\Exception $e) {
-            return $this->errorResponse('An error occurred: ' . $e->getMessage(), 500);
+            return $this->errorResponse($e->getMessage(), 500);
         }
     }
     public function createUser(CreateUserRequest $request) {
@@ -52,7 +52,7 @@ class UserController extends Controller {
             $data = $this->userService->createUser($request);
             return $this->successResponse($data, 201);
         } catch (\Exception $e) {
-            return $this->errorResponse('An error occurred: ' . $e->getMessage(), 500);
+            return $this->errorResponse($e->getMessage(), 500);
         }
     }
     public function importUsers(Request $request) {
@@ -60,7 +60,7 @@ class UserController extends Controller {
             $imported = $this->userService->importUsers($request);
             if ($imported) return $this->successResponse(['message' => 'Users imported successfully'], 201);
         } catch (\Exception $e) {
-            return $this->errorResponse('An error occurred: ' . $e->getMessage(), 500);
+            return $this->errorResponse($e->getMessage(), 500);
         }
     }
     public function updateUser(UpdateUserRequest $request, int $id) {
@@ -70,7 +70,7 @@ class UserController extends Controller {
                 ? $this->successResponse($data, 200)
                 : $this->errorResponse('User not found', 404);
         } catch (\Exception $e) {
-            return $this->errorResponse('An error occurred: ' . $e->getMessage(), 500);
+            return $this->errorResponse($e->getMessage(), 500);
         }
     }
     public function deleteUser(int $id) {
@@ -80,7 +80,7 @@ class UserController extends Controller {
                 ? $this->successResponse(['message' => 'User deleted successfully'], 200)
                 : $this->errorResponse('User not found', 404);
         } catch (\Exception $e) {
-            return $this->errorResponse('Error deleting user: ' . $e->getMessage(), 500);
+            return $this->errorResponse($e->getMessage(), 500);
         }
     }
 }
