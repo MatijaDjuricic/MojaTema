@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useAuthStore } from '../../stores/auth';
-import { RoleNamesCyrillic, themes } from '../../utils/constants';
 import { onClickOutside } from '@vueuse/core';
+import { useAuthStore } from '../../stores/auth';
+import { useAuth } from '../../composables/queries/useAuth';
 import { useModal } from '../../composables/utils/useModal';
 import { usePanel } from '../../composables/utils/usePanel';
 import { useTheme } from '../../composables/utils/useTheme';
+import { RoleNamesCyrillic, themes } from '../../utils/constants';
 import ChatsPanel from '../layout/ChatsPanel.vue';
 import NotificationsPanel from '../layout/NotificationsPanel.vue';
 import IconButton from '../common/IconButton.vue';
@@ -25,16 +25,12 @@ import {
   IconUserCircle
 } from '@tabler/icons-vue';
 const auth = useAuthStore();
-const router = useRouter();
+const { logout: handleLogout } = useAuth();
 const { modalRef, openModal } = useModal();
 const { theme, toggleTheme } = useTheme();
 const { chatsRef, notificationsRef, openPanel } = usePanel();
 const isDropdownVisible = ref(false);
 const dropdownRef = ref<HTMLElement | null>(null);
-const handleLogout = async () => {
-  await auth.logout();
-  router.push('/login');
-};
 const toggleSideBar = () => document.body.classList.toggle("toggle_sidebar");
 onClickOutside(dropdownRef, () => isDropdownVisible.value = false);
 </script>

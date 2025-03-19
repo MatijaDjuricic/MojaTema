@@ -12,7 +12,7 @@ const {
   email,
   password,
   passwordVisible,
-  loading,
+  isSubmitLoading,
   togglePasswordVisibility,
   handleSubmit
 } = useLoginForm();
@@ -48,7 +48,7 @@ const { theme, toggleTheme } = useTheme();
         </PasswordInput>
       </template>
       <template #buttons>
-        <CTA title="Пријави се" :class="$style.login_button" :loading=loading :disabled=loading size="lg" type="submit"/>
+        <CTA title="Пријави се" :class="$style.login_button" :loading=isSubmitLoading :disabled=isSubmitLoading size="lg" type="submit"/>
       </template>
     </FormLayout>
   </main>

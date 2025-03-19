@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { useRouter } from 'vue-router';
 import { useAuthStore } from '../../stores/auth';
+import { useAuth } from '../../composables/queries/useAuth';
 import { useModal } from '../../composables/utils/useModal';
 import { RoleEnum } from '../../utils/enums';
 import { usePanel } from '../../composables/utils/usePanel';
@@ -23,15 +23,11 @@ import {
     IconUserCircle,
     IconUsers
 } from '@tabler/icons-vue';
-const router = useRouter();
 const auth = useAuthStore();
+const { logout: handleLogout } = useAuth();
 const { modalRef, openModal } = useModal();
 const { chatsRef, notificationsRef, openPanel } = usePanel();
 const { theme, toggleTheme } = useTheme();
-const handleLogout = async () => {
-  await auth.logout();
-  router.push('/login');
-};
 </script>
 <style src="./SideBar.module.css" module/>
 <template>
