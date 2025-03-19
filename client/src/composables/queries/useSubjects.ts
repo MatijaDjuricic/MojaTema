@@ -22,7 +22,7 @@ export const useSubjects = () => {
 export const useProfessorSubjects = () => {
     const currentUser = useAuthStore().currentUser;
     return useQuery({
-        queryKey: ['professorTopics'],
+        queryKey: ['professorSubjects'],
         queryFn: () => getSubjectsByProfessorAsync(currentUser.id),
         staleTime: queryStaleTime.subjects
     });
@@ -39,6 +39,7 @@ export const useCreateSubject = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['subjects'] });
+            queryClient.invalidateQueries({ queryKey: ['professorSubjects'] });
             successMessage('Успешно сте додали предмет');
         },
         onError: () => errorMessage('Грешка при додавању предмета')
@@ -58,6 +59,7 @@ export const useImportSubjects = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['subjects'] });
+            queryClient.invalidateQueries({ queryKey: ['professorSubjects'] });
             successMessage('Успешно сте додали предмет');
         }, onError: (error) => {
             errorMessage(error.message);
@@ -74,6 +76,7 @@ export const useUpdateSubject = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['subjects'] });
+            queryClient.invalidateQueries({ queryKey: ['professorSubjects'] });
             successMessage('Успешно сте изменили предмет');
         },
         onError: () => errorMessage('Грешка при ажурирању предметa')
@@ -86,6 +89,7 @@ export const useDeleteSubject = () => {
         mutationFn: deleteSubjectAsync,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['subjects'] });
+            queryClient.invalidateQueries({ queryKey: ['professorSubjects'] });
             successMessage('Успешно сте обрисали предмет');
         }, onError: (error) => {
             errorMessage(error.message);

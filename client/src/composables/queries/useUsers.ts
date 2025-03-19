@@ -39,6 +39,7 @@ export const useCreateUser = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['users'] });
+            queryClient.invalidateQueries({ queryKey: ['chatAvailableUsers'] });
             successMessage("Успешно додат корисник");
         }, onError: (error) => {
             errorMessage(error.message);
@@ -59,6 +60,7 @@ export const useImportUsers = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['users'] });
+            queryClient.invalidateQueries({ queryKey: ['chatAvailableUsers'] });
             successMessage("Успешно додат корисник");
         }, onError: (error) => {
             errorMessage(error.message);
@@ -75,6 +77,7 @@ export const useUpdateUser = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['users'] });
+            queryClient.invalidateQueries({ queryKey: ['chatAvailableUsers'] });
             successMessage(`Успешно си изменио корисника`);
         },
         onError: () => errorMessage('Грешка при ажурирању корисника')
@@ -86,7 +89,8 @@ export const useDeleteUser = () => {
     return useMutation({
         mutationFn: deleteUserAsync,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['users'] })
+            queryClient.invalidateQueries({ queryKey: ['users'] });
+            queryClient.invalidateQueries({ queryKey: ['chatAvailableUsers'] });
             successMessage("Успешно си обрисао корисника");
         }, onError: (error) => {
             errorMessage(error.message);

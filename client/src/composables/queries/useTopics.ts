@@ -81,7 +81,9 @@ export const useImportTopics = () => {
             }
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['topics'] })
+            queryClient.invalidateQueries({ queryKey: ['topics'] });
+            queryClient.invalidateQueries({ queryKey: ['reportedTopics'] });
+            queryClient.invalidateQueries({ queryKey: ['professorTopics'] });
             successMessage("Успешно си увезао теме");
         }, onError: (error) => {
             errorMessage(error.message);
