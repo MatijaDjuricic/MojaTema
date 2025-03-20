@@ -13,6 +13,8 @@ class Student extends Model
     protected $table = self::TABLE;
     protected $fillable = [
         'status',
+        'class_year_id',
+        'department_id',
         'mandatory_grade',
         'elective_grade',
         'graduation_grade',

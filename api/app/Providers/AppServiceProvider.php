@@ -7,6 +7,8 @@ use App\Interfaces\IAuthService;
 use App\Interfaces\IUserService;
 use App\Interfaces\ISubjectService;
 use App\Interfaces\ITopicService;
+use App\Models\User;
+use App\Observers\UserObserver;
 use App\Services\AuthService;
 use App\Services\UserService;
 use App\Services\SubjectService;
@@ -18,5 +20,7 @@ class AppServiceProvider extends ServiceProvider {
         $this->app->bind(ISubjectService::class, SubjectService::class);
         $this->app->bind(ITopicService::class, TopicService::class);
     }
-    public function boot() {}
+    public function boot() {
+        User::observe(UserObserver::class);
+    }
 }
