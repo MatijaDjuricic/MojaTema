@@ -1,0 +1,91 @@
+services:
+  api:
+    build:
+      args:
+        user: user
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: api
+    container_name: api-mojatema
+    restart: unless-stopped
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: mojatema
+      DB_USERNAME: root
+      DB_PASSWORD: password
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+      - ~/.ssh:/root/.ssh
+    depends_on:
+      - mysql
+      - redis  
+    networks:
+      - app-network
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-mojatema
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx:/etc/nginx/conf.d
+      - ./docker/nginx/ssl:/etc/nginx/conf.d/ssl
+      - ./docker/nginx/phpmyadmin.conf:/etc/nginx/conf.d/phpmyadmin.conf
+    networks:
+      - app-network
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-mojatema
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mojatema
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/mysql/logs:/var/log/mysql
+      - ./docker/mysql/ql:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin-mojatema
+    ports:
+      - "8080:80"
+    links:
+      - mysql
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: password
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    networks:
+      - app-network
+  redis:
+    image: "redis:alpine"
+    container_name: redis-mojatema
+    restart: unless-stopped
+    volumes:
+      - ./docker/redis/data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network      
+networks:
+  app-network:
+    driver: bridge

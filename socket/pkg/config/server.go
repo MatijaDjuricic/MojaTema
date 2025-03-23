@@ -1,10 +1,6 @@
 package config
 
-import (
-	"net/http"
-
-	"github.com/MatijaDjuricic/MojaTema/socket/pkg/middleware"
-)
+import "net/http"
 
 type Server struct {
 	Addr    string
@@ -22,7 +18,7 @@ func NewServer(addr string) *Server {
 func (s *Server) Run() error {
 	server := &http.Server{
 		Addr:    s.Addr,
-		Handler: middleware.AllowCors(s.Handler),
+		Handler: AllowCors(s.Handler),
 	}
 	return server.ListenAndServe()
 }

@@ -37,7 +37,7 @@ const { mutate: updateTopic } = useUpdateTopic();
 const { mutate: deleteTopic } = useDeleteTopic();
 const { createTopicRef, updateTopicRef, handleClear, openEditModal } = useTopicForm();
 </script>
-<style src="./AllTopics.module.css" module/>
+<style scoped src="./AllTopics.module.css" module></style>
 <template>
   <PageLayout>
     <HeaderLayout>

@@ -26,16 +26,16 @@ func GetEnvConfig() *EnvConfig {
 			fmt.Println("Error loading .env file", err)
 		}
 		envConfig = &EnvConfig{
-			MongoUriPublic:  getEnv("MONGO_URI_PUBLIC", ""),
-			MongoUriPrivate: getEnv("MONGO_URI_PRIVATE", ""),
-			ClientUrl:       getEnv("CLIENT", "http://localhost:5173"),
-			Port:            ":" + getEnv("PORT", "8080"),
+			MongoUriPublic:  GetEnv("MONGO_URI_PUBLIC", ""),
+			MongoUriPrivate: GetEnv("MONGO_URI_PRIVATE", "mongodb://mongo:27017"),
+			ClientUrl:       GetEnv("CLIENT", "http://localhost:5173"),
+			Port:            ":" + GetEnv("PORT", "8080"),
 		}
 	})
 	return envConfig
 }
 
-func getEnv(key, defaultVal string) string {
+func GetEnv(key, defaultVal string) string {
 	value := os.Getenv(key)
 	if value == "" {
 		return defaultVal

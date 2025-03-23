@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"log"
 	"sync"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -24,14 +25,17 @@ func Connect(uri string) error {
 	var err error
 	once.Do(func() {
 		ctx, cancel := context.WithCancel(context.Background())
-		if cancel == nil {
+		client, connectErr := mongo.Connect(ctx, options.Client().ApplyURI(uri))
+		if connectErr != nil {
+			log.Printf("Failed to connect to MongoDB: %v", connectErr)
+			cancel()
+			err = connectErr
 			return
 		}
-		client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
-		if err != nil {
-			return
-		}
-		if err = client.Ping(ctx, readpref.Primary()); err != nil {
+		if pingErr := client.Ping(ctx, readpref.Primary()); pingErr != nil {
+			log.Printf("Failed to ping MongoDB: %v", pingErr)
+			cancel()
+			err = pingErr
 			return
 		}
 		DbService = &DBService{
@@ -39,7 +43,11 @@ func Connect(uri string) error {
 			Ctx:    ctx,
 			Cancel: cancel,
 		}
+		log.Println("Connected to MongoDB successfully!")
 	})
+	if err != nil {
+		log.Printf("Error during MongoDB connection: %v", err)
+	}
 	return err
 }
 
