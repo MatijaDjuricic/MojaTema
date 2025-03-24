@@ -1,28 +1,58 @@
 services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: client
+    container_name: client-mojatema
+    restart: unless-stopped
+    environment:
+      VITE_API_URL: http://api:8000/api
+      VITE_SOCKET_URL: ws://socket:8080/ws
+      VITE_SOCKET_API_URL: http://socket:8080/api
+    networks:
+      - app-network
   api:
     build:
       args:
         user: user
         uid: 1000
-      context: ./
+      context: ./api
       dockerfile: Dockerfile
     image: api
     container_name: api-mojatema
     restart: unless-stopped
     environment:
+      FRONTEND_URL: http://localhost:3000
+      SANCTUM_STATEFUL_DOMAINS: localhost:3000
+      REDIS_HOST: redis
       DB_CONNECTION: mysql
       DB_HOST: mysql
       DB_PORT: 3306
       DB_DATABASE: mojatema
       DB_USERNAME: root
       DB_PASSWORD: password
-    working_dir: /var/www/
+    working_dir: /var/www
     volumes:
-      - ./:/var/www
+      - ./api:/var/www
       - ~/.ssh:/root/.ssh
     depends_on:
       - mysql
-      - redis  
+      - redis
+    networks:
+      - app-network
+  socket:
+    build:
+      context: ./socket
+      dockerfile: Dockerfile
+    container_name: socket
+    restart: unless-stopped
+    environment:
+      MONGO_URI_PRIVATE: mongodb://root:password@mongo:27017/MojaTema?authSource=admin
+      CLIENT_URL: http://client:3000
+      PORT: 8080
+    depends_on:
+      - mongo
     networks:
       - app-network
   nginx:
@@ -30,13 +60,15 @@ services:
     container_name: nginx-mojatema
     restart: unless-stopped
     ports:
+      - "3000:3000"
       - "8000:8000"
+      - "8080:8080"
       - "443:443"
     volumes:
-      - ./:/var/www
+      - ./api:/var/www
       - ./docker/nginx:/etc/nginx/conf.d
       - ./docker/nginx/ssl:/etc/nginx/conf.d/ssl
-      - ./docker/nginx/phpmyadmin.conf:/etc/nginx/conf.d/phpmyadmin.conf
+      - ./client/dist:/usr/share/nginx/html
     networks:
       - app-network
   mysql:
@@ -64,7 +96,7 @@ services:
     image: phpmyadmin/phpmyadmin:latest
     container_name: phpmyadmin-mojatema
     ports:
-      - "8080:80"
+      - "8081:80"
     links:
       - mysql
     restart: unless-stopped
@@ -76,16 +108,30 @@ services:
       PMA_ARBITRARY: 1
     networks:
       - app-network
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app-network
   redis:
     image: "redis:alpine"
     container_name: redis-mojatema
     restart: unless-stopped
-    volumes:
-      - ./docker/redis/data:/data
     ports:
       - "6379:6379"
+    volumes:
+      - ./docker/redis/data:/data
     networks:
-      - app-network      
+      - app-network 
+volumes:
+  mongo_data:
 networks:
   app-network:
     driver: bridge
