@@ -12,7 +12,8 @@ class ProfessorSubject extends Model
     const TABLE = 'professor_subjects';
     protected $table = self::TABLE; 
     protected $fillable = [
-        'id',
+        'user_id',
+        'subject_id',
     ];
     public function user(): BelongsTo
     {

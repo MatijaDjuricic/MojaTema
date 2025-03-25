@@ -24,18 +24,34 @@ use Illuminate\Support\Facades\Cache;
 class TopicService implements ITopicService
 {
     public function getAllTopics(string $search = ''): JsonResource {
-        return Cache::remember('topics_all' . $search, 60, function () use ($search) {
-            $query = Topic::with(['subject', 'professor', 'student']);
+        return Cache::remember('topics_all' . md5($search), 60, function () use ($search) {
+            $query = Topic::with(['professor_subject', 'student']);
+            $keywords = explode(' ', $search);
             if ($search != '') {
-                $query->where(function($q) use ($search) {
-                    $q->where('topics.title', 'like', '%' . $search . '%')
-                    ->orWhereHas('subject', function($q) use ($search) {
-                        $q->where('title', 'like', '%' . $search . '%');
-                    })
-                    ->orWhereHas('professor', function($q) use ($search) {
-                        $q->where('first_name', 'like', '%' . $search . '%')
-                        ->orWhere('last_name', 'like', '%' . $search . '%');
-                    });
+                $query->where(function ($q) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $q->where(function ($q) use ($keyword) {
+                            $q->where('topics.title', 'like', '%' . $keyword . '%')
+                            ->orWhere('topics.description', 'like', '%' . $keyword . '%')
+                            ->orWhereHas('professor_subject.subject', function ($q) use ($keyword) {
+                                $q->where('title', 'like', '%' . $keyword . '%');
+                            })
+                            ->orWhereHas('professor_subject.user', function ($q) use ($keyword) {
+                                $q->where(function ($q) use ($keyword) {
+                                    $q->where('first_name', 'like', '%' . $keyword . '%')
+                                        ->orWhere('last_name', 'like', '%' . $keyword . '%')
+                                        ->orWhere('email', 'like', '%' . $keyword . '%');
+                                });
+                            })
+                            ->orWhereHas('student.user', function ($q) use ($keyword) {
+                                $q->where(function ($q) use ($keyword) {
+                                    $q->where('first_name', 'like', '%' . $keyword . '%')
+                                        ->orWhere('last_name', 'like', '%' . $keyword . '%')
+                                        ->orWhere('email', 'like', '%' . $keyword . '%');
+                                });
+                            });
+                        });
+                    }
                 });
             }
             return TopicResource::collection($query->get());
@@ -44,7 +60,7 @@ class TopicService implements ITopicService
 
     public function getReportedTopics(): JsonResource {
         $topics = Cache::remember('reported_topics', 60, function () {
-            return Topic::with(['subject', 'professor', 'student'])
+            return Topic::with('student')
                 ->where(function ($q) {
                     $q->where('user_id', auth()->user()->id)
                     ->whereHas('student', function ($q) {
@@ -71,8 +87,8 @@ class TopicService implements ITopicService
 
     public function getTopicsByProfessor(int $id): JsonResource {
         return Cache::remember("topics_by_professor_{$id}", 60, function () use ($id) {
-            $topics = Topic::where('user_id', $id)
-                ->with(['subject', 'professor', 'student'])
+            $topics = Topic::with(['professor_subject', 'student'])
+                ->where('profesor_subject.user_id', $id)
                 ->get();
             if (!$topics) {
                 throw new ModelNotFoundException('Topic not found.');
@@ -87,9 +103,9 @@ class TopicService implements ITopicService
         $topic = Topic::create([
             'title' => $fields['title'],
             'description' => $fields['description'],
-            'subject_id' => $fields['subject_id'],
+            'professor_subject_id' => $fields['professor_subject_id'],
+            'student_id' => $fields['student_id'],
             'status' => TopicStatusEnum::FREE,
-            'user_id' => $fields['professor_id'] ? $fields['professor_id'] : auth()->user()->id,
         ]);
         Cache::forget('topics_all');
         Cache::forget("reported_topics");
@@ -144,8 +160,7 @@ class TopicService implements ITopicService
             'title' => $fields['title'],
             'description' => $fields['description'],
             'status' => !$student ? TopicStatusEnum::FREE->value : $fields['status'],
-            'subject_id' => $fields['subject_id'],
-            'user_id' => $fields['professor_id'],
+            'professor_subject_id' => $fields['professor_subject_id'],
             'student_id' => $student && $fields['status'] != TopicStatusEnum::FREE->value
                 ? $student->id : null,
         ]);

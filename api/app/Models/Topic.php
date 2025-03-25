@@ -17,23 +17,17 @@ class Topic extends Model
         'title',
         'description',
         'status',
-        'subject_id',
-        'user_id',
+        'professor_subject_id',
         'student_id'
     ];
 
-    public function subject(): BelongsTo
+    public function professor_subject(): BelongsTo
     {
-        return $this->belongsTo(Subject::class);
-    }
-
-    public function professor(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(ProfessorSubject::class);
     }
 
     public function student(): BelongsTo
     {
-        return $this->belongsTo(Student::class, 'student_id');
+        return $this->belongsTo(Student::class);
     }
 }

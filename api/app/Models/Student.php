@@ -13,18 +13,18 @@ class Student extends Model
     protected $table = self::TABLE;
     protected $fillable = [
         'status',
+        'user_id',
         'class_year_id',
         'department_id',
         'mandatory_grade',
         'elective_grade',
-        'graduation_grade',
-        'user_id'
+        'graduation_grade'
     ];
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
-    public function classYear(): BelongsTo
+    public function class_year(): BelongsTo
     {
         return $this->belongsTo(ClassYear::class);
     }

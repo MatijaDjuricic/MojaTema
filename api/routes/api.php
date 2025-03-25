@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfessorSubjectController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
@@ -35,6 +36,15 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::post('/import', 'importSubjects');
         Route::put('/{id}', 'updateSubject');
         Route::delete('/{id}', 'deleteSubject');
+    });
+    Route::prefix('professor-subjects')->controller(ProfessorSubjectController::class)->group(function () {
+        Route::get('/', 'professorSubjectsAll');
+        Route::get('/{id}', 'professorSubjectById');
+        Route::get('/professor/{id}', 'professorSubjectsByProfessor');
+        Route::post('/', 'createProfessorSubject');
+        Route::post('/import', 'importProfessorSubjects');
+        Route::put('/{id}', 'updateProfessorSubject');
+        Route::delete('/{id}', 'deleteProfessorSubject');
     });
     Route::prefix('topics')->controller(TopicController::class)->group(function () {
         Route::get('/', 'topicsAll');

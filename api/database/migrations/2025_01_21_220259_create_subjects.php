@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ClassYear;
 use App\Models\Subject;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -12,7 +13,7 @@ return new class extends Migration
         Schema::create(Subject::TABLE, function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->foreignId('class_year_id')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(ClassYear::class, 'class_year_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

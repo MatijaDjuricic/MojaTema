@@ -14,8 +14,8 @@ class CreateTopicRequest extends FormRequest
         return [
             'title' => 'required|string',
             'description' => 'required|string',
-            'subject_id' => 'required|int',
-            'professor_id' => 'int|nullable'
+            'professor_subject_id' => 'required|int',
+            'student_id' => 'int|nullable'
         ];
     }
 }

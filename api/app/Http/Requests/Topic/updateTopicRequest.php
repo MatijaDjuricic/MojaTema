@@ -20,8 +20,7 @@ class updateTopicRequest extends FormRequest
                 TopicStatusEnum::PENDING->value,
                 TopicStatusEnum::RESERVED->value
             ]),
-            'subject_id' => 'int',
-            'professor_id' => 'int',
+            'professor_subject_id' => 'required|int',
             'student_user_id' => 'int|nullable'
         ];
     }

@@ -10,13 +10,15 @@ class TopicImport implements ToModel, WithHeadingRow
 {
     public function model(array $row): ?Topic
     {
-        if (isset($row['title']) && isset($row['description']) && isset($row['subject_id'])) {
+        if (
+            isset($row['title']) && isset($row['description']) &&
+            isset($row['subject_id']) && isset($row['professor_subject_id'])
+        ) {
             return new Topic([
                 'title' => $row['title'],
                 'description' => $row['description'],
-                'subject_id' => $row['subject_id'],
+                'professor_subject_id' => $row['professor_subject_id'],
                 'status' => TopicStatusEnum::FREE->value,
-                'user_id' => auth()->user()->id,
                 'student_id' => null,
             ]);
         } else {
