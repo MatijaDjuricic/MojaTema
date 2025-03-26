@@ -12,7 +12,7 @@
     transition: 300ms ease-in-out;
 }
 .nav_item p {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     text-decoration: none;
 }
 .active, .not_active:hover {

@@ -50,3 +50,11 @@ export interface IUpdateSubjectRequest {
     title: string,
     class_year_id: number
 }
+export interface ICreateProfessorSubjectRequest {
+    user_id: number,
+    subject_id: number
+}
+export interface IUpdateProfessorSubjectRequest {
+    user_id: number,
+    subject_id: number
+}

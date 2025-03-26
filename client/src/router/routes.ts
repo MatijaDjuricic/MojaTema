@@ -78,6 +78,11 @@ export const routes: Array<RouteRecordRaw> = [
                 component: () => import('../views/Users.vue'),
             },
             {
+                path: 'professor-subject',
+                name: 'ProfessorSubject',
+                component: () => import('../views/ProfessorSubject.vue'),
+            },
+            {
                 path: 'topics',
                 name: 'AllTopics',
                 component: () => import('../views/AllTopics.vue'),

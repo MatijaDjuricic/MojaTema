@@ -38,6 +38,15 @@ export type Subject = {
     updatedAt: Date,
     createdAt: Date
 }
+export type ProfessorSubject = {
+    id: number,
+    user_id: number,
+    subject_id: number,
+    professor: User,
+    subject: Subject,
+    createdAt: Date,
+    updatedAt: Date
+}
 export type Message = {
     senderId: number,
     receiverId: number,

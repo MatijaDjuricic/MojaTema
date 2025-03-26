@@ -2,7 +2,8 @@ import { ClassEnum, GraduationPaperEnum, RoleEnum, StudentEnum, TopicStatusEnum 
 export const queryStaleTime = {
     users: 1000 * 60 * 5,
     topics: 1000 * 60 * 5,
-    subjects: 1000 * 60 * 5
+    subjects: 1000 * 60 * 5,
+    professorSubjects: 1000 * 60 * 5
 }
 export const themes = {
     light: 'light',
