@@ -45,16 +45,16 @@ const { createSubjectRef, updateSubjectRef, handleClear, openEditModal } = useSu
           <FormLayout :handle-submit="() => { createSubject(createSubjectRef), closeModal() }">
           <template #inputs>
             <label>Година:</label>
-              <select v-model="createSubjectRef.class_year_id">
-                <option v-for="(class_year, index) in Object.keys(ClassYearEnum).filter(key => isNaN(Number(key)))"
-                  :key="index" :value="index+1"
-                >
-                  {{ class_year }}
-                </option>
-              </select>
-              <label>Наслов:</label>
-              <input v-model="createSubjectRef.title" type="text" placeholder="Унеси наслов..."/>
-            </template>
+            <select v-model="createSubjectRef.class_year_id">
+              <option v-for="(class_year, index) in Object.keys(ClassYearEnum).filter(key => isNaN(Number(key)))"
+                :key="index" :value="index+1"
+              >
+                {{ class_year }}
+              </option>
+            </select>
+            <label>Наслов:</label>
+            <input v-model="createSubjectRef.title" type="text" placeholder="Унеси наслов..."/>
+          </template>
           <template #buttons>
             <CTA title="Додај предмет" color="green" size="sm" type="submit" :loading="isSubmitLoading"/>
             <CTA title="Одбаци" color="red" size="sm" @click.prevent="handleClear"/>
@@ -96,7 +96,7 @@ const { createSubjectRef, updateSubjectRef, handleClear, openEditModal } = useSu
                 </template>
                 <FormLayout :handle-submit="() => { updateSubject({ id: subject.id, data: updateSubjectRef }), closeModalRefs(subject.id) }">
                   <template #inputs>
-                    <label>Улога:</label>
+                    <label>Година:</label>
                     <select v-model="updateSubjectRef.class_year_id">
                       <option v-for="(class_year, index) in Object.keys(ClassYearEnum).filter(key => isNaN(Number(key)))"
                         :key="index" :value="index+1"

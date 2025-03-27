@@ -21,15 +21,14 @@ export interface IChangePasswordRequest {
 export interface ICreateTopicRequest {
     title: string,
     description: string,
-    subject_id: number,
-    professor_id: number | null,
+    professor_subject_id: number,
+    student_user_id: number | null,
 }
 export interface IUpdateTopicRequest {
     title: string,
     description: string,
     status: number,
-    subject_id: number,
-    professor_id: number,
+    professor_subject_id: number,
     student_user_id: number | null,
 }
 export interface IUpdateTopicStatusRequest {

@@ -12,14 +12,14 @@ class TopicImport implements ToModel, WithHeadingRow
     {
         if (
             isset($row['title']) && isset($row['description']) &&
-            isset($row['subject_id']) && isset($row['professor_subject_id'])
+            isset($row['professor_subject_id'])
         ) {
             return new Topic([
                 'title' => $row['title'],
                 'description' => $row['description'],
                 'professor_subject_id' => $row['professor_subject_id'],
-                'status' => TopicStatusEnum::FREE->value,
-                'student_id' => null,
+                'student_id' => isset($row['student_id']) ? $row['student_id'] : null,
+                'status' => isset($row['student_id']) ? TopicStatusEnum::PENDING->value : TopicStatusEnum::FREE->value,
             ]);
         } else {
             \Log::warning('Missing required data in row: ' . json_encode($row));

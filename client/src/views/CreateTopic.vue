@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { useTopicForm } from '../composables/forms/useTopicForm';
-import { useProfessorSubjects } from '../composables/queries/useSubjects';
 import { useCreateTopic, useImportTopics } from '../composables/queries/useTopics';
+import { useProfessorSubjectByProfessorId } from '../composables/queries/useProfessorSubject';
 import { IconFileImport } from '@tabler/icons-vue';
 import PageLayout from '../layouts/PageLayout.vue';
 import HeaderLayout from '../layouts/HeaderLayout.vue';
 import FormLayout from '../layouts/FormLayout.vue';
 import CTA from '../components/common/CTA.vue';
-const { data: professorSubjects } = useProfessorSubjects();
+const { data: professorSubjects } = useProfessorSubjectByProfessorId();
 const { mutate: createTopic, isPending: isSubmitLoading } = useCreateTopic();
 const { importTopics, fileInput } = useImportTopics();
 const { createTopicRef, handleClear } = useTopicForm();
@@ -26,12 +26,12 @@ const { createTopicRef, handleClear } = useTopicForm();
     <div :class="$style.form_wrapper">
       <FormLayout :handle-submit="() => createTopic(createTopicRef)">
         <template #inputs>
-          <label>Предмет:</label>
-          <select v-model="createTopicRef.subject_id">
-            <option v-for="(subject, index) in professorSubjects" :key="index" :value="subject.id">
-              {{ subject.title }}
-            </option>
-          </select>
+          <label>Професор-Предмет:</label>
+            <select v-model="createTopicRef.professor_subject_id">
+              <option v-for="professorSubject in professorSubjects" :key="professorSubject.id" :value="professorSubject.id">
+                {{ professorSubject.subject.title }} - {{ professorSubject.professor.firstName }} {{ professorSubject.professor.lastName }}
+              </option>
+            </select>
           <label>Назив:</label>
           <input v-model="createTopicRef.title" type="text" placeholder="Унеси назив..." />
           <label>Опис:</label>

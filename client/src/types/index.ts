@@ -18,6 +18,7 @@ export type Topic = {
     title: string,
     description: string,
     status: number,
+    professor_subject_id: number,
     subject: {
         id: number,
         title: string,

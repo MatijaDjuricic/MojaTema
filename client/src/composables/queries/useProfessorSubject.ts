@@ -1,4 +1,5 @@
 import { ref } from "vue"
+import { useAuthStore } from "../../stores/auth";
 import { useToastMessage } from "../../composables/utils/useToastMessage";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import {
@@ -7,6 +8,7 @@ import {
     updateProfessorSubjectAsync,
     importProfessorSubjectsAsync,
     deleteProfessorSubjectAsync,
+    getProfessorSubjectByProfessorAsync,
 } from "../../api/requests/professorSubject";
 import { queryStaleTime } from "../../utils/constants";
 import { ICreateProfessorSubjectRequest, IUpdateProfessorSubjectRequest } from "../../types/interface"
@@ -15,6 +17,14 @@ export const useProfessorSubjects = () => {
         queryKey: ['professorSubjects'],
         queryFn: () => getProfessorSubjectsAsync(),
         staleTime: queryStaleTime.professorSubjects
+    });
+}
+export const useProfessorSubjectByProfessorId = () => {
+    const currentUser = useAuthStore().currentUser;
+    return useQuery({
+        queryKey: ['professorSubjectByProfessorId'],
+        queryFn: () => getProfessorSubjectByProfessorAsync(currentUser.id),
+        staleTime: queryStaleTime.topics
     });
 }
 export const useCreateProfessorSubject = () => {

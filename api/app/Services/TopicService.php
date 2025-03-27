@@ -24,10 +24,11 @@ use Illuminate\Support\Facades\Cache;
 class TopicService implements ITopicService
 {
     public function getAllTopics(string $search = ''): JsonResource {
-        return Cache::remember('topics_all' . md5($search), 60, function () use ($search) {
+        $cacheKey = $search ? 'topics_search_' . md5($search) : 'topics_all';
+        return Cache::remember($cacheKey, 60, function () use ($search) {
             $query = Topic::with(['professor_subject', 'student']);
             $keywords = explode(' ', $search);
-            if ($search != '') {
+            if ($search) {
                 $query->where(function ($q) use ($keywords) {
                     foreach ($keywords as $keyword) {
                         $q->where(function ($q) use ($keyword) {
@@ -59,20 +60,21 @@ class TopicService implements ITopicService
     }
 
     public function getReportedTopics(): JsonResource {
-        $topics = Cache::remember('reported_topics', 60, function () {
-            return Topic::with('student')
+        return Cache::remember('reported_topics', 60, function () {
+            $topics = Topic::with(['professor_subject', 'student'])
                 ->where(function ($q) {
-                    $q->where('user_id', auth()->user()->id)
+                    $q->whereHas('professor_subject', function ($q) {
+                        $q->where('user_id', auth()->user()->id);
+                    })
                     ->whereHas('student', function ($q) {
                         $q->whereNotNull('user_id');
                     })
                     ->orWhereHas('student', function ($q) {
                         $q->where('user_id', auth()->user()->id);
                     });
-                })
-                ->get();
+                });
+            return TopicResource::collection($topics->get());
         });
-        return TopicResource::collection($topics);
     }
 
     public function getTopicById(int $id): JsonResource {
@@ -88,12 +90,15 @@ class TopicService implements ITopicService
     public function getTopicsByProfessor(int $id): JsonResource {
         return Cache::remember("topics_by_professor_{$id}", 60, function () use ($id) {
             $topics = Topic::with(['professor_subject', 'student'])
-                ->where('profesor_subject.user_id', $id)
-                ->get();
+                    ->where(function ($q) {
+                        $q->whereHas('professor_subject', function ($q) {
+                            $q->where('user_id', auth()->user()->id);
+                        });
+                    });
             if (!$topics) {
                 throw new ModelNotFoundException('Topic not found.');
             }
-            return TopicResource::collection($topics);
+            return TopicResource::collection($topics->get());
         });
     }
 
@@ -104,7 +109,7 @@ class TopicService implements ITopicService
             'title' => $fields['title'],
             'description' => $fields['description'],
             'professor_subject_id' => $fields['professor_subject_id'],
-            'student_id' => $fields['student_id'],
+            'student_id' => $fields['student_user_id'],
             'status' => TopicStatusEnum::FREE,
         ]);
         Cache::forget('topics_all');

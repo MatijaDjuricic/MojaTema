@@ -15,7 +15,7 @@ class CreateTopicRequest extends FormRequest
             'title' => 'required|string',
             'description' => 'required|string',
             'professor_subject_id' => 'required|int',
-            'student_id' => 'int|nullable'
+            'student_user_id' => 'int|nullable'
         ];
     }
 }

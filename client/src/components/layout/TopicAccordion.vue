@@ -1,15 +1,13 @@
 <script lang="ts" setup>
 import { ref, defineProps } from 'vue';
 import { useUpdateTopicStatus } from '../../composables/queries/useTopics';
-import { useAuthStore } from '../../stores/auth';
 import { TopicStatusNamesCyrillic } from '../../utils/constants';
 import { TopicStatusEnum } from '../../utils/enums';
 import { IconChevronDown, IconCircleDashedX } from '@tabler/icons-vue';
 import CTA from '../common/CTA.vue';
 import type { Topic } from '../../types';
-defineProps<{ topic: Topic }>();
+defineProps<{ topic: Topic, isRerotedBySelf: boolean, userId: number }>();
 const { mutate: updateTopicStatus, isPending: isLoadingTopicStatus } = useUpdateTopicStatus();
-const user = useAuthStore().currentUser;
 const open = ref<boolean>(false);
 </script>
 <style module src="./TopicAccordion.module.css" />
@@ -51,14 +49,14 @@ const open = ref<boolean>(false);
           </div>
           <div :class="$style.cta_wrapper">
             <CTA
-              v-if="topic.student === null"
+              v-if="topic.student === null && !isRerotedBySelf"
               title="Пријави тему"
               size="sm"
               :loading="isLoadingTopicStatus"
               @click="updateTopicStatus({ id: topic.id, status: TopicStatusEnum.NA_CEKANJU })"
             />
             <CTA
-              v-else-if="user.id === topic.student?.userId"
+              v-else-if="userId === topic.student?.userId"
               title="Одјави тему"
               size="sm"
               :loading="isLoadingTopicStatus"

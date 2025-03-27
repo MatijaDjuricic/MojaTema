@@ -29,7 +29,7 @@ const {
 } = useModal();
 const { data: subjects } = useSubjects();
 const { data: users } = useUsers();
-const { data: profssorSubjects, isLoading: isLoadingProfessorSubjects } = useProfessorSubjects();
+const { data: professorSubjects, isLoading: isLoadingProfessorSubjects } = useProfessorSubjects();
 const { mutate: createProfessorSubject, isPending: isSubmitLoading } = useCreateProfessorSubject();
 const { importProfessorSubjects, fileInput } = useImportProfessorSubjects();
 const { mutate: updateProfessorSubject } = useUpdateProfessorSubject();
@@ -89,7 +89,7 @@ const { createProfessorSubjectRef, updateProfessorSubjectRef, handleClear, openE
           </tr>
         </thead>
         <tbody>
-          <tr v-for="professorSubject in profssorSubjects" :key="professorSubject.id">
+          <tr v-for="professorSubject in professorSubjects" :key="professorSubject.id">
             <td>{{ professorSubject.id }}</td>
             <td>{{ professorSubject.subject.title }}</td>
             <td>{{ professorSubject.professor.firstName }} {{ professorSubject.professor.lastName }}</td>

@@ -11,6 +11,7 @@ class TopicResource extends JsonResource {
             'title' => $this->title,
             'description' => $this->description,
             'status' => $this->status,
+            'professor_subject_id' => $this->professor_subject_id,
             'subject' => [
                 'id' => $this->professor_subject->subject_id,
                 'title' => $this->professor_subject->subject->title,

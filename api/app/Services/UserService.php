@@ -39,25 +39,26 @@ class UserService implements IUserService
 
     public function getChatAvailableUsers(): JsonResource {
         try {
-            $topic = Topic::with(['professor', 'student']);
+            $topic = Topic::with(['professor_subject', 'student']);
             $users = [];
             if (auth()->user()->role == UserRoleEnum::STUDENT->value) {
-                $data = $topic
-                    ->orWhereHas('student', function($q)  {
+                $data = $topic->whereNotNull('student_id')
+                    ->orWhereHas('student', function ($q) {
                         $q->where('user_id', auth()->user()->id);
                     })->get();
-                $users = UserResource::collection($data->pluck('professor'));
+                $users = UserResource::collection($data->pluck('professor_subject.user'));
             }
             else if (auth()->user()->role == UserRoleEnum::PROFESSOR->value) {
-                $data = $topic
-                    ->whereNotNull('student_id')
-                    ->where('user_id', auth()->user()->id)->get();
+                $data = $topic->whereNotNull('student_id')
+                    ->whereHas('professor_subject', function ($q) {
+                        $q->where('user_id', auth()->user()->id);
+                    })->get();
                 $users = UserResource::collection($data->pluck('student.user'));
             }
             return JsonResource::collection($users);
         } catch (\Exception $e) {
-            \Log::error('Error updating topic status: ' . $e->getMessage());
-            throw new \Exception('Error updating topic status.');
+            \Log::error('Error fetching topic: ' . $e->getMessage());
+            throw new \Exception('Error fetching topic.');
         }
     }
 

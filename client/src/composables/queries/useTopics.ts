@@ -52,7 +52,7 @@ export const useCreateTopic = () => {
     const { successMessage, errorMessage } = useToastMessage();
     return useMutation({
         mutationFn: async (data: ICreateTopicRequest) => {
-            if (!data.title || !data.description || !data.subject_id) {
+            if (!data.title || !data.description || !data.professor_subject_id) {
                 throw new Error("Поља форме су празна");
             }
             await createTopicAsync(data);

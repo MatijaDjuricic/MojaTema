@@ -105,6 +105,12 @@ const { createUserRef, updateUserRef, openEditModal, handleClear } = useUserForm
                 </template>
                 <FormLayout :handle-submit="() => { updateUser({ id: user.id, data: updateUserRef }), closeModalRefs(user.id) }">
                   <template #inputs>
+                    <label>Име:</label>
+                    <input v-model="updateUserRef.first_name" type="text" placeholder="Унеси име..."/>
+                    <label>Презиме:</label>
+                    <input v-model="updateUserRef.last_name" type="text" placeholder="Унеси презиме..."/>
+                    <label>Имејл:</label>
+                    <input v-model="updateUserRef.email" type="text" placeholder="Унеси имејл..."/>
                     <label>Улога:</label>
                     <select v-model="updateUserRef.role">
                       <option :value="user.role" disabled selected>{{ RoleNamesCyrillic[user.role as RoleEnum] }}</option>
@@ -112,12 +118,6 @@ const { createUserRef, updateUserRef, openEditModal, handleClear } = useUserForm
                         {{ role }}
                       </option>
                     </select>
-                    <label>Име:</label>
-                    <input v-model="updateUserRef.first_name" type="text" placeholder="Унеси име..."/>
-                    <label>Презиме:</label>
-                    <input v-model="updateUserRef.last_name" type="text" placeholder="Унеси презиме..."/>
-                    <label>Имејл:</label>
-                    <input v-model="updateUserRef.email" type="text" placeholder="Унеси имејл..."/>
                   </template>
                   <template #buttons>
                     <CTA title="Измени" color="green" size="sm" type="submit"/>

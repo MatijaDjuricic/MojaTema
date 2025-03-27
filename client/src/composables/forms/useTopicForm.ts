@@ -4,16 +4,15 @@ import { Topic } from "../../types";
 const initialCreateTopicState: ICreateTopicRequest = {
     title: "",
     description: "",
-    subject_id: 0,
-    professor_id: 0
+    professor_subject_id: 0,
+    student_user_id: null
 };
 const initialUpdateTopicState: IUpdateTopicRequest = {
     title: "",
     description: "",
     status: 0,
-    subject_id: 0,
-    professor_id: 0,
-    student_user_id: 0
+    professor_subject_id: 0,
+    student_user_id: null
 };
 export const useTopicForm = () => {
     const createTopicRef = ref<ICreateTopicRequest>(initialCreateTopicState);
@@ -22,16 +21,15 @@ export const useTopicForm = () => {
         createTopicRef.value = {
             title: "",
             description: "",
-            subject_id: 0,
-            professor_id: 0
+            professor_subject_id: 0,
+            student_user_id: null
         };
         updateTopicRef.value = {
             title: "",
             description: "",
             status: 0,
-            subject_id: 0,
-            professor_id: 0,
-            student_user_id: 0
+            professor_subject_id: 0,
+            student_user_id: null
         };
     }
     const openEditModal = (id: number, topics: Topic[] | undefined) => {
@@ -42,8 +40,7 @@ export const useTopicForm = () => {
             title: topic.title,
             description: topic.description,
             status: topic.status,
-            subject_id: topic.subject.id,
-            professor_id: topic.professor.userId,
+            professor_subject_id: topic.professor_subject_id,
             student_user_id: topic.student ? topic.student.userId : 0
         };
     }

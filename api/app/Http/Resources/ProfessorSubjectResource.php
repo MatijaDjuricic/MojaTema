@@ -15,8 +15,8 @@ class ProfessorSubjectResource extends JsonResource
             'subject_id' => $this->subject_id,
             'professor' => [
                 'id' => $this->user->id,
-                'firstName' => $this->user->last_name,
-                'lastName' => $this->user->first_name,
+                'firstName' => $this->user->first_name,
+                'lastName' => $this->user->last_name,
                 'email' => $this->user->email,
             ],
             'subject' => [

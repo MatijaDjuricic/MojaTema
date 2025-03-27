@@ -10,10 +10,10 @@ class ProfessorSubjectImport implements ToModel, WithHeadingRow
 {
     public function model(array $row): ?ProfessorSubject
     {
-        if (isset($row['user_id']) && isset($row['professor_id'])) {
+        if (isset($row['user_id']) && isset($row['subject_id'])) {
             return new ProfessorSubject([
                 'user_id' => $row['user_id'],
-                'class_year_id' => $row['professor_id'],
+                'subject_id' => $row['subject_id'],
             ]);
         } else {
             \Log::warning('Missing required data in row: ' . json_encode($row));

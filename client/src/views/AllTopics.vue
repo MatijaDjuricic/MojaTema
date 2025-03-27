@@ -1,8 +1,15 @@
 <script lang="ts" setup>
+import { useProfessorSubjects } from '../composables/queries/useProfessorSubject';
 import { useUsers } from '../composables/queries/useUsers';
-import { useSubjects } from '../composables/queries/useSubjects';
 import { useTopicForm } from '../composables/forms/useTopicForm';
 import { useModal } from '../composables/utils/useModal';
+import {
+  useCreateTopic,
+  useDeleteTopic,
+  useImportTopics,
+  useTopics,
+  useUpdateTopic,
+} from '../composables/queries/useTopics';
 import { formatDate } from '../utils';
 import { RoleEnum, TopicStatusEnum } from '../utils/enums';
 import { TopicStatusNamesCyrillic } from '../utils/constants';
@@ -13,13 +20,6 @@ import FormLayout from '../layouts/FormLayout.vue';
 import Modal from '../components/layout/Modal.vue';
 import Loader from '../components/common/Loader.vue';
 import CTA from '../components/common/CTA.vue';
-import {
-  useCreateTopic,
-  useDeleteTopic,
-  useImportTopics,
-  useTopics,
-  useUpdateTopic,
-} from '../composables/queries/useTopics';
 const {
   modalRef,
   openModal,
@@ -28,9 +28,9 @@ const {
   closeModalRefs,
   closeModal
 } = useModal();
-const { data: topics, isLoading: isLoadingTopics } = useTopics();
 const { data: users } = useUsers();
-const { data: subjects } = useSubjects();
+const { data: topics, isLoading: isLoadingTopics } = useTopics();
+const { data: professorSubjects } = useProfessorSubjects();
 const { mutate: createTopic, isPending: isSubmitLoading } = useCreateTopic();
 const { importTopics, fileInput } = useImportTopics();
 const { mutate: updateTopic } = useUpdateTopic();
@@ -53,16 +53,10 @@ const { createTopicRef, updateTopicRef, handleClear, openEditModal } = useTopicF
               <input v-model="createTopicRef.title" type="text" placeholder="Унеси назив..." />
               <label>Опис:</label>
               <textarea v-model="createTopicRef.description" placeholder="Унеси опис..."></textarea>
-              <label>Предмет:</label>
-              <select v-model="createTopicRef.subject_id">
-                <option v-for="subject in subjects" :key="subject.id" :value="subject.id">
-                  {{ subject.title }}
-                </option>
-              </select>
-              <label>Професор:</label>
-              <select v-model="createTopicRef.professor_id">
-                <option v-for="professor in users?.filter(u => u.role == RoleEnum.PROFESOR)" :key="professor.id" :value="professor.id">
-                  {{ professor.firstName }} {{ professor.lastName }}
+              <label>Професор-Предмет:</label>
+              <select v-model="createTopicRef.professor_subject_id">
+                <option v-for="professorSubject in professorSubjects" :key="professorSubject.id" :value="professorSubject.id">
+                  {{ professorSubject.subject.title }} - {{ professorSubject.professor.firstName }} {{ professorSubject.professor.lastName }}
                 </option>
               </select>
             </template>
@@ -87,8 +81,7 @@ const { createTopicRef, updateTopicRef, handleClear, openEditModal } = useTopicF
             <th>Број теме</th>
             <th>Наслов</th>
             <th>Опис</th>
-            <th>Предмет</th>
-            <th>Професор</th>
+            <th>Професор-Предмет</th>
             <th>Статус</th>
             <th>Ученик</th>
             <th>Креирано</th>
@@ -102,8 +95,7 @@ const { createTopicRef, updateTopicRef, handleClear, openEditModal } = useTopicF
             <td>{{ topic.id }}</td>
             <td>{{ topic.title }}</td>
             <td>{{ topic.description }}</td>
-            <td>{{ topic.subject.title }}</td>
-            <td>{{ topic.professor.firstName }} {{ topic.professor.lastName }}</td>
+            <td>{{ topic.subject.title }} - {{ topic.professor.firstName }} {{ topic.professor.lastName }}</td>
             <td>{{ TopicStatusNamesCyrillic[topic.status as TopicStatusEnum] }}</td>
             <td>{{ topic.student ? topic.student.firstName + ' ' + topic.student.lastName : '/' }}</td>
             <td>{{ formatDate(new Date(topic.createdAt)) }}</td>
@@ -125,16 +117,10 @@ const { createTopicRef, updateTopicRef, handleClear, openEditModal } = useTopicF
                         {{ status }}
                       </option>
                     </select>
-                    <label>Предмет:</label>
-                    <select v-model="updateTopicRef.subject_id">
-                      <option v-for="subject in subjects" :key="subject.id" :value="subject.id">
-                        {{ subject.title }}
-                      </option>
-                    </select>
-                    <label>Професор:</label>
-                    <select v-model="updateTopicRef.professor_id">
-                      <option v-for="professor in users?.filter(u => u.role == RoleEnum.PROFESOR)" :key="professor.id" :value="professor.id">
-                        {{ professor.firstName }} {{ professor.lastName }}
+                    <label>Професор-Предмет:</label>
+                    <select v-model="updateTopicRef.professor_subject_id">
+                      <option v-for="professorSubject in professorSubjects" :key="professorSubject.id" :value="professorSubject.id">
+                        {{ professorSubject.subject.title }} {{ professorSubject.professor.firstName }} {{ professorSubject.professor.lastName }}
                       </option>
                     </select>
                     <label>Ученик:</label>
