@@ -1,6 +1,7 @@
 import type { User, Message } from ".";
 export interface AuthState {
     user: User | undefined,
+    token: string | undefined
 }
 export interface MessageState {
     messages: Message[]

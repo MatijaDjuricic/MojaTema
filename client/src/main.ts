@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import { VueQueryPlugin } from '@tanstack/vue-query';
 import { createPinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import App from './App.vue';
 import router from './router';
 import toast from 'vue-toastification';
@@ -8,6 +9,7 @@ import 'vue-toastification/dist/index.css';
 import './style.css';
 const pinia = createPinia();
 const app = createApp(App);
+pinia.use(piniaPluginPersistedstate);
 app.use(VueQueryPlugin);
 app.use(router);
 app.use(pinia);

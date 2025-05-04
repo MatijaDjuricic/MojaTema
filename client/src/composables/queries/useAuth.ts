@@ -1,41 +1,38 @@
+import { useRouter } from 'vue-router';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { useAuthStore } from '../../stores/auth';
-import { fetchCsrfTokenAsync, loginAsync, logoutAsync } from '../../api/requests/auth';
-import { ILoginRequest, ILoginResponse } from '../../types/interface';
 import { useToastMessage } from '../utils/useToastMessage';
-import { useRouter } from 'vue-router';
+import { fetchCsrfTokenAsync } from '../../api/requests/auth';
+import { ILoginRequest } from '../../types/interface';
 export const useAuth = () => {
     const { successMessage, errorMessage } = useToastMessage();
     const queryClient = useQueryClient();
     const router = useRouter();
     const authStore = useAuthStore();
     const { mutate: login, isPending: isSubmitLoading } = useMutation({
-        mutationFn: async (credentials: ILoginRequest): Promise<ILoginResponse> => {
+        mutationFn: async (credentials: ILoginRequest): Promise<void> => {
             await fetchCsrfTokenAsync();
-            const response = await loginAsync(credentials);
-            return response;
+            await authStore.login(credentials);
         },
-        onSuccess: (data: ILoginResponse) => {
+        onSuccess: (): void => {
             queryClient.invalidateQueries({queryKey: ['currentUser']});
-            authStore.setUser(data.user);
             successMessage("Успешно пријављивање");
             router.push('/');
         },
-        onError: () => {
+        onError: (): void => {
             errorMessage("Грешка при пријављивању");
         }
     });
     const { mutate: logout } = useMutation({
-        mutationFn: async () => {
-            await logoutAsync();
+        mutationFn: async (): Promise<void> => {
+            await authStore.logout();
         },
-        onSuccess: () => {
+        onSuccess: (): void => {
             queryClient.invalidateQueries({ queryKey: ['currentUser'] });
-            authStore.logout();
             successMessage("Успешно одјављивање");
             router.push('/login');
         },
-        onError: () => {
+        onError: (): void => {
             errorMessage("Грешка при одјављивању");
         }
     });
