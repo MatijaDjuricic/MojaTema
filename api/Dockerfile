@@ -1,8 +1,5 @@
 FROM php:8.2-fpm-alpine
 
-ARG user
-ARG uid
-
 RUN apk update && apk add \
     curl \
     libpng-dev \
@@ -10,19 +7,23 @@ RUN apk update && apk add \
     zip \
     unzip \
     libzip-dev \
-    shadow
+    shadow \
+    bash \
+    git \
+    libjpeg-turbo-dev \
+    libfreetype6-dev
 
-RUN docker-php-ext-install pdo pdo_mysql zip
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
+    docker-php-ext-install gd pdo pdo_mysql zip
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
-
-RUN mkdir -p /home/$user/.composer && \
-    chown -R $user:$user /home/$user
-
 WORKDIR /var/www
+
+RUN composer create-project --prefer-dist laravel/laravel my-laravel-app
+
+WORKDIR /var/www/my-laravel-app
 
 EXPOSE 9000
 
-USER $user
+CMD php artisan serve --host=0.0.0.0 --port=9000
