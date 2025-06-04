@@ -13,17 +13,13 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install gd pdo pdo_mysql zip \
     && rm -rf /var/lib/apt/lists/*
 
-RUN if ! getent passwd www-data; then \
-    groupadd -g 82 www-data && useradd -u 82 -g www-data -m -d /var/www www-data; \
-    fi
-    WORKDIR /var/www
-
+WORKDIR /var/www
 
 COPY . /var/www
 
 RUN chown -R www-data:www-data /var/www
 
-COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80 9000
 
