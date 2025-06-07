@@ -47,6 +47,7 @@ export const useAuthStore = defineStore('auth', {
                 this.user = undefined;
                 this.token = undefined;
                 console.error('Failed to fetch current user:', error);
+                throw new Error('Failed to login');
             }
         },
         async getAuthUser(): Promise<void> {
@@ -56,6 +57,7 @@ export const useAuthStore = defineStore('auth', {
                 this.user = undefined;
                 this.token = undefined;
                 console.error('Failed to fetch current user:', error);
+                throw new Error('Failed to fetch current user');
             }
         },
         async logout(): Promise<void> {
