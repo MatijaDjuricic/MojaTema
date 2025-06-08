@@ -9,10 +9,9 @@ import (
 )
 
 type EnvConfig struct {
-	MongoUriPublic  string
-	MongoUriPrivate string
-	ClientUrl       string
-	Port            string
+	MongoUri  string
+	ClientUrl string
+	Port      string
 }
 
 var (
@@ -26,10 +25,9 @@ func GetEnvConfig() *EnvConfig {
 			fmt.Println("Error loading .env file", err)
 		}
 		envConfig = &EnvConfig{
-			MongoUriPublic:  GetEnv("MONGO_URI_PUBLIC", ""),
-			MongoUriPrivate: GetEnv("MONGO_URI_PRIVATE", "mongodb://mongo:27017"),
-			ClientUrl:       GetEnv("CLIENT", "http://localhost:5173"),
-			Port:            ":" + GetEnv("PORT", "8080"),
+			MongoUri:  GetEnv("MONGO_URI", "mongodb://mongo:27017"),
+			ClientUrl: GetEnv("CLIENT", "http://localhost:5173"),
+			Port:      ":" + GetEnv("PORT", "8080"),
 		}
 	})
 	return envConfig

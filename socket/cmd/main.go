@@ -10,11 +10,11 @@ func main() {
 	env := config.GetEnvConfig()
 	log := logger.NewLogger()
 	server := config.NewServer(env.Port)
-	if err := db.Connect(env.MongoUriPrivate); err != nil {
+	if err := db.Connect(env.MongoUri); err != nil {
 		log.Error("Error connecting to database:", err)
 	}
 	defer db.Close()
-	routeHandler := config.NewRouteHanlder()
+	routeHandler := config.NewRouteHandler()
 	routeHandler.InitializeRoutes(server.Handler)
 	log.Info("Server listening on %s...", env.Port)
 	if err := server.Run(); err != nil {

@@ -13,7 +13,7 @@ type RouteHandler struct {
 	message *message.MessageHandler
 }
 
-func NewRouteHanlder() *RouteHandler {
+func NewRouteHandler() *RouteHandler {
 	chat := chat.NewChatHandler(db.DbService)
 	message := message.NewMessageHandler(db.DbService)
 	return &RouteHandler{
