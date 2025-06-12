@@ -4,7 +4,7 @@ namespace App\Http\Requests\Topic;
 
 use App\Enums\TopicStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
-class updateTopicStatusRequest extends FormRequest
+class UpdateTopicStatusRequest extends FormRequest
 {
     public function authorize(): bool
     {
