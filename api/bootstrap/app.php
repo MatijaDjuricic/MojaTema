@@ -20,6 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         ]);
     })
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustProxies(at: '*', headers: Request::HEADER_X_FORWARDED_ALL);
+    })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->shouldRenderJsonWhen(function (Request $request, Throwable $e) {
             if ($request->is('api/*')) {
