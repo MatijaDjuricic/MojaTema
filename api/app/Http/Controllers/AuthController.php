@@ -48,12 +48,9 @@ class AuthController extends Controller
 
     public function logout(Request $request) {
         try {
-            $request->user()->tokens->each(function ($token) {
-                $token->delete();
-            });
-            $request->session()->flush();
+            $request->user()?->tokens()?->delete();
+            $request->session()->invalidate();
             $request->session()->regenerateToken();
-            cookie()->queue(cookie()->forget(config('session.cookie')));
             return $this->successResponse(['message' => 'Logged out successfully'], 200);
         } catch (\Exception $e) {
             return $this->errorResponse("Error logging out: " . $e->getMessage(), 500);

@@ -8,17 +8,8 @@ use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
-Route::get('/sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
-
-Route::prefix('auth')->controller(AuthController::class)->group(function () {
-    Route::get('/me', 'me')->middleware(['auth:sanctum']);
-    Route::post('/register', 'register');
-    Route::post('/login', 'login');
-    Route::post('/logout', 'logout')->middleware(['auth:sanctum']);
-    Route::patch('/password', 'changePassword')->middleware(['auth:sanctum']);
-});
-
 Route::middleware('auth:sanctum')->group(function() {
+    
     Route::prefix('users')->controller(UserController::class)->group(function() {
         Route::get('/chat', 'chatAvailableUsers');
         Route::get('/', 'usersAll');
@@ -28,6 +19,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::put('/{id}', 'updateUser');
         Route::delete('/{id}', 'deleteUser');
     });
+
     Route::prefix('subjects')->controller(SubjectController::class)->group(function () {
         Route::get('/', 'subjectsAll');
         Route::get('/{id}', 'subjectById');
@@ -37,6 +29,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::put('/{id}', 'updateSubject');
         Route::delete('/{id}', 'deleteSubject');
     });
+
     Route::prefix('professor-subjects')->controller(ProfessorSubjectController::class)->group(function () {
         Route::get('/', 'professorSubjectsAll');
         Route::get('/{id}', 'professorSubjectById');
@@ -46,6 +39,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::put('/{id}', 'updateProfessorSubject');
         Route::delete('/{id}', 'deleteProfessorSubject');
     });
+
     Route::prefix('topics')->controller(TopicController::class)->group(function () {
         Route::get('/', 'topicsAll');
         Route::get('/reported', 'topicsReported');
