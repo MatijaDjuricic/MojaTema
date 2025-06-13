@@ -3,7 +3,7 @@ import type { Subject } from "../../types";
 import type { ICreateSubjectRequest, IUpdateSubjectRequest } from "../../types/interface";
 export const getSubjectsAsync = async () => {
     try {
-        const response = await apiClient.get('/subjects');
+        const response = await apiClient.get('api/subjects');
         return await response.data.data as Subject[];
     } catch (err) {
         throw new Error(`Error: ${err}`);
@@ -11,7 +11,7 @@ export const getSubjectsAsync = async () => {
 }
 export const getSubjectByIdAsync = async (id: number) => {
     try {
-        const response = await apiClient.get(`/subjects/${id}`);
+        const response = await apiClient.get(`api/subjects/${id}`);
         return await response.data.data as Subject;
     } catch (err) {
         throw new Error(`Error: ${err}`);
@@ -19,7 +19,7 @@ export const getSubjectByIdAsync = async (id: number) => {
 }
 export const getSubjectsByProfessorAsync = async (id: number) => {
     try {
-        const response = await apiClient.get(`/subjects/professor/${id}`);
+        const response = await apiClient.get(`api/subjects/professor/${id}`);
         return await response.data.data as Subject[];
     } catch (err) {
         throw new Error(`Error: ${err}`);
@@ -27,7 +27,7 @@ export const getSubjectsByProfessorAsync = async (id: number) => {
 }
 export const createSubjectAsync = async (data: ICreateSubjectRequest) => {
     try {
-        const response = await apiClient.post('/subjects', data);
+        const response = await apiClient.post('api/subjects', data);
         return await response.data.data as Subject;
     } catch (err) {
         throw new Error(`Error: ${err}`);
@@ -35,7 +35,7 @@ export const createSubjectAsync = async (data: ICreateSubjectRequest) => {
 }
 export const importSubjectsAsync = async (formData: FormData) => {
     try {
-        const response = await apiClient.post('/subjects/import', formData, {
+        const response = await apiClient.post('api/subjects/import', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -47,7 +47,7 @@ export const importSubjectsAsync = async (formData: FormData) => {
 }
 export const updateSubjectAsync = async (id: number, data: IUpdateSubjectRequest) => {
     try {
-        const response = await apiClient.put(`/subjects/${id}`, data);
+        const response = await apiClient.put(`api/subjects/${id}`, data);
         return await response.data.data as Subject;
     } catch (err) {
         throw new Error(`Error: ${err}`);
@@ -55,7 +55,7 @@ export const updateSubjectAsync = async (id: number, data: IUpdateSubjectRequest
 }
 export const deleteSubjectAsync = async (id: number) => {
     try {
-        const response = await apiClient.delete(`/subjects/${id}`);
+        const response = await apiClient.delete(`api/subjects/${id}`);
         return await response.data;
     } catch (err) {
         throw new Error(`Error: ${err}`);
