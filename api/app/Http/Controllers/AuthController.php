@@ -48,12 +48,19 @@ class AuthController extends Controller
 
     public function logout(Request $request) {
         try {
-            $request->user()?->tokens()?->delete();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-            return $this->successResponse(['message' => 'Logged out successfully'], 200);
+            $data = $this->authService->logout();
+            return $this->successResponse($data, 200);
         } catch (\Exception $e) {
             return $this->errorResponse("Error logging out: " . $e->getMessage(), 500);
+        }
+    }
+
+    public function refresh(Request $request) {
+        try {
+            $data = $this->authService->refresh();
+            return $this->successResponse($data, 200);
+        } catch (\Exception $e) {
+            return $this->errorResponse("Error refreshing token: " . $e->getMessage(), 500);
         }
     }
 

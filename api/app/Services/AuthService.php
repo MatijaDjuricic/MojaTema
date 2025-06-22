@@ -32,29 +32,45 @@ class AuthService implements IAuthService
             'role' => UserRoleEnum::STUDENT,
             'password' => Hash::make($fields['password']),
         ]);
-        $token = $user->createToken($user->email)->plainTextToken;
+        $token = auth()->login($user);
         Cache::forget('me');
         return JsonResource::make([
-            'user' => UserResource::make($user),
-            'token' => $token
+            'user' => new UserResource($user),
+            'access_token' => $token,
+            'expires_in' => auth()->factory()->getTTL() * 60,
         ]);
     }
 
     public function login(LoginRequest $request): JsonResource {
         $credentials = $request->validated();
-        if (!Auth::attempt($credentials)) {
-            throw new AuthorizationException('Bad credentials, login failed');
+        if (!$token = auth()->attempt($credentials)) {
+            throw new AuthorizationException('Bad credentials');
         }
-        $user = $request->user();
-        $token = $user->createToken($user->email)->plainTextToken;
         Cache::forget('me');
         return JsonResource::make([
-            'user' => UserResource::make($user),
-            'token' => $token
+            'user' => new UserResource(auth()->user()),
+            'access_token' => $token,
+            'expires_in' => auth()->factory()->getTTL() * 60,
+        ]);
+    }
+    
+    public function logout(): JsonResource
+    {
+        auth()->logout(true);
+        return JsonResource::make(['message' => 'Successfully logged out']);
+    }
+
+    public function refresh(): JsonResource
+    {
+        $token = auth()->refresh();
+        return JsonResource::make([
+            'access_token' => $token,
+            'expires_in' => auth('api')->factory()->getTTL() * 60,
         ]);
     }
 
-    public function changePassword(ChangePasswordRequest $request): JsonResource {
+    public function changePassword(ChangePasswordRequest $request): JsonResource
+    {
         $user = $request->user();
         if (!Hash::check($request->current_password, $user->password)) {
             throw new BadRequestException('Current password is incorrect');

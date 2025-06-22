@@ -8,7 +8,15 @@ use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
-Route::middleware('auth:sanctum')->group(function() {
+Route::prefix('auth')->group(function() {    
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('jwt.auth');
+    Route::get('/me', [AuthController::class, 'me'])->middleware('jwt.auth');
+    Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('jwt.refresh');
+});
+
+Route::middleware(['jwt.auth', 'jwt.refresh'])->group(function() {
     
     Route::prefix('users')->controller(UserController::class)->group(function() {
         Route::get('/chat', 'chatAvailableUsers');

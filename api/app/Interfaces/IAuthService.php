@@ -12,5 +12,7 @@ interface IAuthService {
     public function me(Request $request): JsonResource;
     public function register(RegisterRequest $request): JsonResource;
     public function login(LoginRequest $request): JsonResource;
+    public function logout(): JsonResource;
+    public function refresh(): JsonResource;
     public function changePassword(ChangePasswordRequest $request): JsonResource;
 }
