@@ -6,9 +6,8 @@ use App\Http\Controllers\ProfessorSubjectController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
-use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
-Route::prefix('auth')->group(function() {    
+Route::prefix('auth')->group(function() {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('jwt.auth');
@@ -17,7 +16,7 @@ Route::prefix('auth')->group(function() {
 });
 
 Route::middleware(['jwt.auth', 'jwt.refresh'])->group(function() {
-    
+
     Route::prefix('users')->controller(UserController::class)->group(function() {
         Route::get('/chat', 'chatAvailableUsers');
         Route::get('/', 'usersAll');

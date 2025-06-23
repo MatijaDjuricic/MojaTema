@@ -4,41 +4,38 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenExpiredException;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
-
 class JwtMiddleware
 {
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
-        $token = null;
+        $newToken = null;
 
         try {
             $user = JWTAuth::parseToken()->authenticate();
         } catch (TokenExpiredException $e) {
             try {
-                $token = JWTAuth::refresh(JWTAuth::getToken());
-
-                JWTAuth::setToken($token);
-
-                $user = JWTAuth::authenticate($token);
-            } catch (JWTException $e) {
-                return response()->json(['message' => 'Token expired, please log in again'], 401);
+                $newToken = JWTAuth::refresh(JWTAuth::getToken());
+                JWTAuth::setToken($newToken)->authenticate();
+            } catch (JWTException $ex) {
+                return response()->json(['message' => 'Token expired and cannot be refreshed.'], 401);
             }
         } catch (JWTException $e) {
-            return response()->json(['message' => 'Token error: ' . $e->getMessage()], 401);
+            return response()->json(['message' => 'Invalid token.'], 401);
         }
 
         $response = $next($request);
 
-        if ($token) {
-            $response->headers->set('Authorization', 'Bearer ' . $token);
+        if ($newToken) {
+            $response->headers->set('Authorization', 'Bearer ' . $newToken);
 
             if ($response->headers->get('Content-Type') === 'application/json') {
-                $originalContent = json_decode($response->getContent(), true) ?? [];
-                $originalContent['token'] = $token;
-                $response->setContent(json_encode($originalContent));
+                $content = json_decode($response->getContent(), true) ?? [];
+                $content['token'] = $newToken;
+                $response->setContent(json_encode($content));
             }
         }
 
