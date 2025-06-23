@@ -2,14 +2,15 @@
 
 namespace App\Http\Requests\Topic;
 
-use App\Enums\TopicStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
+
 class UpdateTopicRequest extends FormRequest
 {
     public function authorize(): bool
     {
         return true;
     }
+
     public function rules(): array
     {
         return [
