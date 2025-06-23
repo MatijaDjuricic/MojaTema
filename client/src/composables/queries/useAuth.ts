@@ -2,7 +2,6 @@ import { useRouter } from 'vue-router';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { useAuthStore } from '../../stores/auth';
 import { useToastMessage } from '../utils/useToastMessage';
-import { fetchCsrfTokenAsync } from '../../api/requests/auth';
 import { ILoginRequest } from '../../types/interface';
 export const useAuth = () => {
     const { successMessage, errorMessage } = useToastMessage();
@@ -11,7 +10,6 @@ export const useAuth = () => {
     const authStore = useAuthStore();
     const { mutate: login, isPending: isSubmitLoading } = useMutation({
         mutationFn: async (credentials: ILoginRequest): Promise<void> => {
-            await fetchCsrfTokenAsync();
             await authStore.login(credentials);
         },
         onSuccess: (): void => {

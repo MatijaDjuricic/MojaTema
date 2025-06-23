@@ -12,7 +12,8 @@ export interface ILoginRequest {
 }
 export interface ILoginResponse {
     user: User,
-    token: string
+    access_token: string,
+    expires_in: number
 }
 export interface IChangePasswordRequest {
     current_password: string,

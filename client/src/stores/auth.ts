@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { getAuthUserAsync, loginAsync, logoutAsync } from '../api/requests/auth';
+import { getAuthUserAsync, loginAsync, logoutAsync, refreshTokenAsync } from '../api/requests/auth';
 import { AuthState, ILoginRequest } from '../types/interface';
 import { User } from '../types';
 import { RoleEnum } from '../utils/enums';
@@ -40,9 +40,9 @@ export const useAuthStore = defineStore('auth', {
         },
         async login(creds: ILoginRequest): Promise<void> {
             try {
-                const { user, token } = await loginAsync(creds);
+                const { user, access_token } = await loginAsync(creds);
                 this.user = user;
-                this.token = token;
+                this.token = access_token;
             } catch (error) {
                 this.user = undefined;
                 this.token = undefined;
@@ -60,8 +60,23 @@ export const useAuthStore = defineStore('auth', {
                 throw new Error('Failed to fetch current user');
             }
         },
+        async refreshToken(): Promise<void> {
+            try {
+                const { access_token } = await refreshTokenAsync();
+                this.token = access_token;
+            } catch (error) {
+                this.user = undefined;
+                this.token = undefined;
+                console.error('Failed to refresh token:', error);
+                throw new Error('Failed to refresh token');
+            }
+        },
         async logout(): Promise<void> {
-            await logoutAsync();
+            try {
+                await logoutAsync();
+            } catch (error) {
+                console.error('Failed to logout:', error);
+            }
             this.user = undefined;
             this.token = undefined;
         }
