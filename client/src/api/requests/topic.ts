@@ -4,7 +4,7 @@ import type { ICreateTopicRequest, IUpdateTopicRequest } from "../../types/inter
 export const getTopicsAsync = async (search?: string) => {
     try {
         const query: string = search ? `?search=${search}` : '';
-        const response = await apiClient.get(`api/topics${query}`);
+        const response = await apiClient.get(`/api/topics${query}`);
         return await response.data.data as Topic[];
     } catch (err) {
         throw new Error(`Error: ${err}`);
@@ -12,7 +12,7 @@ export const getTopicsAsync = async (search?: string) => {
 }
 export const getReportedTopicsAsync = async () => {
     try {
-        const response = await apiClient.get(`api/topics/reported`);
+        const response = await apiClient.get('/api/topics/reported');
         return await response.data.data as Topic[];
     } catch (err) {
         throw new Error(`Error: ${err}`);
@@ -20,7 +20,7 @@ export const getReportedTopicsAsync = async () => {
 }
 export const getTopicsByProfessorAsync = async (id: number) => {
     try {
-        const response = await apiClient.get(`api/topics/professor/${id}`);
+        const response = await apiClient.get(`/api/topics/professor/${id}`);
         return await response.data.data as Topic[];
     } catch (err) {
         throw new Error(`Error: ${err}`);
@@ -28,7 +28,7 @@ export const getTopicsByProfessorAsync = async (id: number) => {
 }
 export const createTopicAsync = async (data: ICreateTopicRequest) => {
     try {
-        const response = await apiClient.post('api/topics', data);
+        const response = await apiClient.post('/api/topics', data);
         return await response.data.data as Topic;
     } catch (err) {
         throw new Error(`Error: ${err}`);
@@ -36,7 +36,7 @@ export const createTopicAsync = async (data: ICreateTopicRequest) => {
 }
 export const importTopicsAsync = async (formData: FormData) => {
     try {
-        const response = await apiClient.post('api/topics/import', formData, {
+        const response = await apiClient.post('/api/topics/import', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -48,7 +48,7 @@ export const importTopicsAsync = async (formData: FormData) => {
 }
 export const updateTopicAsync = async (id: number, data: IUpdateTopicRequest) => {
     try {
-        const response = await apiClient.put(`api/topics/${id}`, data);
+        const response = await apiClient.put(`/api/topics/${id}`, data);
         return await response.data.data as Topic;
     } catch (err) {
         throw new Error(`Error: ${err}`);
@@ -56,7 +56,7 @@ export const updateTopicAsync = async (id: number, data: IUpdateTopicRequest) =>
 }
 export const updateTopicStatusAsync = async (id: number, status: number) => {
     try {
-        const response = await apiClient.patch(`api/topics/${id}/status`, { status });
+        const response = await apiClient.patch(`/api/topics/${id}/status`, { status });
         return await response.data.data as Topic;
     } catch (err) {
         throw new Error(`Error: ${err}`);
@@ -64,7 +64,7 @@ export const updateTopicStatusAsync = async (id: number, status: number) => {
 }
 export const deleteTopicAsync = async (id: number) => {
     try {
-        const response = await apiClient.delete(`/topics/${id}`);
+        const response = await apiClient.delete(`/api/topics/${id}`);
         return await response.data;
     } catch (err) {
         throw new Error(`Error: ${err}`);

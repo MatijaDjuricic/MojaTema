@@ -3,7 +3,7 @@ import type { ProfessorSubject } from "../../types";
 import type { ICreateProfessorSubjectRequest, IUpdateProfessorSubjectRequest } from "../../types/interface";
 export const getProfessorSubjectsAsync = async () => {
     try {
-        const response = await apiClient.get('api/professor-subjects');
+        const response = await apiClient.get('/api/professor-subjects');
         return await response.data.data as ProfessorSubject[];
     } catch (err) {
         throw new Error(`Error: ${err}`);
@@ -11,7 +11,7 @@ export const getProfessorSubjectsAsync = async () => {
 }
 export const getProfessorSubjectByIdAsync = async (id: number) => {
     try {
-        const response = await apiClient.get(`api/professor-subjects/${id}`);
+        const response = await apiClient.get(`/api/professor-subjects/${id}`);
         return await response.data.data as ProfessorSubject;
     } catch (err) {
         throw new Error(`Error: ${err}`);
@@ -19,7 +19,7 @@ export const getProfessorSubjectByIdAsync = async (id: number) => {
 }
 export const getProfessorSubjectByProfessorAsync = async (id: number) => {
     try {
-        const response = await apiClient.get(`api/professor-subjects/professor/${id}`);
+        const response = await apiClient.get(`/api/professor-subjects/professor/${id}`);
         return await response.data.data as ProfessorSubject[];
     } catch (err) {
         throw new Error(`Error: ${err}`);
@@ -27,7 +27,7 @@ export const getProfessorSubjectByProfessorAsync = async (id: number) => {
 }
 export const createProfessorSubjectAsync = async (data: ICreateProfessorSubjectRequest) => {
     try {
-        const response = await apiClient.post('api/professor-subjects', data);
+        const response = await apiClient.post('/api/professor-subjects', data);
         return await response.data.data as ProfessorSubject;
     } catch (err) {
         throw new Error(`Error: ${err}`);
@@ -35,7 +35,7 @@ export const createProfessorSubjectAsync = async (data: ICreateProfessorSubjectR
 }
 export const importProfessorSubjectsAsync = async (formData: FormData) => {
     try {
-        const response = await apiClient.post('api/professor-subjects/import', formData, {
+        const response = await apiClient.post('/api/professor-subjects/import', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -47,7 +47,7 @@ export const importProfessorSubjectsAsync = async (formData: FormData) => {
 }
 export const updateProfessorSubjectAsync = async (id: number, data: IUpdateProfessorSubjectRequest) => {
     try {
-        const response = await apiClient.put(`api/professor-subjects/${id}`, data);
+        const response = await apiClient.put(`/api/professor-subjects/${id}`, data);
         return await response.data.data as ProfessorSubject;
     } catch (err) {
         throw new Error(`Error: ${err}`);
@@ -55,7 +55,7 @@ export const updateProfessorSubjectAsync = async (id: number, data: IUpdateProfe
 }
 export const deleteProfessorSubjectAsync = async (id: number) => {
     try {
-        const response = await apiClient.delete(`api/professor-subjects/${id}`);
+        const response = await apiClient.delete(`/api/professor-subjects/${id}`);
         return await response.data;
     } catch (err) {
         throw new Error(`Error: ${err}`);

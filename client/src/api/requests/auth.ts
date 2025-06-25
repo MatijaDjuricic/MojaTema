@@ -7,7 +7,7 @@ import type {
 } from "../../types/interface";
 export const loginAsync = async (creds: ILoginRequest) => {
     try {
-        const response = await apiClient.post('/api/auth/login', creds);
+        const response = await apiClient.post('api/auth/login', creds);
         return await response.data.data as ILoginResponse;
     } catch (err) {
         console.error('Failed to login:', err);
@@ -16,7 +16,7 @@ export const loginAsync = async (creds: ILoginRequest) => {
 }
 export const getAuthUserAsync = async () => {
     try {
-        const response = await apiClient.get('/api/auth/me');
+        const response = await apiClient.get('api/auth/me');
         return await response.data.data as User;
     } catch (err) {
         console.error('Failed to fetch current user:', err);
@@ -25,7 +25,7 @@ export const getAuthUserAsync = async () => {
 }
 export const changePasswordAsync = async (data: IChangePasswordRequest) => {
     try {
-        const response = await apiClient.patch('/api/auth/password', data);
+        const response = await apiClient.patch('api/auth/password', data);
         return await response.data.data;
     } catch (err) {
         console.error('Failed to change password:', err);
@@ -34,7 +34,7 @@ export const changePasswordAsync = async (data: IChangePasswordRequest) => {
 }
 export const refreshTokenAsync = async () => {
     try {
-        const response = await apiClient.post('/api/auth/refresh');
+        const response = await apiClient.post('api/auth/refresh');
         return await response.data.data as Omit<ILoginResponse, 'user'>;
     } catch (err) {
         console.error('Failed to refresh token:', err);
@@ -43,7 +43,7 @@ export const refreshTokenAsync = async () => {
 }
 export const logoutAsync = async () => {
     try {
-        await apiClient.post('/api/auth/logout');
+        await apiClient.post('api/auth/logout');
     } catch (err) {
         console.error('Failed to logout:', err);
         throw new Error(`Error: ${err}`);
