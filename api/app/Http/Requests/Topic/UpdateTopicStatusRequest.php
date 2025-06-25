@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Topic;
 
+use App\Enums\TopicStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTopicStatusRequest extends FormRequest
